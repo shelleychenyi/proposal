@@ -1,0 +1,18 @@
+# macOS / Office 暫存檔
+.DS_Store
+~$*
+
+# 壓縮檔：Kintone-intergrate.zip（360MB）超過 GitHub 單檔 100MB 上限，其他 zip 和旁邊的資料夾內容重複
+*.zip
+
+# API 金鑰、密碼等設定檔
+.env
+.env.*
+
+# Claude Code 的個人本機設定與 worktree 副本
+**/.claude/settings.local.json
+**/.claude/worktrees/
+
+# Python 暫存
+__pycache__/
+*.pyc

@@ -1,0 +1,30 @@
+{
+  "outputPrefix": "Visa日本10%還元_口碑施策提案",
+  "startDate": "2025-09-06",
+  "endDate": "2026-09-06",
+  "sources": [],
+  "geoCountries": ["tw"],
+  "limit": 50000,
+  "timeoutSec": 150,
+  "onlyBrandRelevant": true,
+  "sentimentBands": [0.6, 0.2, -0.2, -0.6],
+  "sentimentSource": "g1",
+  "groups": [
+    { "id": "g1", "label": "Visa × 高島屋", "searchExpression": "Visa & 高島屋" },
+    { "id": "g2", "label": "Visa × BicCamera", "searchExpression": "Visa & (BicCamera|Bic Camera|ビックカメラ)" }
+  ],
+  "kpi": {
+    "upliftPercent": 30,
+    "impressionsPerPost": [1000, 1500],
+    "postCount": 100,
+    "registrations": [2500, 5000]
+  },
+  "templates": {
+    "zh": "【範本】客戶名_Intasect_Accucrazy_口碑施策_提案資料_繁中版.pptx",
+    "ja": "【範本】クライアント名_Intasect_Accucrazy_口コミ施策_提案資料_日本語版.pptx"
+  },
+  "tokens": {
+    "【專案名】": "Visa 日本 10% 回饋",
+    "【案件名】": "Visa 日本10%キャッシュバック"
+  }
+}

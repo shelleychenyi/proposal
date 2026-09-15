@@ -1,0 +1,30 @@
+{
+  "outputPrefix": "客戶名_口碑施策提案",
+  "startDate": "",
+  "endDate": "",
+  "sources": [],
+  "geoCountries": ["tw"],
+  "limit": 50000,
+  "timeoutSec": 120,
+  "onlyBrandRelevant": true,
+  "sentimentBands": [0.6, 0.2, -0.2, -0.6],
+  "sentimentSource": "g1",
+  "groups": [
+    { "id": "g1", "label": "【品牌】× 【關鍵字A】", "searchExpression": "品牌 & 關鍵字A" },
+    { "id": "g2", "label": "【品牌】× 【關鍵字B】", "searchExpression": "品牌 & (關鍵字B|同義詞)" }
+  ],
+  "kpi": {
+    "upliftPercent": 30,
+    "impressionsPerPost": [1000, 1500],
+    "postCount": 100,
+    "registrations": [2500, 5000]
+  },
+  "templates": {
+    "zh": "【範本】客戶名_Intasect_Accucrazy_口碑施策_提案資料_繁中版.pptx",
+    "ja": "【範本】クライアント名_Intasect_Accucrazy_口コミ施策_提案資料_日本語版.pptx"
+  },
+  "tokens": {
+    "【專案名】": "專案名稱",
+    "【案件名】": "案件名"
+  }
+}
