@@ -1,0 +1,97 @@
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { width:800px; height:1200px; font-family:"Microsoft JhengHei","PingFang TC",sans-serif; background:#F7F9FC; overflow:hidden; }
+  .panel { width:800px; height:1200px; padding:14px 16px; display:flex; flex-direction:column; gap:12px; }
+  .hd { display:flex; align-items:center; justify-content:space-between; height:34px; }
+  .hd .t { font-size:22px; font-weight:bold; color:#12203F; }
+  .hd .lg { display:flex; gap:14px; font-size:14px; color:#6B7A90; align-items:center;}
+  .dot { display:inline-block; width:13px; height:13px; border-radius:50%; margin-right:3px; vertical-align:-1px;}
+  .mapbox { position:relative; overflow:hidden; border-radius:12px; border:1px solid #D6DDE8; background:#fff; }
+  .mapbox iframe { position:absolute; border:0; }
+  .cap { position:absolute; right:8px; bottom:6px; font-size:11px; color:#6B7A90; background:rgba(255,255,255,.8); padding:1px 4px; border-radius:3px; z-index:5;}
+  .zone { position:absolute; left:12px; top:9px; font-size:16px; font-weight:bold; color:#12203F; background:rgba(255,255,255,.92); padding:2px 8px; border-radius:4px; z-index:5; border:1px solid #D6DDE8;}
+  .pin { position:absolute; width:30px; height:30px; border-radius:50%; color:#fff; font-size:16px; font-weight:bold;
+         display:flex; align-items:center; justify-content:center; transform:translate(-50%,-50%);
+         border:3px solid #fff; box-shadow:0 1px 4px rgba(18,32,63,.45); z-index:10; }
+  .g1 { background:#FF5A3C; } .g2 { background:#12203F; } .g3 { background:#1C7293; }
+  .nbox { position:absolute; border:2px solid #FF5A3C; border-radius:3px; background:rgba(255,90,60,.07); z-index:8; }
+  .nboxlbl { position:absolute; font-size:13px; color:#FF5A3C; font-weight:bold; z-index:9; background:rgba(255,255,255,.85); padding:0 3px; border-radius:2px;}
+</style>
+<div class="panel">
+  <div class="hd">
+    <div class="t">戶外看板 據點位置圖</div>
+    <div class="lg">
+      <span><span class="dot" style="background:#FF5A3C"></span>Ⅰ 桃園動線（往機場必經）</span>
+      <span><span class="dot" style="background:#12203F"></span>Ⅱ 台北・新北</span>
+      <span><span class="dot" style="background:#1C7293"></span>Ⅲ 新竹・中南部</span>
+    </div>
+  </div>
+  <div class="mapbox" id="m1" style="height:560px;">
+    <div class="zone">大台北・桃園（據點 1–7）</div>
+    <iframe id="f1" scrolling="no"></iframe>
+    <div class="cap">地圖資料 © Google</div>
+  </div>
+  <div class="mapbox" id="m2" style="height:540px;">
+    <div class="zone">全台西部走廊（據點 8–12）</div>
+    <iframe id="f2" scrolling="no"></iframe>
+    <div class="cap">地圖資料 © Google</div>
+  </div>
+</div>
+<script>
+const CROP = 90; // px cropped off each iframe edge to hide embed UI
+function setupMap(boxId, frameId, clat, clng, z, pins, nbox){
+  const box = document.getElementById(boxId);
+  const W = box.clientWidth, H = box.clientHeight;
+  const f = document.getElementById(frameId);
+  f.width = W + CROP*2; f.height = H + CROP*2;
+  f.style.left = (-CROP)+"px"; f.style.top = (-CROP)+"px";
+  f.src = "https://maps.google.com/maps?ll="+clat+","+clng+"&z="+z+"&output=embed&hl=zh-TW";
+  const world = 256 * Math.pow(2, z);
+  const px = lng => (lng + 180) / 360 * world;
+  const py = lat => { const s = Math.sin(lat * Math.PI / 180);
+    return (0.5 - Math.log((1 + s) / (1 - s)) / (4 * Math.PI)) * world; };
+  const cx = px(clng), cy = py(clat);
+  for (const p of pins){
+    const x = W/2 + (px(p.lng) - cx) + (p.dx||0), y = H/2 + (py(p.lat) - cy) + (p.dy||0);
+    if (x < 8 || x > W-8 || y < 8 || y > H-8) continue;
+    const d = document.createElement("div");
+    d.className = "pin g" + p.g;
+    d.style.left = x + "px"; d.style.top = y + "px";
+    d.textContent = p.n;
+    box.appendChild(d);
+  }
+  if (nbox){
+    const x1 = W/2 + (px(nbox.lng1) - cx), y1 = H/2 + (py(nbox.lat1) - cy);
+    const x2 = W/2 + (px(nbox.lng2) - cx), y2 = H/2 + (py(nbox.lat2) - cy);
+    const r = document.createElement("div");
+    r.className = "nbox";
+    r.style.left = Math.min(x1,x2)+"px"; r.style.top = Math.min(y1,y2)+"px";
+    r.style.width = Math.abs(x2-x1)+"px"; r.style.height = Math.abs(y2-y1)+"px";
+    box.appendChild(r);
+    const l = document.createElement("div");
+    l.className = "nboxlbl";
+    l.style.left = (Math.min(x1,x2)+4)+"px"; l.style.top = (Math.max(y1,y2)+4)+"px";
+    l.textContent = "上圖範圍";
+    box.appendChild(l);
+  }
+}
+const pinsN = [
+  {n:1, g:1, lat:25.0560, lng:121.2950},
+  {n:2, g:1, lat:24.9890, lng:121.3128},
+  {n:3, g:2, lat:25.0332, lng:121.5378},
+  {n:4, g:2, lat:25.0672, lng:121.5297},
+  {n:5, g:2, lat:25.0468, lng:121.5312},
+  {n:6, g:2, lat:25.0462, lng:121.5148},
+  {n:7, g:2, lat:25.0142, lng:121.4640},
+];
+const pinsS = [
+  {n:8,  g:3, lat:24.7845, lng:121.0040, dx:14, dy:12},
+  {n:9,  g:3, lat:24.8040, lng:120.9655, dx:-8, dy:-8},
+  {n:10, g:3, lat:24.1648, lng:120.6428},
+  {n:11, g:3, lat:22.9975, lng:120.2120},
+  {n:12, g:3, lat:22.6605, lng:120.3020},
+];
+setupMap("m1","f1", 25.035, 121.415, 11, pinsN);
+setupMap("m2","f2", 23.86, 120.95, 8, pinsS, {lat1:25.19, lng1:121.19, lat2:24.90, lng2:121.64});
+</script>
