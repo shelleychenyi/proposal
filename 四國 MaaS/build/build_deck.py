@@ -7,10 +7,19 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from lib import *
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE = os.path.join(os.path.dirname(ROOT), "白馬谷Hakuba Valley", "【中文版】Hakuba Valley 繁體中文市場集客策略提案202610.pptx")
-OUT = os.path.join(ROOT, "【繁中版】四國MaaS 台灣市場Inbound集客策略提案202611.pptx")
-
-d = Deck(BASE)
+import json
+JA = "--ja" in sys.argv
+HAK = os.path.join(os.path.dirname(ROOT), "白馬谷Hakuba Valley")
+if JA:
+    BASE = os.path.join(HAK, "【株式会社岩岳リゾート御中】Hakuba Valley 台湾向けインバウンド集客のご提案202610.pptx")
+    OUT = os.path.join(ROOT, "【インタセクト】四国MaaS 台湾市場インバウンド集客施策のご提案202611_日本語版.pptx")
+    tr_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "i18n_ja.json")
+    TR = json.load(open(tr_path, encoding="utf-8")) if os.path.exists(tr_path) else {}
+    d = Deck(BASE, font="Meiryo", tr=TR, pic_map={"png/dashboard.png": "png/dashboard_ja.png"})
+else:
+    BASE = os.path.join(HAK, "【中文版】Hakuba Valley 繁體中文市場集客策略提案202610.pptx")
+    OUT = os.path.join(ROOT, "【繁中版】四國MaaS 台灣市場Inbound集客策略提案202611.pptx")
+    d = Deck(BASE)
 n_orig = len(d.prs.slides)
 d.keep_only({0, n_orig - 1})
 cover, thanks = d.prs.slides[0], d.prs.slides[1]
@@ -25,14 +34,14 @@ for sh in cover.shapes:
         for c in list(bp):
             bp.remove(c)
         ps = tf.paragraphs
-        ps[1].runs[0].text = "四國MaaS｜台灣市場 Inbound 集客策略提案"
+        ps[1].runs[0].text = d.T("四國MaaS｜台灣市場 Inbound 集客策略提案")
         ps[3].runs[0].text = "2026年11月"
         ps[3].runs[0].font.size = Pt(16)
         for i in (2, 0):
             ps[i]._p.getparent().remove(ps[i]._p)
-    elif sh.has_text_frame and "敬啟" in sh.text_frame.text:
+    elif sh.has_text_frame and ("敬啟" in sh.text_frame.text or "御中" in sh.text_frame.text):
         r0 = sh.text_frame.paragraphs[0].runs
-        r0[0].text = "四國MaaS事業　相關單位　敬啟"
+        r0[0].text = d.T("四國MaaS事業　相關單位　敬啟")
         for r in r0[1:]:
             r.text = ""
 d.tx(cover, 1.89, 4.6, 10.36, 0.45, "把台灣客的「想去」，接上MaaS的「到得了」。", 15, NAVY, True, align="c")
@@ -137,9 +146,9 @@ for i, (r, a, f) in enumerate(routes):
     y = 1.9 + i * 0.36 if i < 2 else 2.62
     h = 0.32 if i < 2 else 0.62
     d.rect(s, 7.2, y, 5.75, h, "FBECEA" if i == 2 else WHITE, LINE)
-    d.tx(s, 7.3, y, 1.9, h, r, 9, INK, True, anchor="m")
-    d.tx(s, 9.2, y, 1.0, h, a, 8.5, GREY, anchor="m")
-    d.tx(s, 10.15, y, 2.8, h, f, 8, RED if i == 2 else INK, i == 2, anchor="m")
+    d.tx(s, 7.3, y, 1.75, h, r, 9, INK, True, anchor="m")
+    d.tx(s, 9.05, y, 1.5, h, a, 8, GREY, anchor="m")
+    d.tx(s, 10.55, y, 2.4, h, f, 7.5 if i == 2 else 8, RED if i == 2 else INK, i == 2, anchor="m")
 # timeline
 d.tx(s, 0.45, 3.4, 8, 0.3, "接下來18個月的重要時間點", 11, NAVY, True)
 d.hline(s, 0.8, 4.55, 12.6, 4.55, "B8C4D6", 3)
@@ -830,5 +839,8 @@ for sh in thanks.shapes:
         runs = sh.text_frame.paragraphs[0].runs
         if runs:
             runs[0].text = str(d.page + 1)
+if JA and d.missing:
+    json.dump(d.missing, open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "i18n_missing.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=0)
+    print("MISSING", len(d.missing))
 d.save(OUT if '--noanim' not in sys.argv else OUT.replace('.pptx','_noanim.pptx'), animate='--noanim' not in sys.argv)
 print("saved", OUT, "slides:", len(d.prs.slides))

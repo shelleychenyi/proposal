@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Intasect 版型小工具：沿用 Hakuba 中文版的母片與字級。"""
-import copy, os
+import copy, os, re
 from lxml import etree
 from pptx import Presentation
 from pptx.util import Inches, Pt, Emu
@@ -21,8 +21,12 @@ def rgb(h):
 
 
 class Deck:
-    def __init__(self, base):
+    def __init__(self, base, font=None, tr=None, pic_map=None):
         self.prs = Presentation(base)
+        self.font = font or FONT
+        self.tr = tr
+        self.pic_map = pic_map or {}
+        self.missing = []
         self.groups = {}
         self._cur = None
         self.page = 1
@@ -51,12 +55,45 @@ class Deck:
         for ph in list(s.placeholders):
             ph._element.getparent().remove(ph._element)
         self.page += 1
+        title, lead, source = self.T(title), self.T(lead), self.T(source)
         self.tx(s, 0.0, 0.13, 10.7, 0.45, title, 24, NAVY, True, anchor="m")
         self.tx(s, 0.45, 0.80, 12.45, 0.62, lead, 12.5, INK, True)
         self.tx(s, 12.30, 7.10, 0.70, 0.25, str(self.page), 9, GREY, align="r", font="Meiryo")
         if source:
             self.tx(s, 0.45, 6.90, 11.7, 0.26, source, 7.5, GREY)
         return s
+
+    # ---------- i18n ----------
+    PREFIX = re.compile(r"^(\d+\. |→ |＋ |－ )")
+
+    def T(self, s):
+        if self.tr is None or not isinstance(s, str) or not re.search(r"[\u3040-\u30ff\u4e00-\u9fff]", s):
+            return s
+        if s in self.tr:
+            return self.tr[s]
+        if not hasattr(self, "_vals"):
+            self._vals = set(self.tr.values())
+        if s in self._vals:
+            return s
+        m = self.PREFIX.match(s)
+        if m and s[m.end():] in self.tr:
+            return m.group(0) + self.tr[s[m.end():]]
+        if s not in self.missing:
+            self.missing.append(s)
+        return s
+
+    def Tx(self, text):
+        if isinstance(text, list):
+            out = []
+            for p in text:
+                if isinstance(p, (list, tuple)) and not (isinstance(p, tuple) and len(p) == 2 and isinstance(p[1], dict)):
+                    out.append([(self.T(seg), {}) if isinstance(seg, str) else (self.T(seg[0]), seg[1]) for seg in p])
+                elif isinstance(p, tuple):
+                    out.append((self.T(p[0]), p[1]))
+                else:
+                    out.append(self.T(p))
+            return out
+        return self.T(text)
 
     # ---------- primitives ----------
     def _track(self, s, shp):
@@ -65,7 +102,9 @@ class Deck:
         return shp
 
     def tx(self, s, x, y, w, h, text, size=10, color=INK, bold=False, align="l",
-           anchor="t", font=FONT, line=1.15, margin=0.04):
+           anchor="t", font=None, line=1.15, margin=0.04):
+        font = font or self.font
+        text = self.Tx(text)
         tb = s.shapes.add_textbox(Inches(x), Inches(y), Inches(w), Inches(h))
         tf = tb.text_frame
         tf.word_wrap = True
@@ -123,7 +162,9 @@ class Deck:
         return self.rect(s, x, y, w, h, fill, line, MSO_SHAPE.ROUNDED_RECTANGLE, radius, lw)
 
     def label(self, s, x, y, w, h, text, fill, color=WHITE, size=10, bold=True, shape=MSO_SHAPE.ROUNDED_RECTANGLE,
-              radius=0.2, align="c", font=FONT):
+              radius=0.2, align="c", font=None):
+        font = font or self.font
+        text = self.T(text)
         sh = self.rect(s, x, y, w, h, fill, None, shape, radius if shape == MSO_SHAPE.ROUNDED_RECTANGLE else None)
         tf = sh.text_frame
         tf.word_wrap = True
@@ -162,6 +203,7 @@ class Deck:
 
     def pic(self, s, path, x, y, w, h, mode="fit", crop=None):
         """fit：等比放進框內置中；cover：裁切填滿框。"""
+        path = self.pic_map.get(path, path)
         path = os.path.join(HERE, path) if not os.path.isabs(path) else path
         im = Image.open(path)
         iw, ih = im.size
