@@ -193,6 +193,17 @@ class Deck:
                 p.crop_left, p.crop_right = l, r
         return self._track(s, p)
 
+    def poly(self, s, pts, fill):
+        E = 914400
+        fb = s.shapes.build_freeform(int(pts[0][0] * E), int(pts[0][1] * E), scale=1.0)
+        fb.add_line_segments([(int(x * E), int(y * E)) for x, y in pts[1:]], close=True)
+        sh = fb.convert_to_shape()
+        sh.fill.solid()
+        sh.fill.fore_color.rgb = rgb(fill)
+        sh.line.fill.background()
+        sh.shadow.inherit = False
+        return self._track(s, sh)
+
     def ai_tag(self, s, x, y, text="AI示意"):
         return self.label(s, x, y, 0.62, 0.2, text, "555555", size=7, bold=False, radius=0.15)
 
