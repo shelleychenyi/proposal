@@ -11,8 +11,15 @@ from lxml import etree
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 BASE = os.path.join(os.path.dirname(ROOT), "Pasona", "（提出）【PASONA】2026インバウンド集客ソリューション（台湾メイン）(1).pptx")
-OUT = os.path.join(ROOT, "【繁中版】長岡花火 台灣市場Inbound推廣施策提案202611_V.2.pptx")
-d = Deck(BASE)
+import json
+JA = "--ja" in sys.argv
+if JA:
+    OUT = os.path.join(ROOT, "【XXX御中】長岡花火 台湾向けインバウンド集客のご提案202611.pptx")
+    _trp = os.path.join(HERE, "i18n_ja.json")
+    d = Deck(BASE, font="Meiryo", tr=json.load(open(_trp, encoding="utf-8")) if os.path.exists(_trp) else {})
+else:
+    OUT = os.path.join(ROOT, "【繁中版】長岡花火 台灣市場Inbound推廣施策提案202611_V.2.pptx")
+    d = Deck(BASE)
 KEEP = [0, 1, 2, 3, 4, 5, 6, 8, 19]
 d.keep_only(set(KEEP))
 S = list(d.prs.slides)
@@ -26,7 +33,7 @@ PNG = lambda n: os.path.join(HERE, "png", n)
 PD = lambda n: os.path.join(HERE, "pandora", n)
 SRC_V = "資料來源：Pandora by The Pocket Company／Accucrazy「長岡花火大會」言及量レポート（2025/10/27〜2026/10/26・台灣＋香港）"
 SRC_I = "資料來源：Pandora「長岡花火大會」インサイトレポート（2025/10/27〜2026/10/26）"
-FONT_ZH = "Microsoft JhengHei"
+FONT_ZH = "Meiryo" if JA else "Microsoft JhengHei"
 
 # ---------------------------------------------------------------- 沿用頁的繁中化
 TR = {
@@ -106,13 +113,15 @@ def walk(shapes):
                                 r.text = r.text.replace("その他日本全国の自治体・DMO・観光協会等", "其他日本全國自治體・DMO・觀光協會等")
 
 
+if JA:
+    TR = {"台湾市場向けインバウンド集客施策": "台湾市場向けインバウンド集客施策", "株式会社パソナグループ　御中": "XXX　御中"}
 for sl in (cover, company, service, domain3, sec1, media, sec2):
     walk(sl.shapes)
 
 for sh in cover.shapes:
     if sh.has_text_frame and "インバウンドプロモーション" in sh.text_frame.text:
         runs = [r for p in sh.text_frame.paragraphs for r in p.runs]
-        runs[0].text = "長岡花火｜台灣市場 Inbound 推廣施策提案"
+        runs[0].text = d.T("長岡花火｜台灣市場 Inbound 推廣施策提案")
         _font(runs[0])
         for r in runs[1:]:
             r.text = ""
@@ -187,7 +196,7 @@ s = p11
 for sh in list(s.shapes):
     if sh.has_text_frame and "1-1." in sh.text_frame.text:
         rs = [r for p in sh.text_frame.paragraphs for r in p.runs]
-        rs[0].text = "1-1. 台灣消費者的行動特徵"
+        rs[0].text = d.T("1-1. 台灣消費者的行動特徵")
         _font(rs[0])
         for r in rs[1:]:
             r.text = ""
@@ -334,7 +343,7 @@ d.tx(s, 2.8, 5.9, 10.0, 0.85, "施策前基準值（總聲量 4,770,013）→ �
 # ================================================================ 2-2 KOC 的定義（沿用 Hakuba 金字塔頁的圖形）
 import copy as _copy
 from pptx import Presentation as _P
-_HK = _P(os.path.join(os.path.dirname(ROOT), "白馬谷Hakuba Valley", "【中文版】Hakuba Valley 繁體中文市場集客策略提案202610.pptx"))
+_HK = _P(os.path.join(os.path.dirname(ROOT), "白馬谷Hakuba Valley", "【株式会社岩岳リゾート御中】Hakuba Valley 台湾向けインバウンド集客のご提案202610.pptx" if JA else "【中文版】Hakuba Valley 繁體中文市場集客策略提案202610.pptx"))
 pkoc = s = page("2-2. KOC 的定義｜台灣資訊發布者的結構",
                 "在台灣，發文者的規模決定了觸及範圍與消費者的距離感。本提案的口碑施策全部以「KOC」執行——粉絲 10 萬以下、貼近旅客視角的發布者。",
                 None)
@@ -348,7 +357,7 @@ _T = {"TextBox 51": "微網紅・旅遊 KOC。以旅客的視角拍攝花火現�
       "Rounded Rectangle 61": "本提案的 KOC\n粉絲 10萬以下"}
 for sh in s.shapes:
     if sh.name in _T and sh.has_text_frame:
-        lines = _T[sh.name].split("\n")
+        lines = d.T(_T[sh.name]).split("\n")
         ps = sh.text_frame.paragraphs
         for i, pp in enumerate(ps):
             for j, r in enumerate(pp.runs):
@@ -602,5 +611,8 @@ for x in list(lst):
     lst.remove(x)
 for sl in order:
     lst.append(by_id[sl._element])
+if JA and d.missing:
+    json.dump(d.missing, open(os.path.join(HERE, "i18n_missing.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=0)
+    print("MISSING", len(d.missing))
 d.save(OUT, animate=False)
 print("saved", OUT, len(d.prs.slides))
