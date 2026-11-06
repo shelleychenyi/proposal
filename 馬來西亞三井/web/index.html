@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LaLa Quest｜MSP 會員 App 3.0 提案</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Plus+Jakarta+Sans:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0E1A33;--blue:#2B67B0;--orange:#F39A1E;--mint:#22C2A0;--pink:#FF6FA3;--teal:#1E9C9A;--navy:#15325E;--gold:#FFD3A3;--ink:#1E1A1D}
+  html,body{margin:0;height:100%;background:var(--bg);overflow:hidden;font-family:"Noto Sans TC","PingFang TC",sans-serif;color:var(--ink)}
+  #viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+  #stage{position:relative;flex:none;width:1600px;height:900px;transform-origin:center center;background:#000;overflow:hidden}
+  .slide{position:absolute;inset:0;opacity:0;transition:opacity .45s ease;pointer-events:none}
+  .slide.on{opacity:1;pointer-events:auto}
+  .slide>img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .slide video.ph{position:absolute;object-fit:cover;background:#0E1A33}
+  #bar{position:fixed;left:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--blue),var(--orange));transition:width .3s;z-index:9}
+  #num{position:fixed;right:16px;bottom:12px;font-size:12px;color:#fff;opacity:.6;z-index:9}
+  #hint{position:fixed;left:16px;bottom:12px;font-size:12px;color:#fff;opacity:.7;z-index:10}
+  #hint a{color:var(--gold)}
+  .nav{position:fixed;top:0;bottom:60px;width:12%;cursor:pointer;z-index:8}
+  #prev{left:0}#next{right:0}
+  #dl{position:fixed;top:12px;right:16px;z-index:11;display:flex;gap:8px;align-items:center;font-size:12px;color:#fff}
+  #dl span{opacity:.6}
+  #dl a{color:#fff;text-decoration:none;background:rgba(255,255,255,.14);padding:5px 12px;border-radius:20px;font-weight:700}
+  #dl a.b{background:var(--orange)}
+  #dl a:hover{background:rgba(255,255,255,.3)}
+
+  /* ---------- IDEA ---------- */
+  .idea video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .idea .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,26,51,.85),rgba(14,26,51,.2) 70%)}
+  .idea .txt{position:absolute;left:126px;top:200px;width:760px;color:#fff}
+  .idea .k{color:var(--orange);font-weight:700;font-size:21px;letter-spacing:.08em}
+  .idea h1{margin:16px 0 0;font-size:66px;line-height:1.18;font-weight:900}
+  .idea h1 small{display:block;font-family:"Plus Jakarta Sans";font-size:30px;color:var(--gold);margin-top:10px}
+  .idea p{color:#fff;font-size:22px;line-height:1.9;margin-top:34px;opacity:.95}
+  .idea p b{color:var(--orange)}
+
+  /* ---------- Island world ---------- */
+  .world{position:absolute;left:4.05%;top:14.4%;width:91.9%;height:70.7%;border-radius:6px;overflow:hidden;
+    background:url(assets/img/sky.jpg) center/cover}
+  .isl{position:absolute;width:23%;top:4%;cursor:pointer;text-align:center;animation:bob 4.5s ease-in-out infinite;transition:filter .3s}
+  .isl img{width:100%;display:block;filter:drop-shadow(0 18px 18px rgba(30,60,110,.25));transition:transform .45s cubic-bezier(.3,1.6,.5,1),filter .3s}
+  .isl:hover img,.isl.act img{transform:translateY(-26px) scale(1.07);filter:drop-shadow(0 36px 26px rgba(30,60,110,.35)) brightness(1.06)}
+  .isl .pill{display:inline-block;margin-top:-6px;color:#fff;font-weight:900;font-size:19px;padding:7px 22px;border-radius:30px;box-shadow:0 6px 14px rgba(0,0,0,.15);position:relative}
+  .isl .sub{display:block;margin:8px auto 0;width:86%;background:#fff;border-radius:14px;padding:8px 10px;font-size:14px;font-weight:700;line-height:1.4;box-shadow:0 6px 16px rgba(0,0,0,.08)}
+  .isl:nth-child(2){animation-delay:-1.1s;top:9%}.isl:nth-child(3){animation-delay:-2.2s}.isl:nth-child(4){animation-delay:-3.3s;top:9%}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .isl .spark{position:absolute;left:50%;top:30%;width:10px;height:10px;border-radius:50%;background:#fff;opacity:0;pointer-events:none}
+  .isl:hover .spark{animation:spark 1s ease-out}
+  @keyframes spark{0%{opacity:.9;box-shadow:0 0 0 0 rgba(255,255,255,.8)}100%{opacity:0;box-shadow:0 0 0 120px rgba(255,255,255,0)}}
+  .card{position:absolute;right:2.5%;bottom:4%;width:34%;background:rgba(255,255,255,.96);border-radius:22px;padding:22px 26px;box-shadow:0 20px 40px rgba(20,40,80,.25);
+    transform:translateY(20px);opacity:0;transition:all .35s;pointer-events:none}
+  .card.show{transform:none;opacity:1;pointer-events:auto}
+  .card h3{margin:0;font-size:24px;font-weight:900}
+  .card ul{margin:12px 0 0;padding-left:20px;font-size:16px;line-height:1.75;font-weight:700;color:#3a3a3a}
+  .card a{display:inline-block;margin-top:12px;font-size:14px;font-weight:900;color:#fff;padding:7px 16px;border-radius:20px;text-decoration:none;cursor:pointer}
+  .card .x{position:absolute;right:16px;top:12px;font-size:20px;color:#999;cursor:pointer}
+  .hintw{position:absolute;left:2%;bottom:3%;background:rgba(14,26,51,.75);color:#fff;font-size:13px;font-weight:700;padding:6px 14px;border-radius:20px}
+
+  /* ---------- Tier characters ---------- */
+  .tiers{position:absolute;left:5.4%;top:16.6%;width:89.5%;height:63.4%;display:flex;gap:1.6%}
+  .tc{flex:1;background:#F6F4F4;border-radius:16px;position:relative;text-align:center;border-top:7px solid var(--c);cursor:pointer;transition:transform .35s,box-shadow .35s;overflow:hidden}
+  .tc:hover{transform:translateY(-10px);box-shadow:0 20px 34px rgba(0,0,0,.14)}
+  .tc .ch{height:52%;display:flex;align-items:flex-end;justify-content:center;padding-top:14px}
+  .tc .ch img{max-height:100%;max-width:82%;animation:bob 3.2s ease-in-out infinite;transition:transform .4s cubic-bezier(.3,1.7,.5,1)}
+  .tc:nth-child(2) .ch img{animation-delay:-.8s}.tc:nth-child(3) .ch img{animation-delay:-1.6s}.tc:nth-child(4) .ch img{animation-delay:-2.4s}
+  .tc:hover .ch img{transform:scale(1.12) rotate(-3deg)}
+  .tc h4{margin:14px 0 0;font-family:"Plus Jakarta Sans";font-weight:800;font-size:32px;color:var(--c);letter-spacing:.04em}
+  .tc .th{font-size:15px;color:#5E5558;font-weight:700;margin-top:4px}
+  .tc .pk{font-size:17px;font-weight:900;line-height:1.7;margin-top:14px}
+  .tc .more{position:absolute;left:0;right:0;bottom:0;background:var(--c);color:#fff;font-size:15px;font-weight:700;padding:14px 12px;line-height:1.6;transform:translateY(100%);transition:transform .35s}
+  .tc:hover .more{transform:none}
+  .tc.legend .ch img{filter:drop-shadow(0 0 18px rgba(255,200,90,.6))}
+  .tagai{position:absolute;background:#000;color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:20px;z-index:3}
+</style>
+</head>
+<body>
+<div id="dl"><span>下載</span><a href="download/MSP_App3.0_LaLaQuest.pdf" download>PDF</a><a href="download/MSP_App3.0_LaLaQuest.pptx" download>PPT</a><a class="b" href="prototype/index.html?s=home" target="_blank">App Prototype ↗</a></div>
+<div id="viewport"><div id="stage"></div></div>
+<div class="nav" id="prev"></div><div class="nav" id="next"></div>
+<div id="bar"></div><div id="num"></div><div id="hint">← → 翻頁｜F 全螢幕｜<a href="prototype/index.html?s=home&play=1" target="_blank">試玩 App Prototype →</a></div>
+
+<script>
+const N = 46, IW = 13.333, IH = 7.5;
+const VIDEO = {"22": [["home", 0.9, 1.3, 2.1025, 4.55]], "26": [["tiers", 0.9, 1.3, 2.1025, 4.55], ["levelup", 3.4525, 1.3, 2.1025, 4.55]], "29": [["quest", 0.9, 1.3, 2.1025, 4.55]], "30": [["capsule", 0.9, 1.3, 2.1025, 4.55]], "33": [["scan", 0.9, 1.3, 2.1025, 4.55]], "34": [["ask", 0.9, 1.3, 2.1025, 4.55]], "38": [["buzz", 0.9, 1.3, 2.1025, 4.55]], "39": [["brand", 0.9, 1.3, 2.1025, 4.55], ["realtalk", 3.4525, 1.3, 2.1025, 4.55]]};
+const SPECIAL = {idea: 10, islands: 20, tiers: 24};
+const JUMP = {levelup: 23, play: 27, ask: 31, buzz: 35};
+const img = n => `assets/slides/s-${String(n).padStart(2, '0')}.jpg`;
+const stage = document.getElementById('stage');
+
+const ISL = [
+  {k: "levelup", c: "#1E9C9A", name: "Level Up 島", sub: "四級會員：停車、倍率、扭蛋跟著升",
+   li: ["Rookie → Explorer → Senpai → Legend", "停車 3H → 全日、點數 1x → 2x", "12 次造訪也能升級，學生也追得上", "升級全螢幕慶祝，值得截圖分享"]},
+  {k: "play", c: "#FF6FA3", name: "Play 島", sub: "簽到・Quest・集章・LaLa Capsule",
+   li: ["每日簽到 Streak，第 7 天送扭蛋", "Makan Quest、Squad Quest", "ACG Matsuri／Bon Odori 館內集章", "24 隻 LaLa Capsule，可跟 kawan 交換"]},
+  {k: "ask", c: "#2B67B0", name: "Ask 島", sub: "AI 發票掃描・Ask LaLa・For You",
+   li: ["拍發票 1 秒入點，自動算等級倍率", "Ask LaLa：英文／馬來文／中文都能問", "幫你排一天、找吃、找停車出口", "For You：每個人的首頁不一樣"]},
+  {k: "buzz", c: "#F39A1E", name: "Buzz 島", sub: "Pandora 好評＋Real Talk 真心話",
+   li: ["Pandora 每日爬 IG、Threads 好評", "AI 摘要「大家愛什麼」＋Buzz Score", "Real Talk：掃過發票才能寫，+20 pts", "Take me there：看完好評一鍵導航"]}];
+const TIERS = [
+  {k: "rookie", c: "#5B9BE0", n: "ROOKIE", th: "LV1｜註冊即得", pk: "1x 點數・3H 停車<br>每日 1 抽", more: "剛加入的 LaLa 頭上長出小芽：每天簽到、生日禮，從第一張發票開始長大。"},
+  {k: "explorer", c: "#1E9C9A", n: "EXPLORER", th: "LV2｜RM1,500 或 12 次造訪", pk: "1.2x 點數・4H 停車<br>生日月雙倍點", more: "背上背包、拿著地圖：常來就能升，聯名咖啡優先訂位。"},
+  {k: "senpai", c: "#F39A1E", n: "SENPAI", th: "LV3｜RM5,000", pk: "1.5x 點數・5H 停車<br>活動優先入場", more: "穿上祭典法被、提著燈籠：Bon Odori、ACG Matsuri 優先入場，每天 2 抽。"},
+  {k: "legend", c: "#15325E", n: "LEGEND", th: "LV4｜RM12,000", pk: "2x 點數・全日停車<br>Legend Lounge", more: "披上金邊斗篷、戴上皇冠：商場叫得出名字的人，年度 Legend Night。"}];
+
+function buildIslands(el) {
+  el.innerHTML += `<div class="world"><div class="tagai" style="left:1.5%;top:2.5%">AI 示意圖</div>
+    ${ISL.map((d, i) => `<div class="isl" data-i="${i}" style="left:${1.5 + i * 24.6}%"><div class="spark"></div>
+      <img src="assets/img/isl_${d.k}.png" alt=""><span class="pill" style="background:${d.c}">${d.name}</span>
+      <span class="sub">${d.sub}</span></div>`).join('')}
+    <div class="card"><span class="x">×</span><h3></h3><ul></ul><a>看這一章 →</a></div>
+    <div class="hintw">👆 點一下島嶼看細節</div></div>`;
+  const card = el.querySelector('.card'), isls = [...el.querySelectorAll('.isl')];
+  isls.forEach(isl => isl.addEventListener('click', e => {
+    e.stopPropagation();
+    const d = ISL[+isl.dataset.i];
+    isls.forEach(x => x.classList.toggle('act', x === isl));
+    card.querySelector('h3').textContent = d.name;
+    card.querySelector('h3').style.color = d.c;
+    card.querySelector('ul').innerHTML = d.li.map(t => `<li>${t}</li>`).join('');
+    const a = card.querySelector('a'); a.style.background = d.c; a.onclick = ev => { ev.stopPropagation(); show(JUMP[d.k]); };
+    card.style.left = (+isl.dataset.i < 2) ? 'auto' : '2.5%'; card.style.right = (+isl.dataset.i < 2) ? '2.5%' : 'auto';
+    card.classList.add('show');
+  }));
+  card.querySelector('.x').onclick = e => { e.stopPropagation(); card.classList.remove('show'); isls.forEach(x => x.classList.remove('act')); };
+  el.querySelector('.world').addEventListener('click', e => e.stopPropagation());
+}
+
+function buildTiers(el) {
+  el.innerHTML += `<div class="tiers">${TIERS.map(t => `<div class="tc ${t.k}" style="--c:${t.c}">
+    <div class="ch"><img src="assets/img/char_${t.k}.png" alt=""></div><h4>${t.n}</h4><div class="th">${t.th}</div>
+    <div class="pk">${t.pk}</div><div class="more">${t.more}</div></div>`).join('')}</div>
+    <div class="tagai" style="left:6.2%;top:18.6%">AI 示意圖</div>`;
+  el.querySelector('.tiers').addEventListener('click', e => e.stopPropagation());
+}
+
+const els = [];
+for (let n = 1; n <= N; n++) {
+  const el = document.createElement('div');
+  el.className = 'slide';
+  if (n === SPECIAL.idea) {
+    el.classList.add('idea');
+    el.innerHTML = `<video src="assets/video/idea_bg.mp4" muted loop playsinline preload="none" poster="assets/img/idea_poster.jpg"></video><div class="shade"></div>
+      <div class="txt"><div class="k">IDEA</div><h1>LaLa Quest<br>把逛街變成升級遊戲<small>Every visit levels you up.</small></h1>
+      <p><b>Level Up</b>　Rookie → Explorer → Senpai → Legend<br><b>Play</b>　簽到、任務、集章、扭蛋<br><b>Ask</b>　AI 管家＋AI 發票集點<br><b>Buzz</b>　網路好評，一鍵帶你過去</p></div>
+      <div class="tagai" style="right:40px;bottom:30px">AI 示意影片</div>`;
+  } else {
+    el.innerHTML = `<img class="bg" src="${img(n)}" alt="" loading="lazy">`;
+    (VIDEO[n] || []).forEach(v => {
+      el.innerHTML += `<video class="ph" src="assets/video/${v[0]}.mp4" poster="assets/img/${v[0]}.jpg" muted loop playsinline preload="none"
+        style="left:${v[1] / IW * 100}%;top:${v[2] / IH * 100}%;width:${v[3] / IW * 100}%;height:${v[4] / IH * 100}%"></video>`;
+    });
+    if (n === SPECIAL.islands) buildIslands(el);
+    if (n === SPECIAL.tiers) buildTiers(el);
+  }
+  stage.appendChild(el);
+  els.push(el);
+}
+
+let i = Math.min(N, Math.max(1, parseInt(location.hash.slice(1)) || 1));
+function show(n) {
+  const prev = els[i - 1];
+  prev.querySelectorAll('video').forEach(v => v.pause());
+  prev.classList.remove('on');
+  i = Math.min(N, Math.max(1, n));
+  const el = els[i - 1];
+  el.classList.add('on');
+  el.querySelectorAll('video').forEach(v => { v.currentTime = 0; v.play().catch(() => {}); });
+  document.getElementById('num').textContent = `${i} / ${N}`;
+  document.getElementById('bar').style.width = `${i / N * 100}%`;
+  history.replaceState(null, '', `#${i}`);
+  [i, i + 1].forEach(k => { const e = els[k]; if (e) e.querySelectorAll('img[loading]').forEach(im => im.loading = 'eager'); });
+}
+function fitStage() {
+  const s = Math.min(innerWidth / 1600, innerHeight / 900);
+  stage.style.transform = `scale(${s})`;
+}
+addEventListener('resize', fitStage); fitStage();
+addEventListener('keydown', e => {
+  if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); show(i + 1); }
+  if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); show(i - 1); }
+  if (e.key === 'Home') show(1);
+  if (e.key === 'End') show(N);
+  if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+});
+document.getElementById('prev').onclick = () => show(i - 1);
+document.getElementById('next').onclick = () => show(i + 1);
+addEventListener('hashchange', () => { const n = parseInt(location.hash.slice(1)); if (n && n !== i) show(n); });
+els[i - 1].classList.add('on'); show(i);
+</script>
+</body>
+</html>

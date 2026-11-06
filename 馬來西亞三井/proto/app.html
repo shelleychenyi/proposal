@@ -503,7 +503,7 @@ h1{font-size:25px;font-weight:800;letter-spacing:-.5px}
     <div class="bi"><div class="th"><img src="../assets/app/ramen.jpg"></div><div class="tx"><b>Akiba Ramen</b><div class="love">Creamy paitan · from RM9.90 · halal-friendly</div><div class="meta"><span class="score">★ 4.8</span><span>128 posts</span><span class="tr">▲ 32%</span></div></div></div>
     <div class="bi"><div class="th"><img src="../assets/app/collabcafe.jpg"></div><div class="tx"><b>Doko Koko Café</b><div class="love">Themed menus · big merch corner</div><div class="meta"><span class="score">★ 4.7</span><span>98 posts</span><span class="tr">▲ 18%</span></div></div></div>
     <div class="bi"><div class="th" style="background:#FFE9F1">🎌</div><div class="tx"><b>Animate Café</b><div class="love">Malaysia's first · collab menus</div><div class="meta"><span class="score">★ 4.6</span><span>57 posts</span><span class="tr">▲ 9%</span></div></div></div>
-    <div class="bi"><div class="th" style="background:#E7F8F3">🧸</div><div class="tx"><b>Kids Play Café</b><div class="love">Play area right next to the tables</div><div class="meta"><span class="score">★ 4.6</span><span>24 posts</span><span class="tr">▲ 12%</span></div></div></div>
+    <div class="bi"><div class="th" style="background:#E7F8F3">🧸</div><div class="tx"><b>Ngam Ngam Neighbourhood</b><div class="love">Play area right next to the tables · L2</div><div class="meta"><span class="score">★ 4.6</span><span>24 posts</span><span class="tr">▲ 12%</span></div></div></div>
   </div>
   <div class="ai-note">✨ Curated by AI from public IG &amp; Threads posts · updated daily</div>
   <div style="height:40px"></div>
@@ -566,7 +566,7 @@ h1{font-size:25px;font-weight:800;letter-spacing:-.5px}
 </section>
 
 <script>
-const q=new URLSearchParams(location.search);const s=q.get('s')||'home';const play=q.get('play')==='1';
+const q=new URLSearchParams(location.search);if(q.get('z'))document.documentElement.style.zoom=q.get('z');const s=q.get('s')||'home';const play=q.get('play')==='1';
 document.getElementById(s).classList.add('on');
 function later(ms,fn){setTimeout(fn,ms)}
 if(s==='home'&&play){later(3200,()=>homeInner.style.transform='translateY(-330px)');later(5600,()=>homeInner.style.transform='translateY(-560px)');}

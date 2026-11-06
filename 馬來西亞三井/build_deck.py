@@ -14,6 +14,7 @@ TC = "brand/turncloud.png"
 BLUE, ORANGE, MINT, PINK, CORAL = "#2B67B0", "#F39A1E", "#22C2A0", "#FF6FA3", "#FF6F61"
 IDEA_VIDEO = A + "video/idea_bg.mp4" if os.path.exists(A + "video/idea_bg.mp4") else None
 
+META = {"video": {}, "special": {}}
 d = Deck(theme={"frame": BLUE, "accent": ORANGE}, footer_logos=[TC])
 
 
@@ -21,12 +22,36 @@ def phone(s, key, x, y, h, video=True, tag=True):
     """手機框＋Prototype 錄影（poster = 截圖）。回傳寬度。"""
     w = h * 390 / 844
     d.round(s, x - 0.07, y - 0.07, w + 0.14, h + 0.14, "#0E1A33", 0.12)
-    poster = A + f"poster/{key}.jpg"
-    vid = A + f"video/{key}.mp4" if video else None
+    poster = A + f"poster_r/{key}.jpg"
+    vid = A + f"video_r/{key}.mp4" if video else None
     d.movie(s, vid, poster, x, y, w, h)
+    if video:
+        META["video"].setdefault(d.n, []).append([key, x, y, w, h])
     if tag:
         d.ai_tag(s, x + 0.08, y + h + 0.14, "Prototype 錄影" if video else "UI 示意")
     return w
+
+
+def ugc(s, key, x, y, w, h, cap=None):
+    """真實社群貼文截圖（IG 嵌入頁）。"""
+    px, py, pw, ph = d.fit(s, A + f"ugc/{key}_c.png", x, y, w, h - (0.3 if cap else 0), border=True)
+    if cap:
+        d.tx(s, x, py + ph + 0.06, w, 0.25, cap, 9, color="grey", align=PP_ALIGN.CENTER)
+    return px, py, pw, ph
+
+
+def bench(title, brand, shots, good, borrow, banner):
+    s = d.info(title, label="Benchmark｜" + brand, banner=banner,
+               source="Data source: App Store 官方截圖（2026/11）")
+    for i, f in enumerate(shots):
+        d.fit(s, A + f"bench/{f}", 0.6 + i * 2.32, 1.3, 2.2, 4.75, border=True)
+    d.tx(s, 7.75, 1.3, 5.0, 0.35, "好在哪裡", 13, color="frame", bold=True)
+    d.callouts(s, 7.75, 1.75, 5.0, good, gap=0.92)
+    yb = 1.75 + 0.92 * len(good) + 0.05
+    d.rect(s, 7.75, yb, 5.0, 0.02, "line")
+    d.tx(s, 7.75, yb + 0.15, 5.0, 0.35, "LaLa Quest 借鏡", 13, color=ORANGE, bold=True)
+    d.tx(s, 7.75, yb + 0.55, 5.0, 1.3, borrow, 12.5, bold=True, spacing=1.55)
+    return s
 
 
 def phone_demo(title, label, key, points, banner, photo=None, keys2=None, source=None):
@@ -96,23 +121,22 @@ s = d.info("機會③　年輕人早就在這裡：動漫、K-pop、聯名咖啡
            source="Data source: Pandora 實測 2025/11/06–2026/11/05，馬來西亞 N=7,236；關鍵字分類、一篇可屬多類")
 d.bars(s, [("美食・咖啡", 1594), ("優惠・折扣", 1465), ("節慶・活動", 1374), ("停車・交通", 1204),
            ("動漫 ACG", 1054), ("電影・K-pop", 724), ("親子", 303)], 0.6, 1.4, 7.6, row_h=0.6, hot={4, 5})
-d.quote(s, 8.4, 1.4, 4.3, 2.15, "「This mall is secretly\nheaven for anime fans 👀」",
-        "@mijuyq Instagram｜2026/07")
-d.quote(s, 8.4, 3.75, 4.3, 2.15, "「Lalaport 的 lulu 猪快闪店\n太好逛了，一时没忍住！」",
-        "IG Reel｜LuLu 快閃店｜2026/05｜聲量 56,568")
+ugc(s, "animate", 8.35, 1.3, 2.15, 4.75, "@mijuyq｜Animate Café")
+ugc(s, "lulu", 10.6, 1.3, 2.15, 4.75, "@ting.eechin｜LuLu 快閃店")
 
 s = d.info("機會④　最痛的停車費，App 早就有解，只是沒人知道", label="Fan Truth",
            banner="把「MSP Member 免費停車」變成等級權益，第一天就讓人感受到 App 的價值",
            source="Data source: Instagram Reel 標註 @lalaport_bbcc（Pandora 聲量 104,838）；官網 MSP Member Free 3 Hours Parking 2026/11–12")
-d.quote(s, 0.72, 1.45, 6.0, 2.6, "「你们觉得我的积蓄\n够给这个 parking fee 吗 🙂‍↕️」",
-        "IG Reel @lalaport_bbcc 標註｜聲量 104,838，近一年馬來西亞前 10 名")
-d.rect(s, 7.1, 1.45, 5.6, 2.6, "soft")
-d.rect(s, 7.1, 1.45, 5.6, 0.08, ORANGE)
-d.tx(s, 7.4, 1.75, 5.0, 0.4, "其實 App 已經有：", 14, color="mid", bold=True)
-d.tx(s, 7.4, 2.2, 5.0, 0.8, "MSP Member\nFree 3 Hours Parking", 24, color="frame", bold=True, spacing=1.2)
-d.tx(s, 7.4, 3.3, 5.0, 0.6, "但它只是 News 頁裡的一則活動", 13, color="mid")
-d.tx(s, 0.75, 4.4, 12, 1.3,
-     "3.0 做法：停車時數跟著等級走 —— Rookie 3H → Explorer 4H → Senpai 5H → Legend 全日。\n"
+ugc(s, "parking", 0.7, 1.25, 2.9, 4.85, "@xinjie___1219｜38,587 likes")
+d.quote(s, 4.0, 1.35, 4.2, 2.3, "「你们觉得我的积蓄\n够给这个 parking fee 吗」",
+        "IG Reel 標註 @lalaport_bbcc｜Pandora 聲量 104,838")
+d.rect(s, 8.5, 1.35, 4.2, 2.3, "soft")
+d.rect(s, 8.5, 1.35, 4.2, 0.08, ORANGE)
+d.tx(s, 8.75, 1.6, 3.8, 0.4, "其實 App 已經有：", 13, color="mid", bold=True)
+d.tx(s, 8.75, 2.0, 3.8, 0.8, "MSP Member\nFree 3 Hours Parking", 20, color="frame", bold=True, spacing=1.2)
+d.tx(s, 8.75, 3.0, 3.8, 0.5, "但它只是 News 頁裡的一則活動", 12, color="mid")
+d.tx(s, 4.0, 4.0, 8.7, 1.8,
+     "3.0 做法：停車時數跟著等級走\nRookie 3H → Explorer 4H → Senpai 5H → Legend 全日。\n"
      "首頁會員卡上直接寫「🅿️ 4H free parking」，出場掃一下就扣。", 15, bold=True, spacing=1.7)
 
 s = d.info("三個切角，收斂成一句話", label="切角 → Proposition", banner="Proposition｜每一次來，都在升級。")
@@ -127,6 +151,7 @@ d.statement("IDEA", "LaLa Quest\n把逛街變成升級遊戲",
             "Ask：AI 管家＋AI 發票集點\n"
             "Buzz：網路好評，一鍵帶你過去",
             image=A + ("idea_poster.jpg" if IDEA_VIDEO else "app/acg_event.jpg"), video=IDEA_VIDEO)
+META["special"]["idea"] = d.n
 
 # ---------------------------------------------------------------- 2 標竿
 d.divider("標竿學習", "好的會員 App，讓人「想」打開，\n不是「要」打開", key="標竿")
@@ -142,14 +167,62 @@ d.table(s, ["品牌", "他們怎麼做", "LaLa Quest 借什麼"],
          ["Sephora", "Beauty Insider 分級＋會員真實評價", "LaLa Buzz＋Real Talk"]],
         col_w=[1.6, 4.2, 3.2], size=13, row_h=0.62)
 
+bench("MUJI：會員卡就是首頁，點數規則一句話講完", "MUJI", ["muji_2.jpg", "muji_3.jpg", "muji_5.jpg"],
+      [("打開就是會員條碼", "首頁第一屏＝會員卡＋點數，結帳不用找"),
+       ("規則極簡", "「100 円＝1 點，1 點＝1 円」，一句話就懂"),
+       ("會員週＝節慶", "「無印良品週間」全會員 10% off，固定檔期養成習慣")],
+      "首頁會員卡＋點數放第一屏；\n點數規則寫成一句馬來西亞英語；\n把 Bon Odori、Raya 做成「Member Week」。",
+      "MUJI 證明：會員卡放首頁、規則越簡單，使用率越高")
+bench("Disney：App 幫你排好一天，等待時間也變成資訊", "Disney", ["disney_3.jpg", "disney_4.jpg", "disney_5.jpg"],
+      [("即時等待時間", "每個設施排多久、下一場表演幾點，一眼看到"),
+       ("My Plans 行程", "把預約、餐廳、表演排成自己的一天"),
+       ("互動地圖", "地圖上直接點設施、餐廳、廁所")],
+      "Ask LaLa「Plan my Saturday」幫你排一天；\n熱門餐廳排隊時間＋聯名咖啡預約；\n樓層地圖結合 Stamp Rally。",
+      "Disney 把「逛」變成「我的行程」：LaLa Quest 用 AI 做到同一件事")
+bench("USJ：地圖是主角，整理券讓人提前規劃", "Universal Studios Japan", ["usj_3.jpg", "usj_4.jpg", "usj_5.jpg"],
+      [("等待時間排行", "依分鐘數排序，最快能玩的放最上面"),
+       ("全園地圖導覽", "設施直接標在插畫地圖上"),
+       ("e 整理券／抽選", "熱門區域用 App 抽入場，製造期待感")],
+      "ACG Matsuri、KLP48 劇場、聯名咖啡：\n用 App 抽「優先入場券」；\nSenpai 以上等級中籤率加倍。",
+      "USJ 的整理券證明：限量＋抽選，會讓人每天打開 App")
+bench("Starbucks：獎勵階梯清楚，掃碼那一刻有驚喜", "Starbucks Rewards", ["starbucks_2.jpg", "starbucks_3.jpg", "starbucks_5.jpg"],
+      [("點數兌換階梯", "25★、100★、200★…每一階換什麼一目了然"),
+       ("掃碼即付即集", "付款＝集點，一個動作完成"),
+       ("Yay! 回饋動畫", "結帳後跳出慶祝畫面，強化成就感")],
+      "Capsule、停車、聯名商品做成兌換階梯；\nAI 發票掃描後跳 +35 pts 動畫；\n升級時全螢幕 Level Up 慶祝。",
+      "Starbucks 2026 改回三級制：等級＋階梯，是最被驗證的會員設計")
+bench("Shopee：大馬人最熟悉的「每天打開」節奏", "Shopee MY", ["shopee_1.jpg", "shopee_4.jpg", "shopee_5.jpg"],
+      [("檔期感超強", "11.11、Payday Sale，倒數與大字視覺"),
+       ("ShopeeVIP 會員", "付費會員專屬免運、折扣與 Voucher"),
+       ("直播＋大獎", "RM11 Million Vouchers、明星直播，製造話題")],
+      "沿用大馬人熟悉的 Payday、11.11 節奏；\nMOP KLIA「Payday Reward」做成 Quest；\n每日 Capsule＝LaLa 版的 Shopee Coins。",
+      "不用教育市場：大馬年輕人早就習慣「每天打開領東西」")
+bench("Sephora：等級＝折扣，AI 幫你挑禮物", "Sephora", ["sephora_1.jpg", "sephora_4.jpg", "sephora_5.jpg"],
+      [("等級直接對應折扣", "Insider 10%／VIB 15%／Rouge 20%，一張圖講完"),
+       ("Wish List 分享", "收藏清單可以分享給朋友"),
+       ("AI Beauty Chat", "用聊天問「200 美元內的禮物」，AI 直接推薦")],
+      "Rookie → Legend 權益用一張圖講完；\nAsk LaLa 用聊天推薦店家與禮物；\nReal Talk＋Buzz 學 Sephora 的評價文化。",
+      "Sephora 是「分級＋AI＋評價」三合一的最佳範本")
+
 # ---------------------------------------------------------------- 3 全貌
 d.divider("App 3.0 全貌", "四大支柱、五個 Tab、\n一個更年輕的 LaLaport", key="全貌")
 s = d.info("LaLa Quest 四大支柱：升級、玩、問、口碑", label="App 架構",
            banner="四個支柱都導向同一件事：把每一次消費、每一次造訪，記回會員身上")
-d.columns(s, [("Level Up", "#1E9C9A", "四級會員", "Rookie／Explorer／\nSenpai／Legend\n停車、倍率、扭蛋次數\n跟著等級升"),
-              ("Play", PINK, "遊戲化", "每日簽到 Streak\n館內 Quest 任務\nStamp Rally 集章\nLaLa Capsule 扭蛋"),
-              ("Ask", BLUE, "AI 功能", "AI 發票掃描集點\nAsk LaLa 管家\nFor You 個人化首頁"),
-              ("Buzz", ORANGE, "口碑專區", "Pandora 爬網路好評\nAI 摘要「大家愛什麼」\nReal Talk 已購分享")])
+d.cover_pic(s, A + "world/sky.jpg", 0.54, 1.08, W - 1.08, 5.3)
+ISL = [("levelup", "#1E9C9A", "Level Up 島", "四級會員：停車、倍率、扭蛋跟著升"),
+       ("play", PINK, "Play 島", "簽到・Quest・集章・LaLa Capsule"),
+       ("ask", BLUE, "Ask 島", "AI 發票掃描・Ask LaLa・For You"),
+       ("buzz", ORANGE, "Buzz 島", "Pandora 好評＋Real Talk 真心話")]
+for i, (k, col, name, desc) in enumerate(ISL):
+    cx = 0.75 + i * 3.02
+    yoff = [0.0, 0.35, 0.0, 0.35][i]
+    d.fit(s, A + f"world/{k}_s.png", cx, 1.2 + yoff, 2.85, 2.95)
+    d.round(s, cx + 0.2, 4.35 + yoff * 0.5, 2.45, 0.42, col, 0.5)
+    d.tx(s, cx + 0.2, 4.41 + yoff * 0.5, 2.45, 0.3, name, 14, color="white", bold=True, align=PP_ALIGN.CENTER)
+    d.round(s, cx + 0.05, 4.85 + yoff * 0.5, 2.75, 0.62, "white", 0.25)
+    d.tx(s, cx + 0.15, 4.95 + yoff * 0.5, 2.55, 0.5, desc, 10.5, color="ink", bold=True, align=PP_ALIGN.CENTER)
+d.ai_tag(s, 0.7, 1.2, "AI 示意圖｜網頁版可互動")
+META["special"]["islands"] = d.n
 
 s = d.info("視覺：留住 LaLaport 的藍與 Mitsui 的橘，換上更年輕的語氣", label="Design System",
            banner="品牌色不變、Logo 不動；變的是圓角、漸層、動態，和一口馬來西亞英語")
@@ -181,7 +254,27 @@ phone_demo("首頁：一打開，就知道自己是哪一級、今天能拿什�
 
 # ---------------------------------------------------------------- 4 分級
 d.divider("會員分級", "從 Regular Member，\n到 Rookie、Explorer、Senpai、Legend", key="分級")
-s = d.info("四個等級：不叫金卡銀卡，叫 Senpai", label="Tier Design",
+s = d.info("四個等級，四個 LaLa：會員一路養大自己的角色", label="Tier Characters",
+           banner="不叫金卡銀卡：每升一級，LaLa 換一套裝備、多一枚徽章，年輕人會想截圖分享",
+           source="角色為 AI 示意設計，正式版可延伸成貼圖、扭蛋公仔與館內裝置")
+TIERS = [("rookie", "#5B9BE0", "ROOKIE", "LV1｜註冊即得", "1x 點數・3H 停車\n每日 1 抽"),
+         ("explorer", "#1E9C9A", "EXPLORER", "LV2｜RM1,500 或 12 次造訪", "1.2x 點數・4H 停車\n生日月雙倍點"),
+         ("senpai", ORANGE, "SENPAI", "LV3｜RM5,000", "1.5x 點數・5H 停車\n活動優先入場"),
+         ("legend", "#15325E", "LEGEND", "LV4｜RM12,000", "2x 點數・全日停車\nLegend Lounge")]
+for i, (k, col, nm, th, perk) in enumerate(TIERS):
+    x = 0.72 + i * 3.02
+    d.round(s, x, 1.25, 2.8, 4.75, "soft", 0.08)
+    d.rect(s, x, 1.25, 2.8, 0.09, col)
+    d.fit(s, A + f"world/char_{k}_s.png", x + 0.25, 1.45, 2.3, 2.25)
+    d.tx(s, x, 3.8, 2.8, 0.45, nm, 22, color=col, bold=True, align=PP_ALIGN.CENTER, font="Arial Black")
+    d.tx(s, x, 4.32, 2.8, 0.3, th, 11.5, color="mid", bold=True, align=PP_ALIGN.CENTER)
+    d.tx(s, x + 0.2, 4.8, 2.4, 0.9, perk, 13, bold=True, align=PP_ALIGN.CENTER, spacing=1.5)
+    if i < 3:
+        d.rect(s, x + 2.84, 3.4, 0.14, 0.24, "grey", MSO_SHAPE.RIGHT_ARROW)
+d.ai_tag(s, 0.82, 1.38)
+META["special"]["tiers"] = d.n
+
+s = d.info("權益對照：不叫金卡銀卡，叫 Senpai", label="Tier Design",
            banner="用日系動漫語言命名，貼近 LaLaport 的日本 DNA，也是年輕人會想截圖分享的身份",
            source="門檻與權益為試算示意，正式數字依三井會員消費分布調整")
 d.table(s, ["等級", "門檻（12 個月）", "點數倍率", "免費停車", "扭蛋", "代表權益"],
@@ -261,11 +354,11 @@ s = d.info("Pandora 實測：馬來西亞網友，已經在幫店家寫好評", 
            banner="這些是真實貼文：LaLa Buzz 上線第一天，就有內容可以放",
            source="Data source: Pandora 實測 2025/11/06–2026/11/05，馬來西亞地區；括號為提及篇數")
 d.bars(s, [("ACG Base", 223), ("KLP48 劇場", 99), ("Doko Koko Café", 98), ("Pokémon", 71),
-           ("Animate", 57), ("MINISO", 42), ("Akiba Ramen", 12)], 0.6, 1.35, 6.4, row_h=0.6, hot={2, 4, 6},
-       name_w=1.9)
-d.quote(s, 7.3, 1.35, 5.4, 1.4, "「Found a hidden ramen gem in KL 🍜」", "@yuumi_kato｜Akiba Ramen｜IG 2026/08")
-d.quote(s, 7.3, 2.9, 5.4, 1.4, "「The food was so well themed!」", "@fayejimeno｜Doko Koko Café｜IG 2026/08")
-d.quote(s, 7.3, 4.45, 5.4, 1.4, "「Play area is RIGHT by the tables」", "@mymamapicks｜親子咖啡｜IG 2026/09")
+           ("Animate", 57), ("MINISO", 42), ("Akiba Ramen", 12)], 0.6, 1.35, 5.6, row_h=0.62, hot={2, 4, 6},
+       name_w=1.7, size=11)
+ugc(s, "akiba", 6.35, 1.25, 2.05, 4.85, "Akiba Ramen｜629 likes")
+ugc(s, "dokokoko", 8.5, 1.25, 2.05, 4.85, "Doko Koko Café｜4,585 likes")
+ugc(s, "kidscafe", 10.65, 1.25, 2.05, 4.85, "Ngam Ngam｜親子餐廳")
 
 phone_demo("Buzz 首頁：大家最近在愛什麼，一頁看完", "LaLa Buzz", "buzz",
            [("Buzz of the Week", "本週聲量最高的店或活動"),
@@ -325,3 +418,5 @@ d.closing("每一次來，都在升級。",
           "③ 2027/01：Phase 0 開發啟動（分級＋AI 發票＋Buzz）",
           logos=[TC])
 d.save("MSP_App3.0_LaLaQuest_提案.pptx")
+import json
+json.dump(META, open("web_meta.json", "w"))
