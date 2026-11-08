@@ -54,7 +54,7 @@ def bench(title, brand, shots, good, borrow, banner):
     return s
 
 
-def phone_demo(title, label, key, points, banner, photo=None, keys2=None, source=None):
+def phone_demo(title, label, key, points, banner, photo=None, keys2=None, source=None, clip=None):
     s = d.info(title, label=label, banner=banner, source=source)
     x = 0.9
     w = phone(s, key, x, 1.3, 4.55)
@@ -62,7 +62,14 @@ def phone_demo(title, label, key, points, banner, photo=None, keys2=None, source
     for k in keys2 or []:
         w2 = phone(s, k, x, 1.3, 4.55)
         x += w2 + 0.45
-    if photo:
+    if clip:  # AI 示意影片（16:9），置中於右側區塊
+        pw = 9.0 - x
+        ph = pw * 9 / 16
+        py = 1.3 + (4.55 - ph) / 2
+        d.movie(s, A + f"video_r/{clip}.mp4", A + f"poster_r/{clip}.jpg", x, py, pw, ph)
+        META["video"].setdefault(d.n, []).append([clip, x, py, pw, ph])
+        d.ai_tag(s, x, py + ph + 0.12, "AI 示意影片")
+    elif photo:
         pw = 9.0 - x
         px, py, pw, ph = d.fit(s, photo, x, 1.3, pw, 4.55)
         d.ai_tag(s, px + 0.1, py + 0.1)
@@ -207,11 +214,11 @@ bench("Sephora：等級＝折扣，AI 幫你挑禮物", "Sephora", ["sephora_1.j
 # ---------------------------------------------------------------- 3 全貌
 d.divider("App 3.0 全貌", "一個主色、四大支柱，\n更年輕也更有質感的 LaLaport", key="全貌")
 phone_demo("首頁：一打開，就是我的會員卡、QR 和我的小怪獸", "Home", "home",
-           [("會員卡＝QR＋等級", "結帳直接掃首頁 QR；卡上寫著 Explorer、1,884 pts"),
+           [("會員卡＝QR＋等級", "結帳一打開 App，店員直接掃首頁 QR（右：情境影片）"),
             ("我的小怪獸", "等級角色住在卡上，升級就換裝，想截圖分享"),
             ("進度與權益", "再 616 點升 Senpai；4H 免費停車、1.2x 點數一眼看到"),
             ("簽到＋快捷鍵", "5 天 Streak；Scan Receipt、Ask LaLa、Capsule、Parking")],
-           "首頁從「商場在推什麼」換成「我是誰、我今天能拿到什麼」", photo=A + "mock_hijab_home.jpg")
+           "首頁從「商場在推什麼」換成「我是誰、我今天能拿到什麼」", clip="checkout")
 
 s = d.info("LaLa Quest 四大支柱：升級、玩、問、口碑", label="App 架構",
            banner="四個支柱都導向同一件事：把每一次消費、每一次造訪，記回會員身上")
