@@ -83,27 +83,27 @@
 <div id="bar"></div><div id="num"></div><div id="hint">← → 翻頁｜F 全螢幕｜<a href="prototype/index.html" target="_blank">試玩 App Prototype →</a></div>
 
 <script>
-const N = 46, IW = 13.333, IH = 7.5;
-const VIDEO = {"22": [["home", 0.9, 1.3, 2.1025, 4.55]], "26": [["tiers", 0.9, 1.3, 2.1025, 4.55], ["levelup", 3.4525, 1.3, 2.1025, 4.55]], "29": [["quest", 0.9, 1.3, 2.1025, 4.55]], "30": [["capsule", 0.9, 1.3, 2.1025, 4.55]], "33": [["scan", 0.9, 1.3, 2.1025, 4.55]], "34": [["ask", 0.9, 1.3, 2.1025, 4.55]], "38": [["buzz", 0.9, 1.3, 2.1025, 4.55]], "39": [["brand", 0.9, 1.3, 2.1025, 4.55], ["realtalk", 3.4525, 1.3, 2.1025, 4.55]]};
-const SPECIAL = {idea: 10, islands: 20, tiers: 24};
-const JUMP = {levelup: 23, play: 27, ask: 31, buzz: 35};
+const N = 45, IW = 13.333, IH = 7.5;
+const VIDEO = {"18": [["home", 0.9, 1.3, 2.1025, 4.55]], "24": [["tiers", 0.9, 1.3, 2.1025, 4.55], ["levelup", 3.4525, 1.3, 2.1025, 4.55]], "27": [["quest", 0.9, 1.3, 2.1025, 4.55]], "28": [["capsule", 0.9, 1.3, 2.1025, 4.55]], "31": [["scan", 0.9, 1.3, 2.1025, 4.55]], "32": [["ask", 0.9, 1.3, 2.1025, 4.55]], "37": [["buzz", 0.9, 1.3, 2.1025, 4.55]], "38": [["brand", 0.9, 1.3, 2.1025, 4.55], ["realtalk", 3.4525, 1.3, 2.1025, 4.55]]};
+const SPECIAL = {idea: 8, islands: 19, tiers: 22};
+const JUMP = {levelup: 21, play: 25, ask: 29, buzz: 33};
 const img = n => `assets/slides/s-${String(n).padStart(2, '0')}.jpg`;
 const stage = document.getElementById('stage');
 
 const ISL = [
-  {k: "levelup", c: "#1E9C9A", name: "Level Up 島", sub: "四級會員：停車、倍率、扭蛋跟著升",
+  {k: "levelup", c: "#13294B", name: "Level Up 島", sub: "四級會員：停車、倍率、扭蛋跟著升",
    li: ["Rookie → Explorer → Senpai → Legend", "停車 3H → 全日、點數 1x → 2x", "12 次造訪也能升級，學生也追得上", "升級全螢幕慶祝，值得截圖分享"]},
-  {k: "play", c: "#FF6FA3", name: "Play 島", sub: "簽到・Quest・集章・LaLa Capsule",
+  {k: "play", c: "#8C6E3C", name: "Play 島", sub: "簽到・Quest・集章・LaLa Capsule",
    li: ["每日簽到 Streak，第 7 天送扭蛋", "Makan Quest、Squad Quest", "ACG Matsuri／Bon Odori 館內集章", "24 隻 LaLa Capsule，可跟 kawan 交換"]},
-  {k: "ask", c: "#2B67B0", name: "Ask 島", sub: "AI 發票掃描・Ask LaLa・For You",
+  {k: "ask", c: "#1E3A63", name: "Ask 島", sub: "AI 發票掃描・Ask LaLa・For You",
    li: ["拍發票 1 秒入點，自動算等級倍率", "Ask LaLa：英文／馬來文／中文都能問", "幫你排一天、找吃、找停車出口", "For You：每個人的首頁不一樣"]},
-  {k: "buzz", c: "#F39A1E", name: "Buzz 島", sub: "Pandora 好評＋Real Talk 真心話",
-   li: ["Pandora 每日爬 IG、Threads 好評", "AI 摘要「大家愛什麼」＋Buzz Score", "Real Talk：掃過發票才能寫，+20 pts", "Take me there：看完好評一鍵導航"]}];
+  {k: "buzz", c: "#B8975A", name: "Buzz 島", sub: "Pandora 好評＋Real Talk 真心話",
+   li: ["Pandora 輿情系統每日蒐集 IG、Threads 貼文", "Pandora AI 判斷情緒，寫成 Buzz Score＋摘要", "Real Talk：掃過發票才能寫，+20 pts", "Take me there：看完好評一鍵導航"]}];
 const TIERS = [
-  {k: "rookie", c: "#5B9BE0", n: "ROOKIE", th: "LV1｜註冊即得", pk: "1x 點數・3H 停車<br>每日 1 抽", more: "剛加入的 LaLa 頭上長出小芽：每天簽到、生日禮，從第一張發票開始長大。"},
-  {k: "explorer", c: "#1E9C9A", n: "EXPLORER", th: "LV2｜RM1,500 或 12 次造訪", pk: "1.2x 點數・4H 停車<br>生日月雙倍點", more: "背上背包、拿著地圖：常來就能升，聯名咖啡優先訂位。"},
-  {k: "senpai", c: "#F39A1E", n: "SENPAI", th: "LV3｜RM5,000", pk: "1.5x 點數・5H 停車<br>活動優先入場", more: "穿上祭典法被、提著燈籠：Bon Odori、ACG Matsuri 優先入場，每天 2 抽。"},
-  {k: "legend", c: "#15325E", n: "LEGEND", th: "LV4｜RM12,000", pk: "2x 點數・全日停車<br>Legend Lounge", more: "披上金邊斗篷、戴上皇冠：商場叫得出名字的人，年度 Legend Night。"}];
+  {k: "rookie", c: "#8F8A80", n: "ROOKIE", th: "LV1｜註冊即得", pk: "1x 點數・3H 停車<br>每日 1 抽", more: "剛加入的 LaLa 頭上長出小芽：每天簽到、生日禮，從第一張發票開始長大。"},
+  {k: "explorer", c: "#13294B", n: "EXPLORER", th: "LV2｜RM1,500 或 12 次造訪", pk: "1.2x 點數・4H 停車<br>生日月雙倍點", more: "背上背包、拿著地圖：常來就能升，聯名咖啡優先訂位。"},
+  {k: "senpai", c: "#B8975A", n: "SENPAI", th: "LV3｜RM5,000", pk: "1.5x 點數・5H 停車<br>活動優先入場", more: "穿上祭典法被、提著燈籠：Bon Odori、ACG Matsuri 優先入場，每天 2 抽。"},
+  {k: "legend", c: "#0B1A30", n: "LEGEND", th: "LV4｜RM12,000", pk: "2x 點數・全日停車<br>Legend Lounge", more: "披上金邊斗篷、戴上皇冠：商場叫得出名字的人，年度 Legend Night。"}];
 
 function buildIslands(el) {
   el.innerHTML += `<div class="world"><div class="tagai" style="left:1.5%;top:2.5%">AI 示意圖</div>
