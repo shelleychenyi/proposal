@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LaLa Quest｜MSP 會員 App 3.0 提案</title>
+<title>LaLa Quest | MSP Member App 3.0 Proposal</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Plus+Jakarta+Sans:wght@600;800&display=swap" rel="stylesheet">
 <style>
   :root{--bg:#0E1A33;--blue:#2B67B0;--orange:#F39A1E;--mint:#22C2A0;--pink:#FF6FA3;--teal:#1E9C9A;--navy:#15325E;--gold:#FFD3A3;--ink:#1E1A1D}
@@ -77,10 +77,10 @@
 </style>
 </head>
 <body>
-<div id="dl"><a class="b" href="prototype/index.html" target="_blank">試玩 App Prototype ↗</a></div>
+<div id="dl"><a class="b" href="prototype/index.html" target="_blank">Try the App Prototype ↗</a></div>
 <div id="viewport"><div id="stage"></div></div>
 <div class="nav" id="prev"></div><div class="nav" id="next"></div>
-<div id="bar"></div><div id="num"></div><div id="hint">← → 翻頁｜F 全螢幕｜<a href="prototype/index.html" target="_blank">試玩 App Prototype →</a></div>
+<div id="bar"></div><div id="num"></div><div id="hint">← → Navigate | F Fullscreen | <a href="prototype/index.html" target="_blank">Try the App Prototype →</a></div>
 
 <script>
 const N = 45, IW = 13.333, IH = 7.5;
@@ -91,27 +91,27 @@ const img = n => `assets/slides/s-${String(n).padStart(2, '0')}.jpg`;
 const stage = document.getElementById('stage');
 
 const ISL = [
-  {k: "levelup", c: "#13294B", name: "Level Up 島", sub: "四級會員：停車、倍率、扭蛋跟著升",
-   li: ["Rookie → Explorer → Senpai → Legend", "停車 3H → 全日、點數 1x → 2x", "12 次造訪也能升級，學生也追得上", "升級全螢幕慶祝，值得截圖分享"]},
-  {k: "play", c: "#8C6E3C", name: "Play 島", sub: "簽到・Quest・集章・LaLa Capsule",
-   li: ["每日簽到 Streak，第 7 天送扭蛋", "Makan Quest、Squad Quest", "ACG Matsuri／Bon Odori 館內集章", "24 隻 LaLa Capsule，可跟 kawan 交換"]},
-  {k: "ask", c: "#1E3A63", name: "Ask 島", sub: "AI 發票掃描・Ask LaLa・For You",
-   li: ["拍發票 1 秒入點，自動算等級倍率", "Ask LaLa：英文／馬來文／中文都能問", "幫你排一天、找吃、找停車出口", "For You：每個人的首頁不一樣"]},
-  {k: "buzz", c: "#B8975A", name: "Buzz 島", sub: "Pandora 好評＋Real Talk 真心話",
-   li: ["Pandora 輿情系統每日蒐集 IG、Threads 貼文", "Pandora AI 判斷情緒，寫成 Buzz Score＋摘要", "Real Talk：掃過發票才能寫，+20 pts", "Take me there：看完好評一鍵導航"]}];
+  {k: "levelup", c: "#13294B", name: "Level Up Island", sub: "4 tiers: parking, multipliers, capsules grow",
+   li: ["Rookie → Explorer → Senpai → Legend", "Parking 3H → all day, points 1x → 2x", "Level up with 12 visits, student-friendly", "Full-screen Level Up moment, made to share"]},
+  {k: "play", c: "#8C6E3C", name: "Play Island", sub: "Check-in · Quests · Stamps · LaLa Capsule",
+   li: ["Daily check-in streak, free capsule on day 7", "Makan Quest, Squad Quest", "ACG Matsuri / Bon Odori stamp rallies", "24 LaLa Capsule characters to trade with kawan"]},
+  {k: "ask", c: "#1E3A63", name: "Ask Island", sub: "AI receipt scan · Ask LaLa · For You",
+   li: ["Snap a receipt, points in 1 sec, tier multiplier applied", "Ask LaLa in English, Malay or Chinese", "Plans your day, finds food and parking exits", "For You: everyone gets a different home"]},
+  {k: "buzz", c: "#B8975A", name: "Buzz Island", sub: "Pandora reviews + Real Talk",
+   li: ["Pandora social listening collects IG & Threads posts daily", "Pandora AI judges sentiment into a Buzz Score + summary", "Real Talk: verified receipts only, +20 pts", "Take me there: one-tap navigation after reading"]}];
 const TIERS = [
-  {k: "rookie", c: "#8F8A80", n: "ROOKIE", th: "LV1｜註冊即得", pk: "1x 點數・3H 停車<br>每日 1 抽", more: "剛加入的 LaLa 頭上長出小芽：每天簽到、生日禮，從第一張發票開始長大。"},
-  {k: "explorer", c: "#13294B", n: "EXPLORER", th: "LV2｜RM1,500 或 12 次造訪", pk: "1.2x 點數・4H 停車<br>生日月雙倍點", more: "背上背包、拿著地圖：常來就能升，聯名咖啡優先訂位。"},
-  {k: "senpai", c: "#B8975A", n: "SENPAI", th: "LV3｜RM5,000", pk: "1.5x 點數・5H 停車<br>活動優先入場", more: "穿上祭典法被、提著燈籠：Bon Odori、ACG Matsuri 優先入場，每天 2 抽。"},
-  {k: "legend", c: "#0B1A30", n: "LEGEND", th: "LV4｜RM12,000", pk: "2x 點數・全日停車<br>Legend Lounge", more: "披上金邊斗篷、戴上皇冠：商場叫得出名字的人，年度 Legend Night。"}];
+  {k: "rookie", c: "#8F8A80", n: "ROOKIE", th: "LV1 | On sign-up", pk: "1x points · 3H parking<br>1 draw a day", more: "A new LaLa with a little sprout: daily check-ins and a birthday gift, growing from the very first receipt."},
+  {k: "explorer", c: "#13294B", n: "EXPLORER", th: "LV2 | RM1,500 or 12 visits", pk: "1.2x points · 4H parking<br>Birthday 2x points", more: "Backpack on, map in hand: come often to level up, with priority collab café booking."},
+  {k: "senpai", c: "#B8975A", n: "SENPAI", th: "LV3 | RM5,000", pk: "1.5x points · 5H parking<br>Priority event entry", more: "Festival happi coat and lantern: priority entry to Bon Odori and ACG Matsuri, 2 draws a day."},
+  {k: "legend", c: "#0B1A30", n: "LEGEND", th: "LV4 | RM12,000", pk: "2x points · all-day parking<br>Legend Lounge", more: "Gold-trimmed cape and crown: the mall knows your name, plus the annual Legend Night."}];
 
 function buildIslands(el) {
-  el.innerHTML += `<div class="world"><div class="tagai" style="left:1.5%;top:2.5%">AI 示意圖</div>
+  el.innerHTML += `<div class="world"><div class="tagai" style="left:1.5%;top:2.5%">AI mock-up</div>
     ${ISL.map((d, i) => `<div class="isl" data-i="${i}" style="left:${1.5 + i * 24.6}%"><div class="spark"></div>
       <img src="assets/img/isl_${d.k}.png" alt=""><span class="pill" style="background:${d.c}">${d.name}</span>
       <span class="sub">${d.sub}</span></div>`).join('')}
-    <div class="card"><span class="x">×</span><h3></h3><ul></ul><a>看這一章 →</a></div>
-    <div class="hintw">👆 點一下島嶼看細節</div></div>`;
+    <div class="card"><span class="x">×</span><h3></h3><ul></ul><a>See this chapter →</a></div>
+    <div class="hintw">👆 Tap an island for details</div></div>`;
   const card = el.querySelector('.card'), isls = [...el.querySelectorAll('.isl')];
   isls.forEach(isl => isl.addEventListener('click', e => {
     e.stopPropagation();
@@ -132,7 +132,7 @@ function buildTiers(el) {
   el.innerHTML += `<div class="tiers">${TIERS.map(t => `<div class="tc ${t.k}" style="--c:${t.c}">
     <div class="ch"><img src="assets/img/char_${t.k}.png" alt=""></div><h4>${t.n}</h4><div class="th">${t.th}</div>
     <div class="pk">${t.pk}</div><div class="more">${t.more}</div></div>`).join('')}</div>
-    <div class="tagai" style="left:6.2%;top:18.6%">AI 示意圖</div>`;
+    <div class="tagai" style="left:6.2%;top:18.6%">AI mock-up</div>`;
   el.querySelector('.tiers').addEventListener('click', e => e.stopPropagation());
 }
 
@@ -143,9 +143,9 @@ for (let n = 1; n <= N; n++) {
   if (n === SPECIAL.idea) {
     el.classList.add('idea');
     el.innerHTML = `<video src="assets/video/idea_bg.mp4" muted loop playsinline preload="none" poster="assets/img/idea_poster.jpg"></video><div class="shade"></div>
-      <div class="txt"><div class="k">IDEA</div><h1>LaLa Quest<br>把逛街變成升級遊戲<small>Every visit levels you up.</small></h1>
-      <p><b>Level Up</b>　Rookie → Explorer → Senpai → Legend<br><b>Play</b>　簽到、任務、集章、扭蛋<br><b>Ask</b>　AI 管家＋AI 發票集點<br><b>Buzz</b>　網路好評，一鍵帶你過去</p></div>
-      <div class="tagai" style="right:40px;bottom:30px">AI 示意影片</div>`;
+      <div class="txt"><div class="k">IDEA</div><h1>LaLa Quest<br>Shop. Play. Level up.<small>Every visit levels you up.</small></h1>
+      <p><b>Level Up</b>　Rookie → Explorer → Senpai → Legend<br><b>Play</b>　Check-ins, quests, stamps, capsules<br><b>Ask</b>　AI concierge + AI receipt scan<br><b>Buzz</b>　Pandora-picked reviews, one tap to go</p></div>
+      <div class="tagai" style="right:40px;bottom:30px">AI mock-up video</div>`;
   } else {
     el.innerHTML = `<img class="bg" src="${img(n)}" alt="" loading="lazy">`;
     (VIDEO[n] || []).forEach(v => {
