@@ -24,19 +24,27 @@ class PandoraError(RuntimeError):
 
 
 def load_api_key(env_file: Path | None = None) -> str:
-    """環境變數優先；否則讀同目錄的 .env。key 永遠不寫進程式碼或輸出檔。"""
-    key = os.environ.get("PANDORA_API_KEY")
-    if key:
-        return key.strip()
+    """依序找 TPC_API_KEY → PANDORA_API_KEY（舊名，相容用）：環境變數優先，否則讀同目錄的 .env。
+    key 永遠不寫進程式碼或輸出檔。"""
+    names = ("TPC_API_KEY", "PANDORA_API_KEY")
+    for name in names:
+        key = os.environ.get(name)
+        if key:
+            return key.strip()
     env_file = env_file or Path(__file__).with_name(".env")
     if env_file.exists():
+        values = {}
         for line in env_file.read_text(encoding="utf-8").splitlines():
             line = line.strip()
-            if line.startswith("PANDORA_API_KEY="):
-                return line.split("=", 1)[1].strip().strip('"').strip("'")
+            for name in names:
+                if line.startswith(f"{name}="):
+                    values[name] = line.split("=", 1)[1].strip().strip('"').strip("'")
+        for name in names:
+            if values.get(name):
+                return values[name]
     raise PandoraError(
         "missing_key",
-        "找不到 API key。請設定環境變數 PANDORA_API_KEY，或在 pandora/.env 寫入 PANDORA_API_KEY=pk_...",
+        "找不到 API key。請設定環境變數 TPC_API_KEY，或在 pandora/.env 寫入 TPC_API_KEY=pk_...",
     )
 
 
