@@ -164,6 +164,38 @@ def whats_new(title, label, banner, head, rows):
     return s
 
 
+def glance(title, label, banner, before_lbl, after_lbl, olds, news, tag_txt):
+    """Before/after at a glance: greyed current-app screens (left) vs live App 3.0 recordings (right)."""
+    s = d.info(title, label=label, banner=banner)
+    oh, nh = 3.35, 3.5
+    ow, nw = oh * 390 / 844, nh * 390 / 844
+    # BEFORE panel
+    d.round(s, 0.6, 1.3, 3.55, 4.75, "#ECEAE6", 0.06)
+    d.tx(s, 0.6, 1.42, 3.55, 0.3, before_lbl, 12, color="grey", bold=True, align=PP_ALIGN.CENTER)
+    x = 0.6 + (3.55 - (2 * ow + 0.2)) / 2
+    for img, cap in olds:
+        d.round(s, x - 0.05, 1.95 - 0.05, ow + 0.1, oh + 0.1, "#B9B5AE", 0.1)
+        d.cover_pic(s, A + f"old/{img}.jpg", x, 1.95, ow, oh)
+        d.tx(s, x - 0.15, 1.95 + oh + 0.12, ow + 0.3, 0.45, cap, 9.5, color="grey", align=PP_ALIGN.CENTER, spacing=1.1)
+        x += ow + 0.2
+    # arrow
+    d.rect(s, 4.3, 3.45, 0.42, 0.55, SC_GOLD, MSO_SHAPE.CHEVRON)
+    # AFTER panel
+    d.round(s, 4.85, 1.3, 7.9, 4.75, SC_NAVY, 0.04)
+    d.tx(s, 4.85, 1.42, 7.9, 0.3, after_lbl, 12, color=SC_GOLD_L, bold=True, align=PP_ALIGN.CENTER)
+    gap = (7.9 - 4 * nw) / 5
+    x = 4.85 + gap
+    for key, cap, pill in news:
+        phone(s, key, x, 1.85, nh, tag=False)
+        d.tx(s, x - 0.25, 1.85 + nh + 0.12, nw + 0.5, 0.3, cap, 10.5, color="white", bold=True, align=PP_ALIGN.CENTER)
+        if pill:
+            d.round(s, x + nw / 2 - 0.35, 1.85 + nh + 0.44, 0.7, 0.2, SC_GOLD, 0.5)
+            d.tx(s, x + nw / 2 - 0.35, 1.85 + nh + 0.44, 0.7, 0.2, pill, 8, color="white", bold=True,
+                 align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+        x += nw + gap
+    return s
+
+
 def scene(title, label, banner, photo, phones, beats, stats=None, chip=None, source=None, video=None):
     """Scenario demo: scene photo + story strip (time-stamped beats) + prototype recordings (+ big stats)."""
     s = d.info(title, label=label, banner=banner, source=source)
@@ -407,6 +439,12 @@ bench("Sephora: tier = discount, and AI picks your gifts", "Sephora",
 
 # ---------------------------------------------------------------- 3 Overview
 d.divider("App 3.0", "A core that brings people in,\nadd-ons that make them stay.", key="全貌")
+glance("App 3.0 at a glance: from a news board to an app that works for me", "What's New | At a Glance",
+       "Same members, a whole new app: every screen now starts with me, my car, my trip, my level",
+       "BEFORE · today's MSP app", "AFTER · App 3.0 (prototype recordings)",
+       [("home", "Banners first;\nmember info buried"), ("news", "Promos & news,\nnothing personal")],
+       [("home", "My card, car & trip", None), ("tiers", "4 tiers + characters", None),
+        ("parking", "LaLa Park", "NEW"), ("busticket", "LaLa Go", "NEW")], "")
 whats_new("What's new in App 3.0: 8 upgrades, 5 brand-new features", "What's New | Before → After",
           "From an app that pushes mall news to an app that parks my car, books my bus and levels me up",
           ["Feature", "Before · current app", "After · App 3.0", "Package", "Demo"],
