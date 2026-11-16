@@ -1170,7 +1170,7 @@ if(s==='levelup'){const cs=['#D9C49A','#1E3A63','#2F4E7A','#B8975A','#C9D3E0','#
   $$('#home .icons div')[0].dataset.go = 'notif';
   $$('#home .icons div')[1].dataset.act = 'qr';
   $('#home .tier').dataset.go = 'tiers'; $('#home .qrw').dataset.act = 'qr';
-  $('#home .d.today').dataset.act = 'checkin';
+  { const t = $('#home .d.today'); if (t) t.dataset.act = 'checkin'; }
   ['parking', 'bus', 'me', 'scan'].forEach((g, i) => $$('#home .q')[i].dataset.go = g);
   $('#home .strip.park').dataset.go = 'parking'; $('#home .strip.trip').dataset.go = 'busticket';
   $$('#home .qc').forEach(e => e.dataset.go = 'quest');
