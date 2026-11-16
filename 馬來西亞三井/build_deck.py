@@ -84,7 +84,7 @@ NAVY, GOLD2 = "#13294B", "#8C6E3C"
 
 def core_map(s, y=1.3):
     """核心＋加購架構：三個加購模組插在同一個核心上。"""
-    adds = [("PLAY 遊戲包", PINK, "簽到 Streak・Quest 任務\nStamp Rally・LaLa Capsule\nMatsuri Pass"),
+    adds = [("PLAY 遊戲包", PINK, "來店打卡・Quest 任務\nStamp Rally・LaLa Capsule\nMatsuri Pass"),
             ("AI 智慧包", BLUE, "AI 發票掃描（1 秒）\nAsk LaLa 管家\nFor You 個人化推薦"),
             ("BUZZ 口碑包", ORANGE, "Pandora LaLa Buzz\nBuzz Score＋AI 摘要\nReal Talk 真心話")]
     d.tx(s, 0.72, y, 8, 0.3, "加購 ADD-ONS｜提升體驗・準備好再開", 12, color=GOLD2, bold=True)
@@ -346,7 +346,7 @@ s = d.info("八個標竿：實用功能把人帶進來，身份感把人留下�
 d.table(s, ["品牌", "他們怎麼做", "LaLa Quest 借什麼"],
         [["1 Utama ONECARD", "App 綁定最多 2 個車牌，LPR 開閘、電子錢包扣款", "核心：LaLa Park 車牌登入"],
          ["Sunway Smart Parking", "車牌辨識無票進出，在 App 內付費", "核心：出場自動付款"],
-         ["MUJI Passport", "進店打卡也送 MUJI Miles，不買東西也能累積", "遊戲包：每日簽到"],
+         ["MUJI Passport", "進店打卡也送 MUJI Miles，不買東西也能累積", "遊戲包：來店打卡"],
          ["Disney App", "AI 行程建議、排隊時能玩的小遊戲", "AI 包：Ask LaLa 排一天"],
          ["Universal Studios", "實體互動收集鑰匙，手機上看分數與收藏", "遊戲包：館內集章"],
          ["Starbucks Rewards", "Green／Gold／Reserve 三級，回饋 1x／1.2x／1.7x", "核心：四級會員＋倍率"],
@@ -407,14 +407,14 @@ whats_new("App 3.0 更新一覽：8 項升級，其中 5 項是全新功能", "W
            ("停車", "紙本票卡；免費 3H 藏在 News 裡", "LaLa Park：車牌即會員、依等級免費停、點數折抵、閘門自動開", "核心・NEW", "park"),
            ("巴士・接駁", "在第三方網站買票，跟商場無關", "LaLa Go：App 買票＋RM10 券＋上車提醒；MOP 機場接駁", "核心・NEW", "go"),
            ("點數・券", "只有 5% 會員在 App 集點", "點數可抵停車、巴士；店家券＋行程券都在同一個錢包", "核心", "home"),
-           ("遊戲", "—", "每日簽到、任務、Stamp Rally、LaLa Capsule", "遊戲・NEW", "play"),
+           ("遊戲", "—", "來店打卡、任務、Stamp Rally、LaLa Capsule", "遊戲・NEW", "play"),
            ("AI", "—", "1 秒發票掃描、Ask LaLa 管家、For You 推薦", "AI・NEW", "ai"),
            ("口碑", "好評散在 IG、Threads，App 裡看不到", "LaLa Buzz：Pandora Buzz Score＋Real Talk 真心話", "AI・NEW", "buzz")])
 phone_demo("首頁：我的會員卡、我的車、我的行程，一頁看完", "Home", "home",
            [("會員卡＝QR＋等級", "結帳一打開 App，店員直接掃首頁 QR（右：情境影片）"),
             ("我的車，即時", "LPR 辨識 WXY 1234 停在 P2：免費時數剩 2h 31m"),
             ("我的行程", "15:30 往新加坡、Bay 3、還有 RM10 優惠券可用"),
-            ("核心快捷鍵", "停車、巴士票、優惠券、登錄發票")],
+            ("What's On 活動牆", "首頁下方滑動看今天的活動與優惠（見影片）")],
            "首頁從「商場在推什麼」換成「我是誰、我今天能拿到什麼」", clip="checkout")
 PAGES["home"] = d.n
 
@@ -517,7 +517,7 @@ addon_overview("加購功能一覽：8 項功能，AI 包優先、再上遊戲�
                    ("buzz", "phone", "LaLa Buzz", "Pandora 讀 3,696+ 則真實貼文：Buzz Score、AI 摘要、熱門標籤"),
                    ("brand", "phone", "店家頁＋Real Talk", "92% 好評、網友原話、一鍵導航；驗證發票才能寫，+20 點")]),
                 ("遊戲包", "#B8975A", "・給會員更多回來的理由", [
-                   ("home_play", "phone", "簽到＋每週任務", "每天 +10 點，連續 7 天送扭蛋；Makan、Squad 任務"),
+                   ("home_play", "phone", "來店打卡＋任務", "來店打卡拿點數；Makan、Squad 任務拿 XP"),
                    ("quest", "phone", "Stamp Rally", "館內平面圖變成尋寶地圖：集滿 5 章換 Matsuri 扭蛋"),
                    ("capsule", "phone", "LaLa Capsule", "每天免費一抽，每季 24 款角色，可跟朋友交換"),
                    ("app/acg_event.jpg", "photo", "Matsuri 季票", "ACG Matsuri、Bon Odori、Raya、CNY：檔期季票＋館內活動")])],
@@ -596,6 +596,9 @@ d.table(s, ["指標", "方案", "現況", "Phase 0（3 個月）", "12 個月（
          ["MAU／會員數", "加購", "—", "20%", "35%"],
          ["Real Talk 分享則數／月", "加購", "0", "—", "3,000"]],
         col_w=[3.4, 1.2, 1.2, 2.1, 2.2], size=13, row_h=0.56, hot_row=0)
+
+from mkt_section import add_marketing  # noqa: E402
+add_marketing(d, "zh")
 
 d.closing("每一次來，都在升級。",
           "Next Step\n① 11 月：確認核心範圍與等級權益（含停車時數）\n② 12 月：停車場 LPR＋巴士業者 API 工作坊；20 位會員 Prototype 測試\n"

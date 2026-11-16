@@ -102,7 +102,7 @@ NAVY, GOLD, GOLD2 = "#13294B", "#B8975A", "#8C6E3C"
 
 def core_map(s, y=1.3):
     """Core + Add-on architecture: three plug-in add-ons sitting on one core."""
-    adds = [("PLAY PACK", PINK, "Check-in streak · Quests\nStamp Rally · LaLa Capsule\nMatsuri Pass"),
+    adds = [("PLAY PACK", PINK, "Visit check-ins · Quests\nStamp Rally · LaLa Capsule\nMatsuri Pass"),
             ("AI PACK", BLUE, "AI Receipt Scan (1 sec)\nAsk LaLa concierge\nFor You picks"),
             ("BUZZ PACK", ORANGE, "Pandora LaLa Buzz\nBuzz Score + AI summary\nReal Talk reviews")]
     d.tx(s, 0.72, y, 6, 0.3, "ADD-ONS  |  experience · switch on when ready", 12, color=GOLD2, bold=True)
@@ -380,7 +380,7 @@ s = d.info("Eight benchmarks: utility gets them in, identity keeps them", label=
 d.table(s, ["Brand", "What they do", "What LaLa Quest borrows"],
         [["1 Utama ONECARD", "Register up to 2 plates; LPR opens the gate, e-wallet pays", "Core: LaLa Park plate login"],
          ["Sunway Smart Parking", "Ticketless entry & exit by plate, paid in the app", "Core: pay-at-exit, no ticket"],
-         ["MUJI Passport", "Earn MUJI Miles just for checking in, no purchase needed", "Play: check-in streaks"],
+         ["MUJI Passport", "Earn MUJI Miles just for checking in, no purchase needed", "Play: visit check-ins"],
          ["Disney App", "AI itinerary tips; mini-games while you queue", "AI: Ask LaLa plans your day"],
          ["Universal Studios", "Collect keys physically, track score in the app", "Play: in-mall Stamp Rally"],
          ["Starbucks Rewards", "Green / Gold / Reserve: 1x / 1.2x / 1.7x rewards", "Core: 4 tiers + multipliers"],
@@ -453,14 +453,14 @@ whats_new("What's new in App 3.0: 8 upgrades, 5 brand-new features", "What's New
            ("Parking", "Paper tickets; free 3H buried in News", "LaLa Park: plate = member, free hours by tier, points pay, gate opens", "Core · NEW", "park"),
            ("Bus & shuttle", "Tickets on third-party sites, no link to the mall", "LaLa Go: in-app tickets + RM10 e-Voucher + boarding reminders; KLIA shuttle", "Core · NEW", "go"),
            ("Points & vouchers", "Only 5% of members earn in-app", "Points pay parking and buses; tenant + trip e-Vouchers in one wallet", "Core", "home"),
-           ("Play", "—", "Daily check-in, quests, Stamp Rally, LaLa Capsule", "Play · NEW", "play"),
+           ("Play", "—", "Visit check-ins, quests, Stamp Rally, LaLa Capsule", "Play · NEW", "play"),
            ("AI", "—", "1-sec receipt scan, Ask LaLa concierge, For You picks", "AI · NEW", "ai"),
            ("Reviews", "Scattered on IG and Threads, invisible in the app", "LaLa Buzz: Pandora Buzz Score + Real Talk reviews", "AI · NEW", "buzz")])
 phone_demo("Home: my card, my car, my trip, all on one screen", "Home", "home",
            [("Card = QR + tier", "At checkout, staff scan the QR on home (video, right)"),
             ("My car, live", "LPR spotted WXY 1234 at P2: 2h 31m free left"),
             ("My trip", "Bus to Singapore 3:30 PM, Bay 3, RM10 voucher to spend"),
-            ("Core shortcuts", "Parking, Bus Tickets, Vouchers, Submit Receipt")],
+            ("What's On gallery", "Swipe today's events and promos at the bottom of home (video)")],
            "Home moves from \"what the mall is pushing\" to \"who I am and what I get today\"", clip="checkout")
 PAGES["home"] = d.n
 
@@ -564,7 +564,7 @@ addon_overview("Add-ons at a glance: 8 features, AI first, then Play", "Add-ons 
                    ("buzz", "phone", "LaLa Buzz", "Pandora reads 3,696+ real posts: Buzz Score, AI summary, hot tags"),
                    ("brand", "phone", "Tenant page + Real Talk", "92% love it, real posts, one tap to go; verified reviews +20 pts")]),
                 ("PLAY PACK", "#B8975A", "·  more reasons to come back", [
-                   ("home_play", "phone", "Check-in + Quests", "+10 pts a day, 7-day streak = free capsule; Makan & Squad quests"),
+                   ("home_play", "phone", "Visit check-ins + Quests", "Check in on visit days for points; Makan & Squad quests for XP"),
                    ("quest", "phone", "Stamp Rally", "The floor plan becomes a treasure map: 5 stamps = Matsuri capsule"),
                    ("capsule", "phone", "LaLa Capsule", "One free draw a day, 24 characters a series, trade with kawan"),
                    ("app/acg_event.jpg", "photo", "Matsuri Season Pass", "ACG Matsuri, Bon Odori, Raya, CNY: seasonal passes + events")])],
@@ -645,6 +645,9 @@ d.table(s, ["Metric", "Package", "Today", "Phase 0 (3 months)", "12 months (illu
          ["MAU / members", "Add-ons", "—", "20%", "35%"],
          ["Real Talk posts per month", "Add-ons", "0", "—", "3,000"]],
         col_w=[3.6, 1.2, 1.1, 2.0, 2.2], size=12.5, row_h=0.56, hot_row=0)
+
+from mkt_section import add_marketing  # noqa: E402
+add_marketing(d, "en")
 
 d.closing("Every visit levels you up.",
           "Next Steps\n1  Nov: confirm the Core scope and tier perks (incl. parking hours)\n"

@@ -571,6 +571,24 @@ html.app #side .mode{display:flex;gap:6px;margin:14px 0 4px}
 html.app #side .mode span{flex:1;text-align:center;font-size:12px;font-weight:800;padding:8px 6px;border-radius:12px;border:1.5px solid #13294B;color:#13294B;cursor:pointer}
 html.app #side .mode span.on{background:#13294B;color:#fff}
 html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-weight:800;color:#8C6E3C;margin:10px 0 2px}
+.wo-tabs{display:flex;gap:6px;margin:0 18px 10px;overflow:hidden}
+.wo-tabs span{font-size:11.5px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mid);white-space:nowrap}
+.wo-tabs span.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.wo-hero{margin:0 18px;border-radius:18px;overflow:hidden;position:relative;box-shadow:0 6px 18px rgba(19,41,75,.15)}
+.wo-hero .trk{display:flex;transition:transform .6s cubic-bezier(.6,0,.2,1)}
+.wo-hero .sl{flex:0 0 100%;position:relative}
+.wo-hero img{width:100%;height:200px;object-fit:cover;display:block}
+.wo-hero .wcap{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 12px;background:linear-gradient(transparent,rgba(8,16,32,.85));color:#fff}
+.wo-hero .wcap b{display:block;font-size:15px}.wo-hero .wcap span{font-size:11px;opacity:.85}
+.wo-tag{font-style:normal;position:absolute;top:10px;left:10px;font-size:9.5px;font-weight:800;letter-spacing:1px;padding:3px 8px;border-radius:6px;background:#fff;color:var(--navy)}
+.wo-tag.g{background:#B8975A;color:#fff}
+.wo-hero .dots{position:absolute;right:12px;bottom:12px;display:flex;gap:4px}
+.wo-hero .dots i{width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.5);transition:width .3s}
+.wo-hero .dots i.on{width:16px;background:#fff}
+.wo-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 18px 0}
+.wo-c{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;position:relative}
+.wo-c img{width:100%;height:100px;object-fit:cover;display:block}
+.wo-c div{padding:7px 9px 9px}.wo-c b{font-size:11.5px;display:block;line-height:1.3}.wo-c span{font-size:10px;color:var(--mid)}
 </style>
 </head>
 <body>
@@ -603,12 +621,6 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
       <div class="chips"><span class="chip">4H free parking</span><span class="chip">1.2x points</span><span class="chip">Birthday 2x</span></div>
     </div>
     <div class="strip park"><div class="ic">P</div><div><b><span class="plate" style="font-size:11px;padding:2px 7px;letter-spacing:1.5px">WXY 1234</span>&nbsp; parked · P2</b><span>Ticketless LPR · points pay the rest</span></div><div class="rt">2h 31m<small>free left</small></div></div>
-    <div class="card streak addon">
-      <div class="hd">5-day check-in streak <em class="ao">PLAY</em> <span>Day 7 · free capsule</span></div>
-      <div class="days">
-        <div class="d ok"><b>✓</b>Mon</div><div class="d ok"><b>✓</b>Tue</div><div class="d ok"><b>✓</b>Wed</div><div class="d ok"><b>✓</b>Thu</div><div class="d ok"><b>✓</b>Fri</div><div class="d today"><b>+10</b>Sat</div><div class="d"><b>★</b>Sun</div>
-      </div>
-    </div>
     <div class="quick">
       <div class="q"><div class="e"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M10 16V8h3a2.5 2.5 0 010 5h-3"/></svg></div>My<br>Parking</div>
       <div class="q"><div class="e"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="3"/><path d="M5 11h14M8 18v2M16 18v2"/><circle cx="8.5" cy="14.5" r=".8"/><circle cx="15.5" cy="14.5" r=".8"/></svg></div>Bus<br>Tickets</div>
@@ -629,6 +641,19 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
     <div class="bz card addon" style="padding:10px">
       <img src="../assets/app/collabcafe.jpg">
       <div><h4>Doko Koko Café</h4><span class="score">★ 4.7 Buzz</span> <span class="tr">▲ 98 posts</span><div class="qt">"So well themed, huge merch section!"</div><div class="src">via Instagram · Pandora AI</div></div>
+    </div>
+    <div class="sec" style="margin-top:6px"><b>What's On at LaLaport</b><a>See all</a></div>
+    <div class="wo-tabs"><span class="on">All</span><span>Events</span><span>Promotions</span><span>Dining</span><span>Pop-ups</span></div>
+    <div class="wo-hero" id="woHero"><div class="trk">
+      <div class="sl"><img src="../assets/app/ev_pink.jpg"><em class="wo-tag">EVENT</em><div class="wcap"><b>LUV IT PINK · Rooftop Garden</b><span>6–9 Nov · 12 PM–10 PM · Level 4</span></div></div>
+      <div class="sl"><img src="../assets/app/ev_sports.jpg"><em class="wo-tag g">PROMO</em><div class="wcap"><b>Sports Direct · Year-End Sale up to 50%</b><span>Until 3 Jan · Members earn 1.2x pts</span></div></div>
+      <div class="sl"><img src="../assets/app/ev_peace.jpg"><em class="wo-tag">POP-UP</em><div class="wcap"><b>PEACEMINUSONE × ZO&amp;FRIENDS</b><span>6–16 Nov · Ground Floor</span></div></div>
+    </div><div class="dots"><i class="on"></i><i></i><i></i></div></div>
+    <div class="wo-grid">
+      <div class="wo-c"><img src="../assets/app/ev_focus.jpg"><div><b>Focus Point · Buy 1 Free 1</b><span>Until 3 Jan</span></div></div>
+      <div class="wo-c"><img src="../assets/app/ev_deepavali.jpg"><div><b>Deepavali Promo · Hot &amp; Roll</b><span>4–9 Nov · RM3 off</span></div></div>
+      <div class="wo-c"><img src="../assets/app/ev_boost.jpg"><div><b>Boost Juice · Blends with Benefits</b><span>Until 4 Dec</span></div></div>
+      <div class="wo-c"><img src="../assets/app/ev_swnk.jpg"><div><b>SWNK Houze · Member privileges</b><span>From 6 Nov</span></div></div>
     </div>
     <div style="height:30px"></div>
   </div></div>
@@ -984,6 +1009,7 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
 
 </div>
 <script>
+(()=>{const h=document.getElementById('woHero');if(!h)return;let i=0;const tr=h.querySelector('.trk'),ds=h.querySelectorAll('.dots i');setInterval(()=>{i=(i+1)%3;tr.style.transform=`translateX(${-100*i}%)`;ds.forEach((d,j)=>d.classList.toggle('on',j===i));},2200);})();
 
 /* shared: luxe line icons + home QR (both modes) */
 (function(){
@@ -1008,10 +1034,10 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
     for(let r=0;r<n;r++)for(let c=0;c<n;c++){let f=F(r,c);if(f<0){x=(x*9301+49297)%233280;f=x/233280>.52?1:0}o+='<i style="background:'+(f?'#13294B':'#fff')+'"></i>'}h.innerHTML=o}
 })();
 
-const q=new URLSearchParams(location.search);if(q.get('z'))document.documentElement.style.zoom=q.get('z');if(q.has('s')){const s=q.get('s')||'home';const play=q.get('play')==='1';
+const q=new URLSearchParams(location.search);if(q.get('z'))document.documentElement.style.zoom=q.get('z');if(q.has('s')){const s=q.get('s')||'home';if(q.get('y'))document.getElementById('homeInner').style.transform='translateY(-'+q.get('y')+'px)';const play=q.get('play')==='1';
 document.getElementById(s).classList.add('on');
 function later(ms,fn){setTimeout(fn,ms)}
-if(s==='home'&&play){later(3200,()=>homeInner.style.transform='translateY(-330px)');later(5600,()=>homeInner.style.transform='translateY(-560px)');}
+if(s==='home'&&play){later(3000,()=>homeInner.style.transform='translateY(-300px)');later(5400,()=>homeInner.style.transform='translateY(-640px)');later(7800,()=>homeInner.style.transform='translateY(-1074px)');}
 if(s==='tiers'&&play){const T=document.getElementById('tiers');const w=document.createElement('div');w.style.transition='transform 1.4s cubic-bezier(.45,0,.2,1)';[...T.children].filter(c=>!c.matches('.status')).forEach(c=>w.appendChild(c));T.appendChild(w);
   const t3=T.querySelector('.tc.t3');later(1700,()=>{t3.style.transition='box-shadow .8s';t3.style.boxShadow='0 0 0 3px #E8D6AE, 0 18px 34px rgba(184,151,90,.55)'});
   const rows=[...T.querySelectorAll('.perk tr')];rows.forEach((r,i)=>{const c=r.children[3];if(!c)return;c.style.transition='background .5s, color .5s';later(2700+i*220,()=>{c.style.background=i?'#F3E7CF':'#8C6E3C';if(i)c.style.fontWeight='800'})});
@@ -1281,7 +1307,7 @@ if(s==='levelup'){const cs=['#D9C49A','#1E3A63','#2F4E7A','#B8975A','#C9D3E0','#
       case 'collectv': el.querySelector('.r span').textContent = '✓ Collected to My Vouchers'; return toast('🎟️ ' + el.dataset.v + ' collected');
       case 'collect': return toast('🎟️ 3 more vouchers on the Home page');
       case 'vouchers': return $('#vouchers').scrollIntoView({behavior: 'smooth'});
-      case 'checkin': { if (el.dataset.done) return; el.dataset.done = 1; el.querySelector('b').textContent = '✓'; el.classList.remove('today'); el.classList.add('ok'); streak++; $('#home .streak .hd').firstChild.textContent = `🔥 ${streak}-day check-in streak `; setPts(10); return toast('🔥 Checked in! +10 pts'); }
+      case 'checkin': { if (el.dataset.done) return; el.dataset.done = 1; el.querySelector('b').textContent = '✓'; el.classList.remove('today'); el.classList.add('ok'); streak++;  setPts(10); return toast('🔥 Checked in! +10 pts'); }
       case 'tiercard': return toast('🏅 ' + el.querySelector('.nm').textContent + ' · ' + (el.querySelector('.ml') ? el.querySelector('.ml').textContent : 'see perks table below'));
       case 'stamp': {
         const st = $$('#quest .stamp')[3]; if (st.classList.contains('got')) return toast('Already stamped ✓');
