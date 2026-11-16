@@ -2,7 +2,7 @@ import asyncio,os,base64,subprocess,sys
 from playwright.async_api import async_playwright
 FF="/Users/shelleychen/.claude/skills/shelley-deck/.venv/lib/python3.9/site-packages/imageio_ffmpeg/binaries/ffmpeg-macos-aarch64-v7.1"
 BASE="file://"+os.path.abspath("proto/app.html")
-VIDS={"home":9,"capsule":6,"scan":6.5,"ask":6,"buzz":5,"brand":4,"realtalk":9,"levelup":5.5,"tiers":3,"quest":3.5}
+VIDS={"home":9,"capsule":6,"scan":6.5,"ask":6,"buzz":5,"brand":4,"realtalk":9,"levelup":5.5,"tiers":3,"quest":3.5,"parking":7.5,"bus":3.5,"busticket":6}
 if len(sys.argv)>1: VIDS={k:VIDS[k] for k in sys.argv[1:]}
 FPS=30
 async def rec(b,k,t):
