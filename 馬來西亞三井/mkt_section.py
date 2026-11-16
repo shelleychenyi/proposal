@@ -10,7 +10,7 @@ RED, YEL, SOFT = "#E0283C", "#F6E27F", "#F3F1EC"
 M = "assets/mkt/"
 
 
-def add_marketing(d, lang):
+def add_marketing(d, lang, meta=None):
     T = (lambda en, zh: en) if lang == "en" else (lambda en, zh: zh)
     C = lambda s, x, y, w, h, t, sz, **k: d.tx(s, x, y, w, h, t, sz, align=PP_ALIGN.CENTER, **k)  # noqa: E731
 
@@ -37,8 +37,11 @@ def add_marketing(d, lang):
     d.cur = "omt"  # no chapter number on these pages
 
     # ------------------------------------------------------------ cover
-    s = d._new(bg="dark")
-    d.cover_pic(s, M + "omt_cover.jpg", 0, 0, 13.333, 7.5)
+    s = d._new(bg="#0A1225")
+    vx, vw = 13.333 - 7.5 * 806 / 720, 7.5 * 806 / 720  # Banaverse clip, left navy cropped off (AI tag burned in)
+    d.movie(s, f"assets/video_r/omt_{lang}.mp4", f"assets/poster_r/omt_{lang}.jpg", vx, 0, vw, 7.5)
+    if meta is not None:
+        meta["video"].setdefault(d.n, []).append([f"omt_{lang}", vx, 0, vw, 7.5])
     d.tx(s, 0.9, 1.75, 4.6, 0.4, "ONE MORE THING", 14, color="accent", bold=True)
     d.tx(s, 0.85, 2.25, 4.8, 1.9, T("We don't just\nbuild the app.\nWe fill it.", "不只做 APP，\n還幫你\n把人送進來。"), 34, color="white",
          bold=True, spacing=1.1)
@@ -46,7 +49,6 @@ def add_marketing(d, lang):
                                   "and VariFlight, all ending in the MSP app and its CRM.",
                                   "Pandora 聽、Banana 做、Adriana 投。從 Meta、TikTok 到小紅書、飛常準，9 個渠道，全部導回 MSP APP 與會員 CRM。"),
          12.5, color="gold", spacing=1.5)
-    d.ai_tag(s, 12.0, 7.05, T("AI mock-up", "AI 示意圖"))
 
     # ------------------------------------------------------------ 1 closed loop
     s = d.info(T("How it runs: one loop that sends people to LaLaport and back into the CRM",
@@ -137,7 +139,7 @@ def add_marketing(d, lang):
                         "一個團隊、一份預算、九個渠道：在地人、粉絲、華語旅客、中國航班旅客全都觸及。"),
                source=T("Data source: Facebook users, TikTok ad reach: DataReportal Digital 2026 Malaysia (via Elite Asia); ChatGPT: Marketing Magazine Malaysia; VariFlight: official; LaLaport: Pandora.",
                         "資料來源：Meta 受眾、TikTok 廣告觸及：DataReportal Digital 2026 Malaysia（Elite Asia 整理）；ChatGPT：Marketing Magazine Malaysia（2026）；飛常準：官方數據；LaLaport Threads／IG：Pandora（2025/11–2026/11）。"))
-    ch = [("#0866FF", "Meta · Facebook / Instagram", T("23.0M Facebook users in Malaysia", "馬來西亞 Facebook 2,300 萬人"),
+    ch = [("#0866FF", T("Meta · Facebook / Instagram", "Meta・Facebook／Instagram"), T("23.0M Facebook users in Malaysia", "馬來西亞 Facebook 2,300 萬人"),
            T("Drop-day launches and install ads; Reels for fandom tenants.", "新品日發佈＋下載廣告；粉絲型店鋪的 Reels。")),
           ("#4285F4", "Google · Search / Maps / PMax", T("Catch people the moment they search", "在對方搜尋的那一刻出現"),
            T("\"LaLaport parking\", \"bus to Singapore\" lead straight to the app.", "「LaLaport 停車」「去新加坡巴士」直接導進 APP。")),
@@ -155,16 +157,25 @@ def add_marketing(d, lang):
            T("Reach China flyers landing at KLIA: MOP outlet + LaLa Go shuttle.", "鎖定降落 KLIA 的中國旅客：MOP Outlet＋LaLa Go 接駁。")),
           (GOLD, T("Creators & KOC · BM / EN / CN", "KOL・KOC（馬來／英／中）"), T("Micro-creators in three languages", "三語微型創作者"),
            T("Chinese guides average 2,915 likes, 3× the Instagram norm.", "繁中攻略平均 2,915 讚，是 IG 平均的 3 倍。"))]
+    LOGOS = [["facebook", "instagram"], ["google"], ["youtube"], ["tiktok"], ["threads"], ["chatgpt"], ["red"], ["variflight"], ["koc"]]
     for i, (c, nm, reach, use) in enumerate(ch):
         x, y = 0.6 + (i % 3) * 4.08, 1.22 + (i // 3) * 1.6
         d.round(s, x, y, 3.95, 1.48, "white", 0.06).line.color.rgb = RGBColor.from_string("E3DFD7")
         d.rect(s, x, y + 0.12, 0.07, 1.24, c)
-        d.tx(s, x + 0.25, y + 0.12, 3.6, 0.32, nm, 13.5, bold=True, color=NAVY)
-        d.tx(s, x + 0.25, y + 0.5, 3.6, 0.3, reach, 11, bold=True, color=c if c not in ("#111111", "#333333") else "#3A3A3A")
-        d.tx(s, x + 0.25, y + 0.85, 3.6, 0.6, use, 10, color="mid", spacing=1.15)
+        lx = x + 0.25
+        for lg in LOGOS[i]:
+            if lg == "koc":
+                d.round(s, lx, y + 0.1, 0.42, 0.42, GOLD, 0.5)
+                C(s, lx, y + 0.21, 0.42, 0.2, "KOC", 8.5, color="white", bold=True)
+            else:
+                d.fit(s, M + f"logo/{lg}.png", lx, y + 0.1, 0.42, 0.42)
+            lx += 0.48
+        d.tx(s, lx + 0.04, y + 0.14, x + 3.85 - lx, 0.32, nm, 13 if i == 0 else 13.5, bold=True, color=NAVY)
+        d.tx(s, x + 0.25, y + 0.6, 3.6, 0.3, reach, 11, bold=True, color=c if c not in ("#111111", "#333333") else "#3A3A3A")
+        d.tx(s, x + 0.25, y + 0.92, 3.6, 0.55, use, 10, color="mid", spacing=1.15)
         if nm.startswith(("Xiao", "小紅", "Vari", "飛常")):
-            d.round(s, x + 2.95, y + 0.15, 0.85, 0.24, RED, 0.5)
-            C(s, x + 2.95, y + 0.18, 0.85, 0.2, T("CHINA", "中國渠道"), 8, color="white", bold=True)
+            d.round(s, x + 2.95, y + 0.19, 0.85, 0.24, RED, 0.5)
+            C(s, x + 2.95, y + 0.22, 0.85, 0.2, T("CHINA", "中國渠道"), 8, color="white", bold=True)
 
     # ------------------------------------------------------------ 3 Xiaohongshu
     s = d.info(T("Xiaohongshu (RED): in the plan before Chinese-speaking travellers land",

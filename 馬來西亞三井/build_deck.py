@@ -598,7 +598,7 @@ d.table(s, ["指標", "方案", "現況", "Phase 0（3 個月）", "12 個月（
         col_w=[3.4, 1.2, 1.2, 2.1, 2.2], size=13, row_h=0.56, hot_row=0)
 
 from mkt_section import add_marketing  # noqa: E402
-add_marketing(d, "zh")
+add_marketing(d, "zh", META)
 
 d.closing("每一次來，都在升級。",
           "Next Step\n① 11 月：確認核心範圍與等級權益（含停車時數）\n② 12 月：停車場 LPR＋巴士業者 API 工作坊；20 位會員 Prototype 測試\n"

@@ -647,7 +647,7 @@ d.table(s, ["Metric", "Package", "Today", "Phase 0 (3 months)", "12 months (illu
         col_w=[3.6, 1.2, 1.1, 2.0, 2.2], size=12.5, row_h=0.56, hot_row=0)
 
 from mkt_section import add_marketing  # noqa: E402
-add_marketing(d, "en")
+add_marketing(d, "en", META)
 
 d.closing("Every visit levels you up.",
           "Next Steps\n1  Nov: confirm the Core scope and tier perks (incl. parking hours)\n"
