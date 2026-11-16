@@ -146,15 +146,20 @@ def whats_new(title, label, banner, head, rows):
     return s
 
 
-def scene(title, label, banner, photo, phones, beats, stats=None, chip=None, source=None):
+def scene(title, label, banner, photo, phones, beats, stats=None, chip=None, source=None, video=None):
     """Scenario demo: scene photo + story strip (time-stamped beats) + prototype recordings (+ big stats)."""
     s = d.info(title, label=label, banner=banner, source=source)
     pw_phone = 4.55 * 390 / 844
     phones_w = len(phones) * pw_phone + (len(phones) - 1) * 0.3
     stats_w = 3.2 if stats else 0
     pw = 12.15 - 0.4 - phones_w - (stats_w + 0.4 if stats else 0)
-    d.cover_pic(s, photo, 0.6, 1.3, pw, 2.95)
-    d.ai_tag(s, 0.7, 1.38)
+    if video:  # Banaverse scene clip (AI tag + chip burned in by proto/scene_video.py)
+        d.movie(s, A + f"video_r/{video}.mp4", A + f"poster_r/{video}.jpg", 0.6, 1.3, pw, 2.95)
+        META["video"].setdefault(d.n, []).append([video, 0.6, 1.3, pw, 2.95])
+        chip = None
+    else:
+        d.cover_pic(s, photo, 0.6, 1.3, pw, 2.95)
+        d.ai_tag(s, 0.7, 1.38)
     if chip:
         d.tag(s, 0.6, 3.83, chip, col=SC_GOLD, size=10.5, h=0.42)
     d.round(s, 0.6, 4.33, pw, 1.55, SC_NAVY, 0.06)
@@ -181,6 +186,29 @@ def scene(title, label, banner, photo, phones, beats, stats=None, chip=None, sou
     return s
 
 
+def addon_overview(title, label, banner, groups, source=None):
+    """All add-on features on one page: one row per pack, each feature with its app mock-up."""
+    s = d.info(title, label=label, banner=banner, source=source)
+    y = 1.25
+    for name, col, sub, items in groups:
+        d.round(s, 0.6, y, 12.15, 0.34, col, 0.5)
+        d.tx(s, 0.85, y + 0.06, 11.6, 0.25, name + "   " + sub, 11.5, color="white", bold=True)
+        cy = y + 0.42
+        for i, (img, kind, t, desc) in enumerate(items):
+            x = 0.6 + i * 3.06
+            d.round(s, x, cy, 2.94, 1.95, "soft", 0.06)
+            if kind == "phone":
+                d.fit(s, A + f"poster_r/{img}.jpg", x + 0.12, cy + 0.1, 0.82, 1.75)
+                tx0 = x + 1.05
+            else:
+                d.cover_pic(s, A + img, x + 0.1, cy + 0.1, 0.86, 1.75)
+                tx0 = x + 1.08
+            d.tx(s, tx0, cy + 0.16, 2.94 - (tx0 - x) - 0.1, 0.5, t, 12.5, color=col, bold=True, spacing=1.05)
+            d.tx(s, tx0, cy + 0.72, 2.94 - (tx0 - x) - 0.12, 1.2, desc, 10, color="mid", spacing=1.25)
+        y = cy + 2.07
+    return s
+
+
 def fill_page_refs():
     for tb, key in PAGE_REFS:
         tb.text_frame.paragraphs[0].runs[0].text = "p.%d" % PAGES[key]
@@ -190,8 +218,8 @@ def fill_page_refs():
 d.cover("MSP 會員 App\n3.0 改版提案。", "LaLa Quest｜每一次來，都在升級。", "2026.11",
         company="TURN CLOUD TECHNOLOGY SERVICE INC.", logos=[LALA, MOP], image=A + "mock_hero3.jpg")
 d.toc([("現況與洞察", "機會"), ("標竿學習", "標竿"), ("App 3.0 全貌", "全貌"), ("核心｜會員分級", "分級"),
-       ("核心｜LaLa Park 停車", "停車"), ("核心｜LaLa Go 巴士", "巴士"), ("加購｜遊戲包", "遊戲"),
-       ("加購｜AI 智慧包", "AI"), ("加購｜口碑包 LaLa Buzz", "口碑"), ("落地與 KPI", "落地")])
+       ("核心｜LaLa Park 停車", "停車"), ("核心｜LaLa Go 巴士", "巴士"), ("加購｜AI 包＋遊戲包", "加購"),
+       ("落地與 KPI", "落地")])
 
 # ---------------------------------------------------------------- 1 現況與洞察
 PD = A + "pandora/"
@@ -214,8 +242,8 @@ s = d.info("一頁看懂：核心功能把人帶進來，加購功能讓人留�
            banner="核心先上：停車、巴士、等級，讓每一位來館的人第一天就有理由註冊")
 d.columns(s, [("洞察", "#8A94A6", "有熱度，缺導客工具",
                "半年 3,696 篇、90.7% 正面\n最大負評：停車\nLTH＋KLIA 帶來大量旅客\n只有 5% 會員用 App 集點"),
-              ("解法", BLUE, "一個核心＋三個加購",
-               "核心：四級會員、車牌停車\n核心：LaLa Go 巴士購票\n核心：點數＋e-Voucher\n加購：遊戲・AI・口碑"),
+              ("解法", BLUE, "一個核心＋兩個加購",
+               "核心：四級會員、車牌停車\n核心：LaLa Go 巴士購票\n核心：點數＋e-Voucher\n加購：AI（含口碑）・遊戲"),
               ("收益", ORANGE, "更多來客、更多會員",
                "每一個車牌＝一位會員\n每一張車票＝一筆館內消費\n集點率 5% → 20%\n各館共用一個會員身份")])
 
@@ -273,9 +301,8 @@ d.callouts(s, 4.2, 4.1, 8.4, [("旅客都會提早到", "跨境巴士要求提�
 d.statement("IDEA", "LaLa Quest\n停車、搭車、升級",
             "Every visit levels you up.\n"
             "核心：四級會員・車牌停車・LaLa Go 巴士・e-Voucher\n"
-            "遊戲包：簽到、任務、集章、扭蛋\n"
-            "AI 智慧包：1 秒發票掃描＋Ask LaLa\n"
-            "口碑包：Pandora 好評，一鍵帶你過去",
+            "AI 智慧包：1 秒發票掃描、Ask LaLa、LaLa Buzz 口碑\n"
+            "遊戲包：簽到、任務、集章、扭蛋",
             image=A + ("idea_poster.jpg" if IDEA_VIDEO else "app/acg_event.jpg"), video=IDEA_VIDEO)
 META["special"]["idea"] = d.n
 
@@ -292,7 +319,7 @@ d.table(s, ["品牌", "他們怎麼做", "LaLa Quest 借什麼"],
          ["Universal Studios", "實體互動收集鑰匙，手機上看分數與收藏", "遊戲包：館內集章"],
          ["Starbucks Rewards", "Green／Gold／Reserve 三級，回饋 1x／1.2x／1.7x", "核心：四級會員＋倍率"],
          ["Shopee", "Coins＋每日小遊戲，大馬人每天的習慣", "遊戲包：每日一抽扭蛋"],
-         ["Sephora", "Beauty Insider 分級＋會員真實評價", "口碑包：Buzz＋Real Talk"]],
+         ["Sephora", "Beauty Insider 分級＋會員真實評價", "AI 包：LaLa Buzz＋Real Talk"]],
         col_w=[2.1, 4.6, 2.9], size=12.5, row_h=0.52)
 
 bench("MUJI：會員卡就是首頁，點數規則一句話講完", "MUJI", ["muji_2.jpg", "muji_3.jpg", "muji_5.jpg"],
@@ -329,7 +356,7 @@ bench("Sephora：等級＝折扣，AI 幫你挑禮物", "Sephora", ["sephora_1.j
       [("等級直接對應折扣", "Insider 10%／VIB 15%／Rouge 20%，一張圖講完"),
        ("Wish List 分享", "收藏清單可以分享給朋友"),
        ("AI Beauty Chat", "用聊天問「200 美元內的禮物」，AI 直接推薦")],
-      "Rookie → Legend 權益用一張圖講完；\nAI 包：Ask LaLa 用聊天推薦；\n口碑包學 Sephora 的評價文化。",
+      "Rookie → Legend 權益用一張圖講完；\nAI 包：Ask LaLa 用聊天推薦；\nLaLa Buzz 學 Sephora 的評價文化。",
       "Sephora 的升級路徑：先有分級，再疊上 AI 與評價")
 
 # ---------------------------------------------------------------- 3 全貌
@@ -341,10 +368,10 @@ whats_new("App 3.0 更新一覽：8 項升級，其中 5 項是全新功能", "W
            ("會員", "權益看不清楚，沒有升級的動力", "4 個等級＋角色，每次來館權益都長大", "核心", "tiers"),
            ("停車", "紙本票卡；免費 3H 藏在 News 裡", "LaLa Park：車牌即會員、依等級免費停、點數折抵、閘門自動開", "核心・NEW", "park"),
            ("巴士・接駁", "在第三方網站買票，跟商場無關", "LaLa Go：App 買票＋RM10 券＋上車提醒；MOP 機場接駁", "核心・NEW", "go"),
-           ("點數・券", "只有 5% 會員在 App 集點", "點數可抵停車、巴士；店家券＋行程券都在同一個錢包", "核心", "coremap"),
-           ("遊戲", "—", "每日簽到、任務、Stamp Rally、LaLa Capsule", "加購・NEW", "play"),
-           ("AI", "—", "1 秒發票掃描、Ask LaLa 管家、For You 推薦", "加購・NEW", "ai"),
-           ("口碑", "好評散在 IG、Threads，App 裡看不到", "LaLa Buzz：Pandora Buzz Score＋Real Talk 真心話", "加購・NEW", "buzz")])
+           ("點數・券", "只有 5% 會員在 App 集點", "點數可抵停車、巴士；店家券＋行程券都在同一個錢包", "核心", "home"),
+           ("遊戲", "—", "每日簽到、任務、Stamp Rally、LaLa Capsule", "遊戲・NEW", "play"),
+           ("AI", "—", "1 秒發票掃描、Ask LaLa 管家、For You 推薦", "AI・NEW", "ai"),
+           ("口碑", "好評散在 IG、Threads，App 裡看不到", "LaLa Buzz：Pandora Buzz Score＋Real Talk 真心話", "AI・NEW", "buzz")])
 phone_demo("首頁：我的會員卡、我的車、我的行程，一頁看完", "Home", "home",
            [("會員卡＝QR＋等級", "結帳一打開 App，店員直接掃首頁 QR（右：情境影片）"),
             ("我的車，即時", "LPR 辨識 WXY 1234 停在 P2：免費時數剩 2h 31m"),
@@ -352,24 +379,6 @@ phone_demo("首頁：我的會員卡、我的車、我的行程，一頁看完",
             ("核心快捷鍵", "停車、巴士票、優惠券、登錄發票")],
            "首頁從「商場在推什麼」換成「我是誰、我今天能拿到什麼」", clip="checkout")
 PAGES["home"] = d.n
-
-s = d.info("核心＋加購：先上能帶來人流的功能，好玩的之後再插上", label="產品架構",
-           banner="核心是基本授權、第一階段上線；每個加購模組都可單獨開通，不用重做 App")
-core_map(s)
-META["special"]["coremap"] = d.n
-PAGES["coremap"] = d.n
-
-s = d.info("為什麼這樣分：核心功能每一個都帶來一次來館，加購讓來館更深", label="模組邏輯",
-           banner="判斷原則：能把一台車、一班巴士、一張發票帶進館的，就是核心")
-d.table(s, ["模組", "方案", "怎麼帶來人流", "主要 KPI"],
-        [["會員身份＋四級", "核心", "每來一次權益就長大一點", "Explorer 以上占比"],
-         ["LaLa Park 車牌停車", "核心", "免費停車只給註冊車牌的會員", "註冊車牌數"],
-         ["LaLa Go 巴士", "核心", "賣 LTH 車票＋附 e-Voucher 先消費", "售票數、券使用率"],
-         ["點數＋e-Voucher", "核心", "店家優惠、乘車優惠券", "優惠券兌換數"],
-         ["遊戲包 Play", "加購", "簽到、任務、集章、扭蛋", "週活躍"],
-         ["AI 智慧包", "加購", "1 秒發票掃描、Ask LaLa、For You", "每月發票數"],
-         ["口碑包 Buzz", "加購", "Pandora 好評＋Real Talk", "Buzz → 導航點擊"]],
-        col_w=[2.6, 1.2, 3.9, 2.4], size=13, row_h=0.58)
 
 s = d.info("視覺：一個主色、一抹香檳金，站得住精品品牌旁邊", label="Design System",
            banner="向官網的乾淨留白看齊：午夜藍做主色、香檳金只用在等級與重點，告別五顏六色的「App 感」")
@@ -427,12 +436,13 @@ d.table(s, ["等級", "門檻（12 個月）", "點數倍率", "免費停車（L
 d.tx(s, 0.75, 5.2, 12, 0.6, "★ 「次數」也能升級：Explorer 可用 12 次造訪達成。加購遊戲包後，各級另享每日扭蛋 1／1／2／3 次。",
      13.5, bold=True, color="frame")
 
-phone_demo("等級頁：四張卡疊在一起，下一級永遠看得到", "核心｜Tier", "tiers",
+phone_demo("等級頁：四張卡疊在一起，下一級永遠看得到", "核心｜Tier", "tierflow",
            [("卡片疊疊樂", "四級會員卡像錢包一樣疊著，Legend 黑金卡最吸睛"),
             ("權益對照表", "倍率、車牌停車時數、乘車點數、活動入場"),
-            ("升級那一刻", "全螢幕慶祝：停車 4H → 5H 解鎖")],
+            ("升級那一刻", "升上 Senpai：停車 4H → 5H、點數 1.5x"),
+            ("在館內的那一刻", "跟朋友一起見證升級（右：情境影片）")],
            "讓會員知道「下一步在哪」，比給更多點數更有用",
-           keys2=["levelup"])
+           clip="lvscene")
 
 # ---------------------------------------------------------------- 5 LaLa Park（核心）
 d.divider("LaLa Park", "核心②｜車牌註冊一次，\n閘門就認得你是會員", key="停車")
@@ -444,7 +454,7 @@ scene("LaLa Park：開進來、逛一下午、開出去，閘門自己打開", "
        ("出場", "扣掉 4H 免費，800 點付清餘額，閘門自動打開，不用票卡")],
       stats=[("0 張票卡", "車牌就是會員卡"), ("3H → 全天", "免費停車時數跟著等級長大"),
              ("100 點 = RM1", "點數直接折抵停車費")],
-      source="停車時數、費率與點數比例皆為示意；與三井 LPR 停車系統以 API 串接")
+      video="park_scene_zh", source="停車時數、費率與點數比例皆為示意；與三井 LPR 停車系統以 API 串接")
 PAGES["park"] = d.n
 
 # ---------------------------------------------------------------- 6 LaLa Go（核心）
@@ -456,45 +466,26 @@ scene("LaLa Go：App 訂巴士票、多拿 RM10 券，時間到了提醒你上�
        ("3:00 PM", "推播：「30 分鐘後上車，RM10 還沒用！」買杯珍奶剛好"),
        ("3:20 PM", "Bay 3 掃 QR 上車，點數在行程結束後入帳")],
       chip="MOP：機場免費接駁時刻＋趕飛機提醒",
-      source="業者、票價與時刻皆為示意；票務以業者訂票 API 串接（LTH 為 busonlineticket.com 體系）")
+      video="go_scene_zh", source="業者、票價與時刻皆為示意；票務以業者訂票 API 串接（LTH 為 busonlineticket.com 體系）")
 PAGES["go"] = d.n
 
-# ---------------------------------------------------------------- 7 遊戲包（加購）
-d.divider("遊戲包", "加購 A｜每天、每週、每季，\n都有一個回來的理由", key="遊戲")
-s = d.info("遊戲包：每天簽到、每週任務、每季祭典", label="加購｜Play Pack",
-           banner="選配加購：等核心累積會員後，配合 ACG Matsuri、Bon Odori 檔期開通")
-d.flow(s, [("DAILY", "#1E9C9A", "簽到 Streak", "每天 +10 pts\n連續 7 天送扭蛋\n斷了可用點數補簽"),
-           ("WEEKLY", BLUE, "Quest 任務", "Makan Quest：試 2 家新店\nSquad Quest：帶 1 個 kawan\n完成給 XP"),
-           ("SEASONAL", PINK, "Matsuri Pass", "Bon Odori・ACG Matsuri・\nRaya・CNY・Deepavali\n館內集章 Stamp Rally"),
-           ("COLLECT", ORANGE, "LaLa Capsule", "24 隻一系列\n稀有款可跟朋友交換\n集滿換實體公仔")])
+# ---------------------------------------------------------------- 7 Add-ons (AI + Play)
+d.divider("加購功能", "AI 包＋遊戲包｜準備好就插上：\n先讓來館更聰明，再給更多回來的理由", key="加購")
+addon_overview("加購功能一覽：8 項功能，AI 包優先、再上遊戲包", "加購｜總覽",
+               "準備好就插上：AI 讓每次來館更聰明，遊戲讓會員有理由再回來",
+               [("AI 智慧包", "#1E3A63", "・讓來館更聰明・LaLa Buzz 口碑併入 AI 包", [
+                   ("scan", "phone", "AI 發票掃描", "拍一張，1.2 秒入點；等級倍率自動算"),
+                   ("ask", "phone", "Ask LaLa＋For You", "AI 逛街管家：找吃、找店、找出口、排行程，首頁個人推薦"),
+                   ("buzz", "phone", "LaLa Buzz", "Pandora 讀 3,696+ 則真實貼文：Buzz Score、AI 摘要、熱門標籤"),
+                   ("brand", "phone", "店家頁＋Real Talk", "92% 好評、網友原話、一鍵導航；驗證發票才能寫，+20 點")]),
+                ("遊戲包", "#B8975A", "・給會員更多回來的理由", [
+                   ("home_play", "phone", "簽到＋每週任務", "每天 +10 點，連續 7 天送扭蛋；Makan、Squad 任務"),
+                   ("quest", "phone", "Stamp Rally", "館內平面圖變成尋寶地圖：集滿 5 章換 Matsuri 扭蛋"),
+                   ("capsule", "phone", "LaLa Capsule", "每天免費一抽，每季 24 款角色，可跟朋友交換"),
+                   ("app/acg_event.jpg", "photo", "Matsuri 季票", "ACG Matsuri、Bon Odori、Raya、CNY：檔期季票＋館內活動")])],
+               source="App 畫面為 Prototype 截圖；Matsuri 照片為 AI 示意圖")
 
-phone_demo("Stamp Rally：把館內動線，變成一張尋寶地圖", "加購｜遊戲包・Quest", "quest",
-           [("樓層地圖集章", "L4 Garden Dining、L2 ACG Base、L1 Doko Koko"),
-            ("離你 40m", "定位提示下一站，帶動跨樓層人流"),
-            ("集滿換限定", "5 章換 Matsuri 限定扭蛋＋300 XP")],
-           "集章是日本商場最熟悉的玩法，搬進 App 就能量化每一層的人流",
-           photo=A + "app/acg_event.jpg")
-PAGES["play"] = d.n
-
-phone_demo("LaLa Capsule：每天一抽，抽到的是「想收集」的心", "加購｜遊戲包・Capsule", "capsule",
-           [("每日免費一抽", "簽到送、等級越高次數越多"),
-            ("24 隻一系列", "Durian-chan、Ramen-kun…原創角色，可做成實體公仔"),
-            ("Trade with kawan", "重複的可以跟朋友交換，自帶社群擴散")],
-           "扭蛋把「點數」變成「收藏」：數位收集，實體兌換，再回到館內",
-           photo=A + "mock_friends_capsule.jpg")
-
-# ---------------------------------------------------------------- 8 AI（加購）
-d.divider("AI 智慧包", "加購 B｜拍發票、問管家、看推薦：\n三個 AI 各解一個麻煩", key="AI")
-s = d.info("AI 智慧包：讓集點從「麻煩」變成「順手」", label="加購｜AI Pack",
-           banner="核心已能上傳發票登錄；AI 包讓它 1 秒完成，再加上一位 AI 管家")
-d.columns(s, [("AI Receipt Scan", ORANGE, "拍一張，1 秒入點",
-               "AI 讀店名、金額、時間\n1.2 秒（核心：上傳、24h 審核）\n防重複、防竄改"),
-              ("Ask LaLa", BLUE, "你的 AI 逛街管家",
-               "英文／馬來文／中文都能問\n找吃、找店、找停車出口\n幫你排一天行程"),
-              ("For You", MINT, "每個人的首頁不一樣",
-               "依等級、喜好、歷史推薦\nACG 粉看到聯名咖啡\n旅客看到乘車優惠")])
-
-phone_demo("AI 發票掃描：吃完拉麵，順手一拍就入點", "加購｜AI Receipt Scan", "scan",
+phone_demo("AI 發票掃描：吃完拉麵，順手一拍就入點", "加購・AI 包｜發票掃描", "scan",
            [("AI 即時辨識", "店名、金額、時間自動抓，1.2 秒完成"),
             ("等級倍率自動算", "Explorer 1.2x：RM28.90 → +35 pts"),
             ("順便推進任務", "加購遊戲包時：Makan Quest 完成")],
@@ -502,15 +493,13 @@ phone_demo("AI 發票掃描：吃完拉麵，順手一拍就入點", "加購｜A
            photo=A + "mock_ramen_scan.jpg")
 PAGES["ai"] = d.n
 
-phone_demo("Ask LaLa：像問朋友一樣問商場", "加購｜Ask LaLa", "ask",
+phone_demo("Ask LaLa：像問朋友一樣問商場", "加購・AI 包｜Ask LaLa", "ask",
            [("用馬來西亞英語聊", "「Jom makan! Any halal ramen under RM15?」"),
             ("答案帶你過去", "附 Buzz 評分、步行時間，按 Go 導航"),
             ("認得你的車和行程", "問「最近的出口？」直接用 LaLa Park 資料")],
            "Ask LaLa 背後是 LLM＋館內店家資料＋核心停車與巴士資料：問得到，也走得到")
 
-# ---------------------------------------------------------------- 9 口碑包（加購）
-d.divider("口碑包 LaLa Buzz", "加購 C｜網路上的好評，搬進 App；\n館內的真心話，留在 App", key="口碑")
-scene("LaLa Buzz：看大家最近在愛什麼，一鍵走過去", "加購｜LaLa Buzz・情境 Demo",
+scene("LaLa Buzz：看大家最近在愛什麼，一鍵走過去", "加購・AI 包｜LaLa Buzz 情境 Demo",
       "Pandora 驅動：網友的真心好評變成來館理由，Real Talk 把熱度留在 App",
       A + "app/ramen.jpg", ["buzz", "brand"],
       [("週五晚上", "滑 Buzz：Akiba Ramen ★4.8・92% 好評・本週 ▲32%"),
@@ -519,6 +508,21 @@ scene("LaLa Buzz：看大家最近在愛什麼，一鍵走過去", "加購｜LaL
       chip="Powered by Pandora・3,696 則真實貼文",
       source="資料來源：Pandora 社群聆聽，LaLaport BBCC，2026/5/3–10/31，N=3,696（Instagram、Threads）")
 PAGES["buzz"] = d.n
+
+phone_demo("Stamp Rally：把館內動線，變成一張尋寶地圖", "加購・遊戲包｜Stamp Rally", "quest",
+           [("樓層地圖集章", "L4 Garden Dining、L2 ACG Base、L1 Doko Koko"),
+            ("離你 40m", "定位提示下一站，帶動跨樓層人流"),
+            ("集滿換限定", "5 章換 Matsuri 限定扭蛋＋300 XP")],
+           "集章是日本商場最熟悉的玩法，搬進 App 就能量化每一層的人流",
+           photo=A + "app/acg_event.jpg")
+PAGES["play"] = d.n
+
+phone_demo("LaLa Capsule：每天一抽，抽到的是「想收集」的心", "加購・遊戲包｜Capsule", "capsule",
+           [("每日免費一抽", "簽到送、等級越高次數越多"),
+            ("24 隻一系列", "Durian-chan、Ramen-kun…原創角色，可做成實體公仔"),
+            ("Trade with kawan", "重複的可以跟朋友交換，自帶社群擴散")],
+           "扭蛋把「點數」變成「收藏」：數位收集，實體兌換，再回到館內",
+           photo=A + "mock_friends_capsule.jpg")
 
 # ---------------------------------------------------------------- 10 落地
 d.divider("落地與 KPI", "核心先上、加購隨時開：\nActivation、時程、分工、KPI", key="落地")
@@ -533,8 +537,8 @@ s = d.info("先上線核心，再依檔期一個個插上加購模組", label="�
            banner="Phase 0 全部是核心：分級、車牌停車、LaLa Go 一起上線；加購依需求開通")
 d.timeline(s, 1.8, ["2027/01", "2027/04", "2027/07", "2027/10", "2028/01"],
            [("P0 核心｜分級・停車・巴士・優惠券", 0, 0.4),
-            ("加購｜口碑包（Pandora）", 0.3, 0.6),
-            ("加購｜AI 智慧包（發票・Ask LaLa）", 0.45, 0.8),
+            ("加購｜AI 包：LaLa Buzz 口碑（Pandora）", 0.3, 0.6),
+            ("加購｜AI 包：發票掃描・Ask LaLa", 0.45, 0.8),
             ("加購｜遊戲包（任務・扭蛋・祭典）", 0.6, 1.0)])
 d.table(s, ["", "三井 Mitsui Shopping Park", "騰雲 TurnCloud"],
         [["內容", "等級權益、停車規則、店家優惠券", "UI/UX 設計、Prototype、文案在地化"],

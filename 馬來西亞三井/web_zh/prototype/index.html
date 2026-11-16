@@ -575,7 +575,7 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
 </head>
 <body>
 <div id="side"><h1>LaLa Quest<br><span style="color:#13294B">MSP App 3.0</span></h1><p>Clickable prototype. Tap, scroll and swipe like a real app.<br>AI 示意・資料為示意</p>
-<div class="mode"><span class="on" data-m="full">Core + Add-ons</span><span data-m="core">Core only</span></div><div class="jump"><em class="ag">CORE</em><span data-j="home">🏠 Home</span><span data-j="tiers">🏅 Member levels</span><span data-j="parking">🅿️ LaLa Park · LPR</span><span data-j="bus">🚌 LaLa Go · Bus tickets</span><span data-j="busticket">🎫 My trip &amp; reminders</span><span data-j="me">👤 Me &amp; vouchers</span><em class="ag">ADD-ONS</em><span data-j="quest">🗺️ Play · Stamp Rally</span><span data-j="capsule">🎰 Play · LaLa Capsule</span><span data-j="scan">🧾 AI · Receipt Scan</span><span data-j="ask">✨ AI · Ask LaLa</span><span data-j="buzz">💬 Buzz · LaLa Buzz</span><span data-j="akiba">🍜 Buzz · Brand page</span></div></div>
+<div class="mode"><span class="on" data-m="full">Core + Add-ons</span><span data-m="core">Core only</span></div><div class="jump"><em class="ag">CORE</em><span data-j="home">🏠 Home</span><span data-j="tiers">🏅 Member levels</span><span data-j="parking">🅿️ LaLa Park · LPR</span><span data-j="bus">🚌 LaLa Go · Bus tickets</span><span data-j="busticket">🎫 My trip &amp; reminders</span><span data-j="me">👤 Me &amp; vouchers</span><em class="ag">ADD-ONS · AI</em><span data-j="scan">🧾 AI · Receipt Scan</span><span data-j="ask">✨ AI · Ask LaLa</span><span data-j="buzz">💬 AI · LaLa Buzz</span><span data-j="akiba">🍜 AI · Buzz tenant page</span><em class="ag">ADD-ONS · PLAY</em><span data-j="quest">🗺️ Play · Stamp Rally</span><span data-j="capsule">🎰 Play · LaLa Capsule</span></div></div>
 <div id="device">
 
 <!-- HOME -->
@@ -621,7 +621,7 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
       <div class="qc" style="background:linear-gradient(135deg,#0B1A30,#1E3A63)"><span class="xp">+300 XP</span><div class="t">ACG MATSURI · 7–9 NOV</div><h3>Stamp Rally:<br>collect 5 stamps</h3><div class="p"><i class="on">🎐</i><i class="on">🍜</i><i class="on">⛩️</i><i>?</i><i>?</i></div></div>
       <div class="qc" style="background:linear-gradient(135deg,#8C6E3C,#B8975A)"><span class="xp">+50 XP</span><div class="t">MAKAN QUEST</div><h3>Try 2 new F&amp;B<br>this week</h3><div class="p"><i class="on">🍜</i><i>?</i></div></div>
     </div>
-    <div class="sec addon"><b>Trending on LaLa Buzz <em class="ao">BUZZ</em></b><a>More</a></div>
+    <div class="sec addon"><b>Trending on LaLa Buzz <em class="ao">AI</em></b><a>More</a></div>
     <div class="bz card addon" style="padding:10px">
       <img src="../assets/app/ramen.jpg">
       <div><h4>Akiba Ramen</h4><span class="score">★ 4.8 Buzz</span> <span class="tr">▲ 128 posts</span><div class="qt">"Found a hidden ramen gem in KL 🍜"</div><div class="src">via Instagram · Pandora AI</div></div>
@@ -768,7 +768,7 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
 <section class="screen" id="buzz">
   <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
   <div class="scroll"><div class="inner" id="buzzInner">
-  <div class="pad" style="padding-top:6px"><h1>LaLa Buzz</h1><div class="sub">What Malaysians love here, from real social posts. <em class="ao">BUZZ ADD-ON</em></div><div class="pdr"><i></i>Powered by <b>PANDORA</b> social listening · updated daily</div></div>
+  <div class="pad" style="padding-top:6px"><h1>LaLa Buzz</h1><div class="sub">What Malaysians love here, from real social posts. <em class="ao">AI ADD-ON</em></div><div class="pdr"><i></i>Powered by <b>PANDORA</b> social listening · updated daily</div></div>
   <div class="seg" style="margin-top:12px"><span class="on">All</span><span>🍜 Makan</span><span>🎌 ACG</span><span>👟 Outlet</span><span>👨‍👩‍👧 Family</span></div>
   <div class="hero"><img src="../assets/app/acg_event.jpg"><div class="ov"><span class="k">BUZZ OF THE WEEK</span><h3>ACG Base turns 1 🎉</h3><p>223 posts · "Heaven for anime fans"</p></div></div>
   <div class="sec"><b>Top rated this month</b><a>Map view</a></div>
@@ -1012,6 +1012,10 @@ const q=new URLSearchParams(location.search);if(q.get('z'))document.documentElem
 document.getElementById(s).classList.add('on');
 function later(ms,fn){setTimeout(fn,ms)}
 if(s==='home'&&play){later(3200,()=>homeInner.style.transform='translateY(-330px)');later(5600,()=>homeInner.style.transform='translateY(-560px)');}
+if(s==='tiers'&&play){const T=document.getElementById('tiers');const w=document.createElement('div');w.style.transition='transform 1.4s cubic-bezier(.45,0,.2,1)';[...T.children].filter(c=>!c.matches('.status')).forEach(c=>w.appendChild(c));T.appendChild(w);
+  const t3=T.querySelector('.tc.t3');later(1700,()=>{t3.style.transition='box-shadow .8s';t3.style.boxShadow='0 0 0 3px #E8D6AE, 0 18px 34px rgba(184,151,90,.55)'});
+  const rows=[...T.querySelectorAll('.perk tr')];rows.forEach((r,i)=>{const c=r.children[3];if(!c)return;c.style.transition='background .5s, color .5s';later(2700+i*220,()=>{c.style.background=i?'#F3E7CF':'#8C6E3C';if(i)c.style.fontWeight='800'})});
+  const bt=T.querySelector('.pad .btn');bt.style.transition='transform .25s, box-shadow .4s';later(6000,()=>{bt.style.transform='scale(.95)';bt.style.boxShadow='0 0 0 5px rgba(184,151,90,.45)'});later(6280,()=>bt.style.transform='scale(1)');}
 if(s==='parking'&&play){later(500,()=>pkPush.classList.add('on'));later(3300,()=>pkPush.classList.remove('on'));later(4300,()=>pkExit.classList.add('on'));later(6200,()=>pkExit.classList.add('done'));}
 if(s==='busticket'&&play){later(1200,()=>busPush.classList.add('on'));later(2600,()=>{tog30.style.boxShadow='0 0 0 4px rgba(184,151,90,.45)'});later(5200,()=>busPush.classList.remove('on'));}
 if(s==='bus'&&play){const ds=[...document.querySelectorAll('#bus .dep')];ds.forEach(d=>d.classList.remove('sel'));later(1400,()=>ds[2].classList.add('sel'));}

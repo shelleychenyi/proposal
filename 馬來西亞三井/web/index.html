@@ -83,9 +83,9 @@
 <div id="bar"></div><div id="num"></div><div id="hint">← → Navigate | F Fullscreen | <a href="prototype/index.html" target="_blank">Try the App Prototype →</a></div>
 
 <script>
-const N = 47, IW = 13.333, IH = 7.5;
-const VIDEO = {"20": [["home", 0.9, 1.3, 2.1025, 4.55], ["checkout", 3.4525, 2.0148, 5.5475, 3.1205]], "27": [["tiers", 0.9, 1.3, 2.1025, 4.55], ["levelup", 3.4525, 1.3, 2.1025, 4.55]], "29": [["parking", 7.0475, 1.3, 2.1025, 4.55]], "31": [["bus", 8.245, 1.3, 2.1025, 4.55], ["busticket", 10.6475, 1.3, 2.1025, 4.55]], "34": [["quest", 0.9, 1.3, 2.1025, 4.55]], "35": [["capsule", 0.9, 1.3, 2.1025, 4.55]], "38": [["scan", 0.9, 1.3, 2.1025, 4.55]], "39": [["ask", 0.9, 1.3, 2.1025, 4.55]], "41": [["buzz", 8.245, 1.3, 2.1025, 4.55], ["brand", 10.6475, 1.3, 2.1025, 4.55]]};
-const SPECIAL = {idea: 9, islands: 0, tiers: 25};
+const N = 42, IW = 13.333, IH = 7.5;
+const VIDEO = {"20": [["home", 0.9, 1.3, 2.1025, 4.55], ["checkout", 3.4525, 2.0148, 5.5475, 3.1205]], "25": [["tierflow", 0.9, 1.3, 2.1025, 4.55], ["lvscene", 3.4525, 2.0148, 5.5475, 3.1205]], "27": [["park_scene_en", 0.6, 1.3, 6.0475, 2.95], ["parking", 7.0475, 1.3, 2.1025, 4.55]], "29": [["go_scene_en", 0.6, 1.3, 7.245, 2.95], ["bus", 8.245, 1.3, 2.1025, 4.55], ["busticket", 10.6475, 1.3, 2.1025, 4.55]], "32": [["scan", 0.9, 1.3, 2.1025, 4.55]], "33": [["ask", 0.9, 1.3, 2.1025, 4.55]], "34": [["buzz", 8.245, 1.3, 2.1025, 4.55], ["brand", 10.6475, 1.3, 2.1025, 4.55]], "35": [["quest", 0.9, 1.3, 2.1025, 4.55]], "36": [["capsule", 0.9, 1.3, 2.1025, 4.55]]};
+const SPECIAL = {idea: 9, islands: 0, tiers: 23};
 const JUMP = {levelup: 21, play: 25, ask: 29, buzz: 33};
 const img = n => `assets/slides/s-${String(n).padStart(2, '0')}.jpg`;
 const stage = document.getElementById('stage');
@@ -144,7 +144,7 @@ for (let n = 1; n <= N; n++) {
     el.classList.add('idea');
     el.innerHTML = `<video src="assets/video/idea_bg.mp4" muted loop playsinline preload="none" poster="assets/img/idea_poster.jpg"></video><div class="shade"></div>
       <div class="txt"><div class="k">IDEA</div><h1>LaLa Quest<br>Park. Ride. Level up.<small>Every visit levels you up.</small></h1>
-      <p><b>Core</b>　Tiers · LPR parking · LaLa Go buses · e-Vouchers<br><b>Play</b>　Check-ins, quests, stamps, capsules<br><b>AI</b>　Instant receipt scan + Ask LaLa<br><b>Buzz</b>　Pandora-picked reviews, one tap to go</p></div>
+      <p><b>Core</b>　Tiers · LPR parking · LaLa Go buses · e-Vouchers<br><b>AI</b>　Instant receipt scan, Ask LaLa, LaLa Buzz reviews<br><b>Play</b>　Check-ins, quests, stamps, capsules</p></div>
       <div class="tagai" style="right:40px;bottom:30px">AI mock-up video</div>`;
   } else {
     el.innerHTML = `<img class="bg" src="${img(n)}" alt="" loading="lazy">`;

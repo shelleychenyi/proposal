@@ -164,15 +164,20 @@ def whats_new(title, label, banner, head, rows):
     return s
 
 
-def scene(title, label, banner, photo, phones, beats, stats=None, chip=None, source=None):
+def scene(title, label, banner, photo, phones, beats, stats=None, chip=None, source=None, video=None):
     """Scenario demo: scene photo + story strip (time-stamped beats) + prototype recordings (+ big stats)."""
     s = d.info(title, label=label, banner=banner, source=source)
     pw_phone = 4.55 * 390 / 844
     phones_w = len(phones) * pw_phone + (len(phones) - 1) * 0.3
     stats_w = 3.2 if stats else 0
     pw = 12.15 - 0.4 - phones_w - (stats_w + 0.4 if stats else 0)
-    d.cover_pic(s, photo, 0.6, 1.3, pw, 2.95)
-    d.ai_tag(s, 0.7, 1.38)
+    if video:  # Banaverse scene clip (AI tag + chip burned in by proto/scene_video.py)
+        d.movie(s, A + f"video_r/{video}.mp4", A + f"poster_r/{video}.jpg", 0.6, 1.3, pw, 2.95)
+        META["video"].setdefault(d.n, []).append([video, 0.6, 1.3, pw, 2.95])
+        chip = None
+    else:
+        d.cover_pic(s, photo, 0.6, 1.3, pw, 2.95)
+        d.ai_tag(s, 0.7, 1.38)
     if chip:
         d.tag(s, 0.6, 3.83, chip, col=SC_GOLD, size=10.5, h=0.42)
     d.round(s, 0.6, 4.33, pw, 1.55, SC_NAVY, 0.06)
@@ -199,6 +204,29 @@ def scene(title, label, banner, photo, phones, beats, stats=None, chip=None, sou
     return s
 
 
+def addon_overview(title, label, banner, groups, source=None):
+    """All add-on features on one page: one row per pack, each feature with its app mock-up."""
+    s = d.info(title, label=label, banner=banner, source=source)
+    y = 1.25
+    for name, col, sub, items in groups:
+        d.round(s, 0.6, y, 12.15, 0.34, col, 0.5)
+        d.tx(s, 0.85, y + 0.06, 11.6, 0.25, name + "   " + sub, 11.5, color="white", bold=True)
+        cy = y + 0.42
+        for i, (img, kind, t, desc) in enumerate(items):
+            x = 0.6 + i * 3.06
+            d.round(s, x, cy, 2.94, 1.95, "soft", 0.06)
+            if kind == "phone":
+                d.fit(s, A + f"poster_r/{img}.jpg", x + 0.12, cy + 0.1, 0.82, 1.75)
+                tx0 = x + 1.05
+            else:
+                d.cover_pic(s, A + img, x + 0.1, cy + 0.1, 0.86, 1.75)
+                tx0 = x + 1.08
+            d.tx(s, tx0, cy + 0.16, 2.94 - (tx0 - x) - 0.1, 0.5, t, 12.5, color=col, bold=True, spacing=1.05)
+            d.tx(s, tx0, cy + 0.72, 2.94 - (tx0 - x) - 0.12, 1.2, desc, 10, color="mid", spacing=1.25)
+        y = cy + 2.07
+    return s
+
+
 def fill_page_refs():
     for tb, key in PAGE_REFS:
         tb.text_frame.paragraphs[0].runs[0].text = "p.%d" % PAGES[key]
@@ -208,8 +236,8 @@ def fill_page_refs():
 d.cover("MSP App 3.0\nRenewal Proposal.", "LaLa Quest | Every visit levels you up.", "Nov 2026",
         company="TURN CLOUD TECHNOLOGY SERVICE INC.", logos=[LALA, MOP], image=A + "mock_hero3.jpg")
 d.toc([("Insights", "機會"), ("Benchmarks", "標竿"), ("App 3.0 Overview", "全貌"), ("Core · Member Tiers", "分級"),
-       ("Core · LaLa Park", "停車"), ("Core · LaLa Go", "巴士"), ("Add-on · Play", "遊戲"),
-       ("Add-on · AI", "AI"), ("Add-on · LaLa Buzz", "口碑"), ("Rollout & KPI", "落地")])
+       ("Core · LaLa Park", "停車"), ("Core · LaLa Go", "巴士"), ("Add-ons · AI + Play", "加購"),
+       ("Rollout & KPI", "落地")])
 
 # ---------------------------------------------------------------- 1 Insights
 PD = A + "pandora/"
@@ -234,9 +262,9 @@ s = d.info("At a glance: a core that brings people in, add-ons that make them st
 d.columns(s, [("Insight", "#8A94A6", "Love is there, traffic tools aren't",
                "3,696 posts, 90.7% positive\nTop complaint: parking\nLTH + KLIA bring travellers\n"
                "Only 5% earn points in-app"),
-              ("Solution", BLUE, "Core + 3 add-ons",
+              ("Solution", BLUE, "Core + 2 add-ons",
                "Core: tiers, LPR parking\nCore: LaLa Go bus tickets\nCore: points + e-Vouchers\n"
-               "Add-ons: Play · AI · Buzz"),
+               "Add-ons: AI (+ Buzz) · Play"),
               ("Return", ORANGE, "More visits, more members",
                "Every plate = a member\nEvery bus ticket = mall spend\nPoint earning 5% → 20%\n"
                "One ID across all malls")])
@@ -306,9 +334,8 @@ d.callouts(s, 4.2, 4.1, 8.4, [("Travellers arrive early", "Cross-border coaches 
 d.statement("IDEA", "LaLa Quest\nPark. Ride. Level up.",
             "Every visit levels you up.\n"
             "Core: tiers · LPR parking · LaLa Go buses · e-Vouchers\n"
-            "Play add-on: check-ins, quests, stamp rallies, capsules\n"
-            "AI add-on: instant receipt scan + Ask LaLa\n"
-            "Buzz add-on: Pandora-picked reviews, one tap to go",
+            "AI add-on: instant receipt scan, Ask LaLa, LaLa Buzz reviews\n"
+            "Play add-on: check-ins, quests, stamp rallies, capsules",
             image=A + ("idea_poster.jpg" if IDEA_VIDEO else "app/acg_event.jpg"), video=IDEA_VIDEO)
 META["special"]["idea"] = d.n
 
@@ -326,7 +353,7 @@ d.table(s, ["Brand", "What they do", "What LaLa Quest borrows"],
          ["Universal Studios", "Collect keys physically, track score in the app", "Play: in-mall Stamp Rally"],
          ["Starbucks Rewards", "Green / Gold / Reserve: 1x / 1.2x / 1.7x rewards", "Core: 4 tiers + multipliers"],
          ["Shopee", "Coins + daily mini-games, a daily Malaysian habit", "Play: daily LaLa Capsule"],
-         ["Sephora", "Beauty Insider tiers + verified member reviews", "Buzz: LaLa Buzz + Real Talk"]],
+         ["Sephora", "Beauty Insider tiers + verified member reviews", "AI: LaLa Buzz + Real Talk"]],
         col_w=[2.1, 4.6, 2.9], size=12, row_h=0.52)
 
 bench("MUJI: the member card is the home screen; rules in one line", "MUJI",
@@ -375,7 +402,7 @@ bench("Sephora: tier = discount, and AI picks your gifts", "Sephora",
        ("Shareable Wish List", "Share your saved list with friends"),
        ("AI Beauty Chat", "Ask \"gifts under $200\", get picks")],
       "Rookie → Legend perks in one picture;\nAI add-on: Ask LaLa recommends by chat;\n"
-      "Buzz add-on borrows Sephora's review culture.",
+      "AI add-on: LaLa Buzz borrows Sephora's review culture.",
       "Sephora shows the upgrade path: tiers first, then AI and reviews on top")
 
 # ---------------------------------------------------------------- 3 Overview
@@ -387,10 +414,10 @@ whats_new("What's new in App 3.0: 8 upgrades, 5 brand-new features", "What's New
            ("Membership", "Perks hard to see; no reason to level up", "4 tiers + characters; perks grow with every visit", "Core", "tiers"),
            ("Parking", "Paper tickets; free 3H buried in News", "LaLa Park: plate = member, free hours by tier, points pay, gate opens", "Core · NEW", "park"),
            ("Bus & shuttle", "Tickets on third-party sites, no link to the mall", "LaLa Go: in-app tickets + RM10 e-Voucher + boarding reminders; KLIA shuttle", "Core · NEW", "go"),
-           ("Points & vouchers", "Only 5% of members earn in-app", "Points pay parking and buses; tenant + trip e-Vouchers in one wallet", "Core", "coremap"),
-           ("Play", "—", "Daily check-in, quests, Stamp Rally, LaLa Capsule", "Add-on · NEW", "play"),
-           ("AI", "—", "1-sec receipt scan, Ask LaLa concierge, For You picks", "Add-on · NEW", "ai"),
-           ("Reviews", "Scattered on IG and Threads, invisible in the app", "LaLa Buzz: Pandora Buzz Score + Real Talk reviews", "Add-on · NEW", "buzz")])
+           ("Points & vouchers", "Only 5% of members earn in-app", "Points pay parking and buses; tenant + trip e-Vouchers in one wallet", "Core", "home"),
+           ("Play", "—", "Daily check-in, quests, Stamp Rally, LaLa Capsule", "Play · NEW", "play"),
+           ("AI", "—", "1-sec receipt scan, Ask LaLa concierge, For You picks", "AI · NEW", "ai"),
+           ("Reviews", "Scattered on IG and Threads, invisible in the app", "LaLa Buzz: Pandora Buzz Score + Real Talk reviews", "AI · NEW", "buzz")])
 phone_demo("Home: my card, my car, my trip, all on one screen", "Home", "home",
            [("Card = QR + tier", "At checkout, staff scan the QR on home (video, right)"),
             ("My car, live", "LPR spotted WXY 1234 at P2: 2h 31m free left"),
@@ -398,24 +425,6 @@ phone_demo("Home: my card, my car, my trip, all on one screen", "Home", "home",
             ("Core shortcuts", "Parking, Bus Tickets, Vouchers, Submit Receipt")],
            "Home moves from \"what the mall is pushing\" to \"who I am and what I get today\"", clip="checkout")
 PAGES["home"] = d.n
-
-s = d.info("Core + Add-ons: start with what brings people in, plug in fun later", label="Product Structure",
-           banner="Core is the base licence and goes live first; each add-on is optional and switches on without a rebuild")
-core_map(s)
-META["special"]["coremap"] = d.n
-PAGES["coremap"] = d.n
-
-s = d.info("Why this split: core features each bring a visit, add-ons deepen it", label="Package Logic",
-           banner="Rule of thumb: if it brings a car, a bus or a receipt into the mall, it's core")
-d.table(s, ["Module", "Package", "Brings people in by…", "Main KPI"],
-        [["Member ID + 4 tiers", "Core", "Perks that grow with every visit", "Members at Explorer+"],
-         ["LaLa Park · LPR", "Core", "Free parking only for registered plates", "Plates registered"],
-         ["LaLa Go · Bus", "Core", "Selling LTH tickets + e-Voucher to spend first", "Tickets sold, voucher use"],
-         ["Points + e-Vouchers", "Core", "Tenant deals and trip vouchers", "Vouchers redeemed"],
-         ["Play Pack", "Add-on", "Check-ins, quests, stamp rallies, capsules", "Weekly active"],
-         ["AI Pack", "Add-on", "1-sec receipt scan, Ask LaLa, For You", "Receipts / month"],
-         ["Buzz Pack", "Add-on", "Pandora reviews + Real Talk", "Buzz → visit clicks"]],
-        col_w=[2.4, 1.3, 4.0, 2.4], size=12.5, row_h=0.58, hot_row=None)
 
 s = d.info("Visual: one main colour and a touch of champagne gold", label="Design System",
            banner="Clean like the official site: midnight navy leads, gold only for tiers and highlights")
@@ -474,12 +483,13 @@ d.table(s, ["Tier", "Threshold (12 months)", "Points", "Free parking (LPR)", "Bu
 d.tx(s, 0.75, 5.2, 12, 0.6, "★ Visits count too: reach Explorer with 12 visits. With Play add-on, each tier also unlocks "
      "more capsule draws (1 / 1 / 2 / 3 a day).", 13, bold=True, color="frame")
 
-phone_demo("Tier page: four cards stacked, the next level always in sight", "Core | Tier", "tiers",
+phone_demo("Tier page: four cards stacked, the next level always in sight", "Core | Tier", "tierflow",
            [("Stacked cards", "Four tier cards stacked like a wallet; Legend black-gold"),
             ("Perks at a glance", "Multiplier, LPR parking hours, bus points, event entry"),
-            ("Level-up moment", "Full-screen celebration: 4H → 5H parking unlocked")],
+            ("Level-up moment", "Senpai unlocked: 4H → 5H parking, 1.5x points"),
+            ("In the mall", "The moment it happens, with friends (video, right)")],
            "Showing members \"where's next\" works better than giving more points",
-           keys2=["levelup"])
+           clip="lvscene")
 
 # ---------------------------------------------------------------- 5 LaLa Park (core)
 d.divider("LaLa Park", "Core 2 | Register your plate once.\nThe gate knows you're a member.", key="停車")
@@ -491,7 +501,7 @@ scene("LaLa Park: drive in, shop all afternoon, drive out. The gate just opens",
        ("Exit", "4H free taken off, 800 pts pay the rest. Gate opens, no ticket")],
       stats=[("0 tickets", "Your plate is your member card"), ("3H → all day", "Free parking grows with your tier"),
              ("100 pts = RM1", "Points pay the parking fee")],
-      source="Parking hours, rates and point values are illustrative; car park integration via API with Mitsui's LPR system")
+      video="park_scene_en", source="Parking hours, rates and point values are illustrative; car park integration via API with Mitsui's LPR system")
 PAGES["park"] = d.n
 
 # ---------------------------------------------------------------- 6 LaLa Go (core)
@@ -503,45 +513,26 @@ scene("LaLa Go: book the bus, get RM10 to spend, never miss boarding", "Core | L
        ("3:00 PM", "Push: \"30 min to boarding, RM10 still unused!\" Bubble tea, sorted"),
        ("3:20 PM", "Show the QR at Bay 3 and board. Points land after the trip")],
       chip="Also at MOP: free KLIA shuttle + \"catch my flight\"",
-      source="Operators, fares and timetables are illustrative; tickets via operator booking APIs (busonlineticket.com network at LTH)")
+      video="go_scene_en", source="Operators, fares and timetables are illustrative; tickets via operator booking APIs (busonlineticket.com network at LTH)")
 PAGES["go"] = d.n
 
-# ---------------------------------------------------------------- 7 Play (add-on)
-d.divider("Play Add-on", "Add-on A | Every day, every week, every season:\na reason to come back.", key="遊戲")
-s = d.info("Play Pack: daily check-in, weekly quests, seasonal festivals", label="Add-on | Play Pack",
-           banner="Optional add-on: switch on for ACG Matsuri or Bon Odori, once the core has a member base")
-d.flow(s, [("DAILY", "#1E9C9A", "Check-in Streak", "+10 pts every day\n7-day streak = free capsule\nMissed a day? Use points"),
-           ("WEEKLY", BLUE, "Quests", "Makan Quest: try 2 new spots\nSquad Quest: bring 1 kawan\nEarn XP"),
-           ("SEASONAL", PINK, "Matsuri Pass", "Bon Odori · ACG Matsuri ·\nRaya · CNY · Deepavali\nIn-mall Stamp Rally"),
-           ("COLLECT", ORANGE, "LaLa Capsule", "24 characters per series\nTrade rare ones with friends\nComplete a set = real figure")])
+# ---------------------------------------------------------------- 7 Add-ons (AI + Play)
+d.divider("Add-ons", "AI + Play | Plug in when ready:\nsmarter visits first, more reasons to return next.", key="加購")
+addon_overview("Add-ons at a glance: 8 features, AI first, then Play", "Add-ons | Overview",
+               "Plug in when ready: AI makes every visit smarter, Play gives members a reason to come back",
+               [("AI PACK", "#1E3A63", "·  smarter visits  ·  LaLa Buzz now part of AI", [
+                   ("scan", "phone", "AI Receipt Scan", "Snap a receipt, points in 1.2 sec; tier multiplier applied"),
+                   ("ask", "phone", "Ask LaLa + For You", "AI concierge in Malaysian English: food, shops, exits, day plans"),
+                   ("buzz", "phone", "LaLa Buzz", "Pandora reads 3,696+ real posts: Buzz Score, AI summary, hot tags"),
+                   ("brand", "phone", "Tenant page + Real Talk", "92% love it, real posts, one tap to go; verified reviews +20 pts")]),
+                ("PLAY PACK", "#B8975A", "·  more reasons to come back", [
+                   ("home_play", "phone", "Check-in + Quests", "+10 pts a day, 7-day streak = free capsule; Makan & Squad quests"),
+                   ("quest", "phone", "Stamp Rally", "The floor plan becomes a treasure map: 5 stamps = Matsuri capsule"),
+                   ("capsule", "phone", "LaLa Capsule", "One free draw a day, 24 characters a series, trade with kawan"),
+                   ("app/acg_event.jpg", "photo", "Matsuri Season Pass", "ACG Matsuri, Bon Odori, Raya, CNY: seasonal passes + events")])],
+               source="App screens are prototype captures; Matsuri photo is an AI mock-up")
 
-phone_demo("Stamp Rally: the mall floor plan becomes a treasure map", "Add-on | Play · Quest", "quest",
-           [("Floor-map stamps", "L4 Garden Dining, L2 ACG Base, L1 Doko Koko"),
-            ("40m away", "Location hints guide you to the next stop"),
-            ("Collect for exclusives", "5 stamps = Matsuri capsule + 300 XP")],
-           "Stamp rallies are a Japanese mall classic; in-app, they measure traffic on every floor",
-           photo=A + "app/acg_event.jpg")
-PAGES["play"] = d.n
-
-phone_demo("LaLa Capsule: one free draw a day, and a reason to collect", "Add-on | Play · Capsule", "capsule",
-           [("One free draw daily", "From check-ins; higher tiers draw more"),
-            ("24 per series", "Durian-chan, Ramen-kun… originals, can become figures"),
-            ("Trade with kawan", "Swap duplicates with friends: built-in sharing")],
-           "Capsules turn points into collectibles: digital collecting, physical rewards, back to the mall",
-           photo=A + "mock_friends_capsule.jpg")
-
-# ---------------------------------------------------------------- 8 AI (add-on)
-d.divider("AI Add-on", "Add-on B | Snap receipts, ask a concierge, get picks:\nthree AIs, three hassles solved.", key="AI")
-s = d.info("AI Pack: from \"a hassle\" to \"no-brainer\"", label="Add-on | AI Pack",
-           banner="Core already takes receipts by upload; the AI Pack makes it instant and adds a concierge")
-d.columns(s, [("AI Receipt Scan", ORANGE, "One snap, instant points",
-               "AI reads shop, amount, time\nin 1.2 sec (core: upload, 24h)\nBlocks duplicates and edits"),
-              ("Ask LaLa", BLUE, "Your AI concierge",
-               "Ask in English, Malay or Chinese\nFind food, shops, parking exits\nPlans your day for you"),
-              ("For You", MINT, "A home made for you",
-               "Picks by tier, taste and history\nACG fans see collab cafés\nTravellers see trip deals")])
-
-phone_demo("AI Receipt Scan: finish your ramen, snap, points in", "Add-on | AI Receipt Scan", "scan",
+phone_demo("AI Receipt Scan: finish your ramen, snap, points in", "Add-on · AI | Receipt Scan", "scan",
            [("Instant AI read", "Shop, amount and time captured in 1.2 sec"),
             ("Tier multiplier applied", "Explorer 1.2x: RM28.90 → +35 pts"),
             ("Quests move forward", "With Play add-on: Makan Quest done")],
@@ -549,15 +540,13 @@ phone_demo("AI Receipt Scan: finish your ramen, snap, points in", "Add-on | AI R
            photo=A + "mock_ramen_scan.jpg")
 PAGES["ai"] = d.n
 
-phone_demo("Ask LaLa: ask the mall like you'd ask a friend", "Add-on | Ask LaLa", "ask",
+phone_demo("Ask LaLa: ask the mall like you'd ask a friend", "Add-on · AI | Ask LaLa", "ask",
            [("Chat in Malaysian English", "\"Jom makan! Any halal ramen under RM15?\""),
             ("Answers take you there", "With Buzz score and walking time; tap Go"),
             ("Knows your car and trip", "\"Nearest exit?\" uses your LaLa Park session")],
            "Ask LaLa runs on an LLM + tenant data + core parking and bus data: answers you can walk to")
 
-# ---------------------------------------------------------------- 9 Buzz (add-on)
-d.divider("LaLa Buzz", "Add-on C | Bring the online love into the app;\nkeep in-mall Real Talk in the app.", key="口碑")
-scene("LaLa Buzz: see what everyone's loving, then walk straight in", "Add-on | LaLa Buzz · Scenario Demo",
+scene("LaLa Buzz: see what everyone's loving, then walk straight in", "Add-on · AI | LaLa Buzz · Scenario Demo",
       "Powered by Pandora: real posts become the reason to visit, and Real Talk keeps the love in the app",
       A + "app/ramen.jpg", ["buzz", "brand"],
       [("Fri night", "Scroll Buzz: Akiba Ramen ★4.8 · 92% love it · ▲32% this week"),
@@ -566,6 +555,21 @@ scene("LaLa Buzz: see what everyone's loving, then walk straight in", "Add-on | 
       chip="Powered by Pandora · 3,696 real posts",
       source="Data source: Pandora social listening, LaLaport BBCC, 3 May–31 Oct 2026, N=3,696 (Instagram, Threads)")
 PAGES["buzz"] = d.n
+
+phone_demo("Stamp Rally: the mall floor plan becomes a treasure map", "Add-on · Play | Stamp Rally", "quest",
+           [("Floor-map stamps", "L4 Garden Dining, L2 ACG Base, L1 Doko Koko"),
+            ("40m away", "Location hints guide you to the next stop"),
+            ("Collect for exclusives", "5 stamps = Matsuri capsule + 300 XP")],
+           "Stamp rallies are a Japanese mall classic; in-app, they measure traffic on every floor",
+           photo=A + "app/acg_event.jpg")
+PAGES["play"] = d.n
+
+phone_demo("LaLa Capsule: one free draw a day, and a reason to collect", "Add-on · Play | Capsule", "capsule",
+           [("One free draw daily", "From check-ins; higher tiers draw more"),
+            ("24 per series", "Durian-chan, Ramen-kun… originals, can become figures"),
+            ("Trade with kawan", "Swap duplicates with friends: built-in sharing")],
+           "Capsules turn points into collectibles: digital collecting, physical rewards, back to the mall",
+           photo=A + "mock_friends_capsule.jpg")
 
 # ---------------------------------------------------------------- 10 Rollout
 d.divider("Rollout & KPI", "Core first, add-ons when ready:\nactivation, timeline, roles, KPIs.", key="落地")
@@ -582,8 +586,8 @@ s = d.info("Launch the core first, then plug in add-ons season by season", label
            banner="Phase 0 is all core: tiers, LPR parking and LaLa Go go live together; add-ons follow on demand")
 d.timeline(s, 1.8, ["Jan 2027", "Apr 2027", "Jul 2027", "Oct 2027", "Jan 2028"],
            [("P0 Core | Tiers · Park · Go · Vouchers", 0, 0.4),
-            ("Add-on | Buzz Pack (Pandora)", 0.3, 0.6),
-            ("Add-on | AI Pack (Receipt Scan · Ask LaLa)", 0.45, 0.8),
+            ("Add-on | AI Pack: LaLa Buzz (Pandora)", 0.3, 0.6),
+            ("Add-on | AI Pack: Receipt Scan · Ask LaLa", 0.45, 0.8),
             ("Add-on | Play Pack (Quests · Capsule · Matsuri)", 0.6, 1.0)])
 d.table(s, ["", "Mitsui Shopping Park", "TurnCloud"],
         [["Content", "Tier perks, car park rules, tenant vouchers", "UI/UX, prototype, localised copy"],
