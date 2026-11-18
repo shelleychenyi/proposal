@@ -722,11 +722,29 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
 .dep .fr .bell{font-size:11px;font-weight:800;color:var(--navy);border:1.5px solid var(--navy);border-radius:10px;padding:4px 8px;display:inline-block}
 .dep.sel .fr .bell{background:var(--navy);color:#fff}
 .push{cursor:pointer}
+
+/* ===== v8: receipt approved (lucky draw) ===== */
+#rok{background:#fff}
+.okwrap{position:absolute;top:47px;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;padding:34px 22px 0;text-align:center}
+.okc{width:132px;height:132px;border-radius:50%;background:#1F8A4C;display:grid;place-items:center;box-shadow:0 0 0 14px rgba(31,138,76,.12),0 0 0 28px rgba(31,138,76,.06);transform:scale(.4);opacity:0;transition:all .55s cubic-bezier(.3,1.6,.5,1)}
+.okc svg{width:70px;height:70px;stroke:#fff;stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:60;stroke-dashoffset:60;transition:stroke-dashoffset .5s .35s}
+#rok.go .okc{transform:none;opacity:1}#rok.go .okc svg{stroke-dashoffset:0}
+.okt{font-size:13px;font-weight:800;letter-spacing:4px;color:#1F8A4C;margin-top:30px}
+.okh{font-family:var(--serif);font-size:36px;font-weight:700;line-height:1.05;margin-top:6px}
+.oks{font-size:13px;color:var(--mid);margin-top:8px;line-height:1.45}
+.okr{width:100%;margin-top:20px;border:1px solid var(--line);border-radius:18px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;text-align:left}
+.okr b{font-size:14px;display:block}.okr span{font-size:11.5px;color:var(--mid)}.okr .am{font-family:var(--serif);font-size:24px;font-weight:700;color:var(--navy)}
+.okd{width:100%;margin-top:12px;border-radius:20px;padding:14px 16px;background:linear-gradient(135deg,#13294B,#0B1A30);color:#fff;text-align:left;position:relative;overflow:hidden}
+.okd:after{content:"";position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(#D9C49A55,transparent 70%)}
+.okd .k{font-size:10px;letter-spacing:2px;font-weight:800;color:var(--gold2)}
+.okd b{font-family:var(--serif);font-size:22px;display:block;margin-top:4px}
+.okd .rw{display:flex;justify-content:space-between;margin-top:10px;font-size:11.5px}.okd .rw span{opacity:.8}.okd .rw em{font-style:normal;font-weight:800;color:var(--gold2)}
+.okbtn{width:100%;margin-top:18px}
 </style>
 </head>
 <body>
 <div id="side"><h1>LaLa Quest<br><span style="color:#13294B">MSP App 3.0</span></h1><p>Clickable prototype. Tap, scroll and swipe like a real app.<br>AI 示意・資料為示意</p>
-<div class="mode"><span class="on" data-m="full">Core + Add-ons</span><span data-m="core">Core only</span></div><div class="jump"><em class="ag">CORE</em><span data-j="home">🏠 Home</span><span data-j="missions">🎯 Mission Wall</span><span data-j="tiers">🏅 Member levels</span><span data-j="parking">🅿️ LaLa Park · LPR</span><span data-j="bus">🚌 LaLa Go · Bus times</span><span data-j="busticket">⏰ Trip reminder</span><span data-j="receipt">🧾 Submit receipt</span><span data-j="rhist">📋 My receipts</span><span data-j="me">👤 Me &amp; vouchers</span><em class="ag">ADD-ONS · AI</em><span data-j="scan">🧾 AI · Receipt Scan</span><span data-j="ask">✨ AI · Ask LaLa</span><span data-j="buzz">💬 AI · LaLa Buzz</span><span data-j="akiba">🍜 AI · Buzz tenant page</span><em class="ag">ADD-ONS · PLAY</em><span data-j="quest">🗺️ Play · Stamp Rally</span><span data-j="capsule">🎰 Play · LaLa Capsule</span></div></div>
+<div class="mode"><span class="on" data-m="full">Core + Add-ons</span><span data-m="core">Core only</span></div><div class="jump"><em class="ag">CORE</em><span data-j="home">🏠 Home</span><span data-j="missions">🎯 Mission Wall</span><span data-j="tiers">🏅 Member levels</span><span data-j="parking">🅿️ LaLa Park · LPR</span><span data-j="bus">🚌 LaLa Go · Bus times</span><span data-j="busticket">⏰ Trip reminder</span><span data-j="receipt">🧾 Submit receipt · lucky draw</span><span data-j="rok">✅ Receipt approved</span><span data-j="rhist">📋 My entries</span><span data-j="me">👤 Me &amp; vouchers</span><em class="ag">ADD-ONS · AI</em><span data-j="scan">🧾 AI · Receipt Scan</span><span data-j="ask">✨ AI · Ask LaLa</span><span data-j="buzz">💬 AI · LaLa Buzz</span><span data-j="akiba">🍜 AI · Buzz tenant page</span><em class="ag">ADD-ONS · PLAY</em><span data-j="quest">🗺️ Play · Stamp Rally</span><span data-j="capsule">🎰 Play · LaLa Capsule</span></div></div>
 <div id="device">
 
 <!-- HOME -->
@@ -814,7 +832,7 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
     <tr><td>Unlock at</td><td>Sign up</td><td class="me">RM1.5k</td><td>RM5k</td><td>RM12k</td></tr>
   </table></div>
   <div class="sec" style="margin-top:12px"><b>3 ways to level up</b></div>
-  <div class="how"><div><b>🧾</b>Spend &amp; scan receipts</div><div><b>📍</b>Visit &amp; check in</div><div><b>🎯</b>Clear quests</div></div>
+  <div class="how"><div><b>🧾</b>Spend with member QR</div><div><b>📍</b>Visit &amp; check in</div><div><b>🎯</b>Clear quests</div></div>
   <div class="pad" style="margin-top:6px"><div class="btn blue">616 pts more to SENPAI →</div></div>
 </section>
 
@@ -1184,24 +1202,24 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
 <section class="screen" id="receipt">
   <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
   <div class="scroll" style="bottom:0"><div class="inner" id="rcInner">
-    <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>Submit Receipt</h2><div class="sub" style="font-size:12px">Earn points · count it toward missions</div></div></div>
-    <div class="rcard"><div class="lab">STEP 1 · COUNT IT TOWARD</div>
-      <div class="ropt on" data-act="ropt"><span class="rd"></span><div><b>Anniversary Fiesta</b><span>Spend RM300 mission</span></div><span class="mini">RM80 to go</span></div>
-      <div class="ropt" data-act="ropt"><span class="rd"></span><div><b>Points only</b><span>Skip campaign entry</span></div></div>
+    <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>Submit Receipt</h2><div class="sub" style="font-size:12px">Submit receipts · join the lucky draw</div></div></div>
+    <div class="rcard"><div class="lab">STEP 1 · CHOOSE THE DRAW</div>
+      <div class="ropt on" data-act="ropt"><span class="rd"></span><div><b>Anniversary Lucky Draw</b><span>Every RM50 = 1 entry · draw on 5 Dec</span></div><span class="mini">Grand prize</span></div>
+      <div class="ropt" data-act="ropt"><span class="rd"></span><div><b>Monthly Member Draw</b><span>Every receipt = 1 entry</span></div></div>
     </div>
     <div class="rcard"><div class="lab">STEP 2 · QUICK CHECK</div>
       <div class="rq">Is this <b>one receipt</b> from a LaLaport BBCC store, dated within the last 7 days?</div>
       <div class="yn"><span id="rcYes" data-act="ryes">Yes</span><span data-act="toast" data-msg="Only LaLaport BBCC receipts from the last 7 days earn points">No</span></div>
     </div>
     <div class="rcard" id="rcUp"><div class="lab">STEP 3 · UPLOAD</div>
-      <div class="rwarn"><span>ℹ️</span><div>Long receipt? <b>Snap each page</b> in the next box. Keep the original until your points arrive.</div></div>
+      <div class="rwarn"><span>ℹ️</span><div>Long receipt? <b>Snap each page</b> in the next box. Keep the original until the draw.</div></div>
       <div class="slots"><div class="slot" id="rcSlot" data-act="rcam"><div class="cm">📷</div>
           <div class="thumb"><div style="text-align:center"><b>AKIBA RAMEN</b><br>LaLaport BBCC L4-FC-14</div>------------------<br>18/11/2026 19:42<br>Inv #A-09231<br>------------------<br>Chicken Paitan x2 25.80<br>Tempura Set x2 &nbsp;17.80<br>Gyoza &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 12.90<br>Matcha Latte x3 21.30<br>Ramune x2 &nbsp; &nbsp; &nbsp; 20.70<br>------------------<br><b>TOTAL &nbsp; &nbsp; RM 98.50</b></div>
           <span class="pg">Page 1 of 1</span><span class="ac"><span>Retake</span><span>🗑</span></span></div>
         <div class="slot add" data-act="toast" data-msg="📷 Add the next page of a long receipt">＋<br>Add page</div></div>
     </div>
     <div class="rcard"><div class="agree"><div class="tog" id="rcTog" data-act="tog"></div><div>I agree to the <a>Terms &amp; Conditions</a></div></div>
-      <div class="btn" id="rcSubmit" style="margin-top:12px" data-act="rsubmit">Submit receipt</div></div>
+      <div class="btn" id="rcSubmit" style="margin-top:12px" data-act="rsubmit">Submit &amp; enter the draw</div></div>
     <div style="height:30px"></div>
   </div></div>
   <div class="rcam" id="rcCam"><div class="pill" id="rcPill">Position the receipt in the frame</div>
@@ -1215,19 +1233,34 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
     <div class="ctl"><div class="sh"><i></i></div><div class="md"><span>Manual</span><span class="on">Auto capture</span></div></div></div>
 </section>
 
+<!-- RECEIPT APPROVED -->
+<section class="screen" id="rok">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="okwrap">
+    <div class="okc"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <div class="okt">APPROVED</div>
+    <div class="okh">Receipt approved</div>
+    <div class="oks">You're in the Anniversary Lucky Draw.<br>Good luck, Shu Hoong!</div>
+    <div class="okr"><div><b>Akiba Ramen · L4</b><span>18 Nov 2026 · 7:42 PM · Inv #A-09231</span></div><div class="am">RM98.50</div></div>
+    <div class="okd"><div class="k">ANNIVERSARY LUCKY DRAW</div><b>+1 entry</b>
+      <div class="rw"><span>Entry no.</span><em>LQ-2611-0318</em></div><div class="rw"><span>Your entries this month</span><em>5</em></div><div class="rw"><span>Draw date</span><em>5 Dec 2026</em></div></div>
+    <div class="btn okbtn" data-go="rhist">View my entries</div>
+    <div style="margin-top:12px;font-size:12.5px;font-weight:700;color:var(--navy)" data-go="receipt">＋ Submit another receipt</div>
+  </div>
+</section>
+
 <!-- MY RECEIPTS -->
 <section class="screen" id="rhist">
   <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
-  <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>My Receipts</h2><div class="sub" style="font-size:12px">Checked within 24 h · we'll notify you</div></div></div>
-  <div class="rhsum"><div><b>RM 318.50</b><span>Fiesta spend this month</span></div><div><b>+382</b><span>pts from receipts</span></div></div>
-  <div class="rh pend new" id="rhNew"><div class="t"><span class="st" id="rhSt">⏳ Pending</span><span class="dt">18 Nov 2026<br>7:46 PM</span></div>
-    <div class="am"><b>RM 98.50</b><span>Akiba Ramen · L4</span></div><div class="ms" id="rhMs">We're checking your receipt. Usually within 24 hours.</div></div>
+  <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>My Receipts</h2><div class="sub" style="font-size:12px">Lucky draw entries · receipt status</div></div></div>
+  <div class="rhsum"><div><b>5 entries</b><span>Anniversary Lucky Draw</span></div><div><b>5 Dec</b><span>Draw date</span></div></div>
+  <div class="rh okk new" id="rhNew"><div class="t"><span class="st" id="rhSt">✅ Approved</span><span class="dt">18 Nov 2026<br>7:46 PM</span></div>
+    <div class="am"><b>RM 98.50</b><span>Akiba Ramen · L4</span></div><div class="ms" id="rhMs">1 lucky draw entry · LQ-2611-0318</div></div>
   <div class="rh okk"><div class="t"><span class="st">✅ Approved</span><span class="dt">16 Nov 2026<br>3:12 PM</span></div>
-    <div class="am"><b>RM 221.90</b><span>Uniqlo · L1</span></div><div class="ms">+266 pts · counted toward Anniversary Fiesta</div></div>
+    <div class="am"><b>RM 221.90</b><span>Uniqlo · L1</span></div><div class="ms">4 lucky draw entries · LQ-2611-0204 to 0207</div></div>
   <div class="rh rej"><div class="t"><span class="st">⛔ Rejected</span><span class="dt">08 Nov 2026<br>6:01 PM</span></div>
     <div class="am"><b>RM 43.00</b><span>Unknown store</span></div><div class="ms">Not from a participating LaLaport BBCC store. <a style="color:var(--navy);font-weight:800">Resubmit ›</a></div></div>
-  <div class="aitip addon" data-go="scan"><div style="font-size:24px">✨</div><div><b>Skip the wait with AI Receipt Scan</b><span>AI add-on · points land in 1 second</span></div></div>
-  <div class="pad" style="margin-top:14px"><div class="btn" data-go="receipt">＋ Submit another receipt</div></div>
+    <div class="pad" style="margin-top:14px"><div class="btn" data-go="receipt">＋ Submit another receipt</div></div>
 </section>
 
 <!-- NOTIFICATIONS -->
@@ -1235,11 +1268,11 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
   <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
   <div class="hdr"><div class="back" data-act="back">‹</div><h2>Notifications</h2></div>
   <div class="nt new" data-go="missions"><div class="e" style="background:#FAF3E4">🎯</div><div><b>RM80 to your next reward</b><span>Anniversary Fiesta · dining picks near you: Akiba Ramen set RM28.</span><em>Just now</em></div></div>
-  <div class="nt new" data-go="rhist"><div class="e" style="background:#F3EEE5">🧾</div><div><b>Receipt approved · +118 pts</b><span>Akiba Ramen RM98.50 now counts toward your Fiesta mission.</span><em>5 min ago</em></div></div>
+  <div class="nt new" data-go="rhist"><div class="e" style="background:#F3EEE5">🧾</div><div><b>Receipt approved · lucky draw entry</b><span>Akiba Ramen RM98.50 · you're in the Anniversary Lucky Draw.</span><em>5 min ago</em></div></div>
   <div class="nt" data-go="busticket"><div class="e" style="background:#F3EEE5">🚌</div><div><b>30 min to boarding</b><span>Transtar to Singapore · Bay 3, LTH LG1 East Atrium.</span><em>Just now</em></div></div>
   <div class="nt new" data-go="parking"><div class="e" style="background:#F3EEE5">🅿️</div><div><b>WXY 1234 recognised at P2</b><span>Explorer 4H free parking has started. No ticket needed.</span><em>2:14 PM</em></div></div>
   <div class="nt addon" data-go="quest"><div class="e" style="background:#F3EEE5">🎐</div><div><b>ACG Matsuri Stamp Rally is live!</b><span>Collect 5 stamps this weekend for a limited capsule.</span><em>10 min ago</em></div></div>
-  <div class="nt" data-go="tiers"><div class="e" style="background:#F3EEE5">🔥</div><div><b>616 pts to SENPAI</b><span>Scan 2 more receipts this week to level up.</span><em>1 h ago</em></div></div>
+  <div class="nt" data-go="tiers"><div class="e" style="background:#F3EEE5">🔥</div><div><b>RM620 to SENPAI</b><span>Shop with your member QR to level up.</span><em>1 h ago</em></div></div>
   <div class="nt addon" data-go="buzz"><div class="e" style="background:#EFEBE4">💬</div><div><b>Trending on LaLa Buzz</b><span>Akiba Ramen is the most-loved makan spot this week.</span><em>Yesterday</em></div></div>
   <div class="nt" data-go="tiers"><div class="e" style="background:#EFEBE4">🅿️</div><div><b>MSP Member Free Parking</b><span>Explorers park 4 hours free until 31 Dec.</span><em>2 days ago</em></div></div>
   <div class="nt addon" data-go="capsule"><div class="e" style="background:#EFEBE4">🎰</div><div><b>Your free spin is ready</b><span>Matsuri Series · 6/24 collected</span><em>2 days ago</em></div></div>
@@ -1280,7 +1313,7 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
 
 const PUSH={invite:['🎉 You\'re invited · Anniversary Fiesta','Explorer exclusive: spend RM300 by 30 Nov, get RM30 + 300 bonus pts. Tap to see your missions.','now','missions'],
   gap:['🍜 RM80 to your next reward','Dining picks near you: Akiba Ramen set RM28 · Doko Koko Café. Ends Sunday.','now','missions'],
-  approved:['🧾 Receipt approved · +118 pts','Akiba Ramen RM98.50 now counts toward Anniversary Fiesta.','now','rhist'],
+  approved:['🧾 Receipt approved · you\'re in the draw','Akiba Ramen RM98.50 · Anniversary Lucky Draw entry LQ-2611-0318 · draw on 5 Dec.','now','rhist'],
   reward:['✅ Reward unlocked · RM300 reached','Your RM30 voucher + 300 bonus pts are ready. Tap to claim.','now','missions'],
   tier:['🏅 Next tier: Senpai · RM620 to go','5H free parking and 1.5x points are close. See your tier benefits.','now','tiers']};
 function gpush(scr,k,on=true){let p=scr.querySelector('.push.gp');if(!p){p=document.createElement('div');p.className='push gp';scr.appendChild(p)}
@@ -1308,10 +1341,8 @@ if(s==='receipt'&&play){later(1300,()=>rcYes.classList.add('on'));
   later(7500,()=>{rcCam.classList.remove('on');rcSlot.classList.add('got');rcSlot.style.boxShadow=''});
   later(8600,()=>rcInner.style.transform='translateY(-470px)');
   later(9500,()=>rcTog.classList.add('on'));later(10300,()=>{rcSubmit.style.transform='scale(.95)'});
-  later(10600,()=>{SCR.classList.remove('on');const R=document.getElementById('rhist');R.classList.add('on')});
-  later(12600,()=>{rhSt.textContent='✅ Approved';rhNew.className='rh okk new';rhMs.textContent='+118 pts · counted toward Anniversary Fiesta'});
-  later(13400,()=>gpush(document.getElementById('rhist'),'reward'));}
-if(s==='rhist'&&q.get('st')==='ok'){rhSt.textContent='✅ Approved';rhNew.className='rh okk new';rhMs.textContent='+118 pts · counted toward Anniversary Fiesta'}
+  later(10700,()=>{SCR.classList.remove('on');const R=document.getElementById('rok');R.classList.add('on');setTimeout(()=>R.classList.add('go'),60)});}
+if(s==='rok'){later(play?400:0,()=>SCR.classList.add('go'))}
 if(s==='rcam'){}
 if(s==='receipt'&&q.get('cam')){rcCam.style.transition='none';rcCam.classList.add('on','lock');rcPill.textContent='Scanning… hold steady'}
 if(s==='receipt'&&q.get('got')){rcSlot.classList.add('got');rcYes.classList.add('on');rcTog.classList.add('on')}
@@ -1522,6 +1553,7 @@ if(s==='levelup'){const cs=['#D9C49A','#1E3A63','#2F4E7A','#B8975A','#C9D3E0','#
   enter.missions = () => { const sc = $('#missions .scroll'); sc.scrollTop = 0;
     if (rewardReady && !claimed) { claimed = true; $('#msBar').style.width = '100%'; $('#msAmt').innerHTML = 'RM318.50 <small>/ RM300</small>'; $('#msGap').textContent = 'Reward unlocked'; $('#msGap').classList.add('done'); $('#msBadge').textContent = 'Ready to claim';
       setTimeout(() => sc.scrollTo({top: 250, behavior: 'smooth'}), 300); setTimeout(() => $('#msClaim').classList.add('on'), 1300); } };
+  enter.rok = () => { const r = $('#rok'); r.classList.remove('go'); setTimeout(() => r.classList.add('go'), 80); setTimeout(() => gpush(r, 'approved'), 2600); };
   enter.receipt = () => { $('#rcSlot').classList.remove('got'); $('#rcYes').classList.remove('on'); $('#rcTog').classList.remove('on'); $('#rcCam').classList.remove('on'); };
   let invited = false;
   enter.home = () => { if (invited) return; invited = true; setTimeout(() => gpush($('#home'), 'invite'), 1400); setTimeout(() => { const p = $('#home .push.gp'); if (p) p.classList.remove('on'); }, 7000); };
@@ -1580,7 +1612,7 @@ if(s==='levelup'){const cs=['#D9C49A','#1E3A63','#2F4E7A','#B8975A','#C9D3E0','#
         setTimeout(() => { c.classList.add('lock'); $('#rcPill').textContent = 'Scanning… hold steady'; }, 900); setTimeout(() => { c.classList.add('snap'); $('#rcPill').textContent = '✓ Captured'; }, 2100);
         setTimeout(() => { c.classList.remove('on'); el.classList.add('got'); }, 2800); return; }
       case 'rsubmit': { if (!$('#rcSlot').classList.contains('got')) return toast('📷 Add a photo of your receipt first'); if (!$('#rcTog').classList.contains('on')) return toast('Please agree to the Terms & Conditions');
-        go('rhist'); setTimeout(() => { $('#rhSt').textContent = '✅ Approved'; $('#rhNew').className = 'rh okk new'; $('#rhMs').textContent = '+118 pts · counted toward Anniversary Fiesta'; setPts(118); rewardReady = true; gpush($('#rhist'), 'reward'); }, 2600); return; }
+        rewardReady = true; go('rok'); return; }
       case 'back': return back();
       case 'close': return closeSheet();
       case 'toast': return toast(el.dataset.msg);

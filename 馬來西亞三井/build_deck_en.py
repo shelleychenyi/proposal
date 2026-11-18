@@ -453,7 +453,7 @@ whats_new("What's new in App 3.0: 9 upgrades, 6 brand-new features", "What's New
            ("Parking", "Paper tickets; free 3H buried in News", "LaLa Park: plate = member, free hours by tier, points pay, gate opens", "Core · NEW", "park"),
            ("Bus & shuttle", "Times on operator sites, no link to the mall", "LaLa Go: bus + KLIA shuttle times, boarding reminders, shops on the way", "Core · NEW", "go"),
            ("Missions", "Campaigns live in News posts", "Mission Wall + smart push: spend gap, picks, reward and tier alerts", "Core · NEW", "missions"),
-           ("Receipts & points", "Only 5% of members earn in-app", "Snap & submit receipts, track status; points pay parking", "Core", "receipt"),
+           ("Receipts & draw", "Paper receipts at the counter", "Snap & submit receipts, clear \"Approved\", lucky-draw entries", "Core", "receipt"),
            ("Play", "—", "Visit check-ins, quests, Stamp Rally, LaLa Capsule", "Play · NEW", "play"),
            ("AI", "—", "1-sec receipt scan, Ask LaLa concierge, For You picks", "AI · NEW", "ai"),
            ("Reviews", "Scattered on IG and Threads, invisible in the app", "LaLa Buzz: Pandora Buzz Score + Real Talk reviews", "AI · NEW", "buzz")])

@@ -109,7 +109,7 @@ def add_marketing(d, lang, meta=None):
     for i, t in enumerate([T("Install from every post & ad (UTM · QR)", "貼文、廣告都導下載（UTM・QR）"),
                            T("Register plate: LaLa Park perks", "登錄車牌，拿 LaLa Park 優惠"),
                            T("Book LaLa Go, get the RM10 e-Voucher", "訂 LaLa Go，拿 RM10 e-Voucher"),
-                           T("Scan receipts, level up", "掃發票、升等級")]):
+                           T("Submit receipts, enter the draw", "登錄發票、參加抽獎")]):
         y = 1.75 + i * 0.4
         d.tx(s, 10.02, y, 0.25, 0.3, "✓", 11, bold=True, color="cyan")
         d.tx(s, 10.27, y + 0.02, 2.4, 0.4, t, 9, spacing=1.05)

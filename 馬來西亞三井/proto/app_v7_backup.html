@@ -1,0 +1,1656 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390, initial-scale=1">
+<title>MSP App 3.0 Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#13294B;--navy:#0B1A30;--orange:#B8975A;--coral:#8C6E3C;--cream:#F3EEE5;--mint:#2F4E7A;--pink:#1E3A63;--ink:#1A1F2B;--mid:#6B6F78;--line:#E6E0D6;--bg:#F6F3EE}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:var(--bg);font-family:"Plus Jakarta Sans",system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.screen{display:none;position:relative;width:390px;height:844px;overflow:hidden;background:var(--bg)}
+.screen.on{display:block}
+.status{height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 32px;font-weight:700;font-size:15px}
+.status .ic{display:flex;gap:6px;align-items:center}
+.status .bat{width:25px;height:12px;border:1.5px solid currentColor;border-radius:4px;position:relative}
+.status .bat:after{content:"";position:absolute;inset:1.5px;width:16px;background:currentColor;border-radius:1.5px}
+.scroll{position:absolute;top:47px;left:0;right:0;bottom:84px;overflow:hidden}
+.inner{transition:transform 1.6s cubic-bezier(.5,0,.2,1)}
+.nav{position:absolute;left:0;right:0;bottom:0;height:84px;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding-top:10px;z-index:20}
+.nav div{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;font-weight:600;color:#A09A8E;width:62px}
+.nav div.act{color:var(--blue)}
+.nav .i{font-size:21px;line-height:24px;filter:grayscale(1);opacity:.7}
+.nav .act .i{filter:none;opacity:1}
+.nav .fab{margin-top:-26px}
+.nav .fab .b{width:58px;height:58px;border-radius:20px;background:linear-gradient(135deg,var(--orange),var(--coral));display:grid;place-items:center;color:#fff;font-size:24px;box-shadow:0 8px 20px rgba(184,151,90,.45)}
+.nav .fab span{color:var(--orange)}
+.top{display:flex;align-items:center;justify-content:space-between;padding:6px 18px 10px}
+.mall{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:30px;padding:7px 12px;font-weight:700;font-size:13px}
+.mall i{width:9px;height:9px;border-radius:50%;background:var(--blue);display:inline-block}
+.icons{display:flex;gap:8px}
+.icons div{width:38px;height:38px;border-radius:12px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-size:17px;position:relative}
+.dot{position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--coral);border:2px solid #fff}
+.pad{padding:0 18px}
+h1{font-size:25px;font-weight:800;letter-spacing:-.5px}
+.sub{font-size:13.5px;color:var(--mid);margin-top:2px}
+.sec{display:flex;justify-content:space-between;align-items:baseline;margin:20px 18px 10px}
+.sec b{font-size:17px;font-weight:800}
+.sec a{font-size:12.5px;color:var(--blue);font-weight:700}
+/* tier card */
+.tier{margin:14px 18px 0;border-radius:24px;padding:18px 18px 16px;color:#fff;position:relative;overflow:hidden;background:linear-gradient(135deg,#1E3A63 0%,#13294B 60%,#0B1A30 100%);box-shadow:0 14px 30px rgba(19,41,75,.35)}
+.tier:before{content:"";position:absolute;top:-60%;left:-40%;width:50%;height:220%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:rotate(20deg);animation:shine 3.2s 1s infinite}
+@keyframes shine{0%{left:-60%}60%,100%{left:130%}}
+.tier .row{display:flex;justify-content:space-between;align-items:flex-start}
+.badge{font-size:11px;font-weight:800;letter-spacing:1.5px;background:rgba(255,255,255,.2);padding:5px 10px;border-radius:20px}
+.tier .pts{font-size:34px;font-weight:800;letter-spacing:-1px;margin-top:10px}
+.tier .pts small{font-size:14px;font-weight:600;opacity:.85;margin-left:4px}
+.bar{height:9px;border-radius:9px;background:rgba(255,255,255,.25);margin-top:12px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:9px;background:linear-gradient(90deg,#E8D6AE,var(--orange));animation:fill 1.8s .6s cubic-bezier(.3,.8,.3,1) forwards}
+@keyframes fill{to{width:var(--w)}}
+.tier .meta{display:flex;justify-content:space-between;font-size:12px;margin-top:8px;opacity:.95}
+.chips{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.chip{font-size:11.5px;font-weight:700;background:rgba(255,255,255,.18);padding:6px 10px;border-radius:20px}
+.qr{width:46px;height:46px;border-radius:12px;background:#fff;display:grid;place-items:center;color:var(--navy);font-size:22px}
+/* streak */
+.card{background:#fff;border-radius:20px;border:1px solid var(--line);padding:14px}
+.streak{margin:14px 18px 0}
+.streak .hd{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:14.5px}
+.streak .hd span{font-size:12px;color:var(--mid);font-weight:600}
+.days{display:flex;justify-content:space-between;margin-top:12px}
+.d{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:10.5px;color:var(--mid);font-weight:600}
+.d b{width:38px;height:38px;border-radius:13px;background:var(--bg);display:grid;place-items:center;font-size:15px;border:1.5px dashed #D8D0C2}
+.d.ok b{background:var(--cream);border:1.5px solid #E3D3B3}
+.d.today b{background:linear-gradient(135deg,var(--orange),var(--coral));color:#fff;border:none;animation:pulse 1.4s infinite;font-size:11px;font-weight:800}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(184,151,90,.55)}50%{box-shadow:0 0 0 8px rgba(184,151,90,0)}}
+/* quick */
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 18px 0}
+.q{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11.5px;font-weight:700;text-align:center}
+.q .e{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:21px}
+/* quests h-scroll */
+.hs{display:flex;gap:12px;padding:0 18px;overflow:hidden}
+.qc{min-width:230px;border-radius:20px;padding:14px;color:#fff;position:relative;overflow:hidden}
+.qc .t{font-size:11px;font-weight:800;letter-spacing:1px;opacity:.9}
+.qc h3{font-size:16px;font-weight:800;margin-top:6px;line-height:1.25}
+.qc .p{display:flex;gap:5px;margin-top:12px}
+.qc .p i{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.25);display:grid;place-items:center;font-size:13px;font-style:normal}
+.qc .p i.on{background:#fff}
+.qc .xp{position:absolute;top:12px;right:12px;background:#fff;color:var(--ink);font-size:11px;font-weight:800;padding:4px 8px;border-radius:12px}
+/* buzz mini */
+.bz{display:flex;gap:12px;align-items:center;margin:0 18px 10px}
+.bz img{width:74px;height:74px;border-radius:16px;object-fit:cover}
+.bz h4{font-size:15px;font-weight:800}
+.score{display:inline-flex;align-items:center;gap:4px;background:#F3EEE5;color:#8C6E3C;font-weight:800;font-size:12px;padding:3px 8px;border-radius:10px}
+.src{font-size:11px;color:var(--mid);margin-top:4px}
+.qt{font-size:12.5px;color:var(--ink);margin-top:4px;font-style:italic}
+/* generic header */
+.hdr{display:flex;align-items:center;gap:12px;padding:6px 18px 12px}
+.back{width:38px;height:38px;border-radius:12px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;font-size:18px}
+.hdr h2{font-size:19px;font-weight:800}
+/* tiers screen */
+.stack{position:relative;height:318px;margin:0 18px 0}
+.tc{position:absolute;left:0;right:0;height:180px;border-radius:24px;padding:18px;color:#fff;box-shadow:0 12px 26px rgba(0,0,0,.18);overflow:hidden}
+.tc .nm{font-size:26px;font-weight:800;letter-spacing:1px}
+.tc .ds{font-size:12.5px;opacity:.92;margin-top:4px}
+.tc .lv{position:absolute;right:18px;top:18px;font-size:12px;font-weight:800;background:rgba(255,255,255,.22);padding:5px 10px;border-radius:14px}
+.tc .ml{position:absolute;left:18px;bottom:16px;font-size:12px;font-weight:700;opacity:.95}
+.t1{background:linear-gradient(135deg,#C9D3E0,#4A5F80)}
+.t2{background:linear-gradient(135deg,#1E3A63,#13294B 70%)}
+.t3{background:linear-gradient(135deg,#D4BC8C,#B8975A 45%,#8C6E3C)}
+.t4{background:linear-gradient(135deg,#0E1A33,#1E3A63 55%,#0E1A33);border:1.5px solid #C9AD78}
+.t4 .nm{background:linear-gradient(90deg,#F6E3A1,#C9AD78,#F3E6C8,#C9AD78);-webkit-background-clip:text;color:transparent}
+.anim-stack .tc{animation:fan .9s cubic-bezier(.3,1.4,.4,1) both}
+@keyframes fan{from{transform:translateY(0) scale(.96);opacity:0}}
+.perk{margin:0 18px}
+.perk table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;background:#fff;border-radius:18px;border:1px solid var(--line);overflow:hidden}
+.perk th{font-size:10.5px;padding:10px 4px;color:#fff;font-weight:800}
+.perk td{padding:10px 4px;text-align:center;border-top:1px solid var(--line);font-weight:600}
+.perk td:first-child{text-align:left;padding-left:12px;color:var(--mid);font-weight:600}
+.perk .me{background:#F3EEE5;font-weight:800}
+.how{display:flex;gap:8px;margin:12px 18px}
+.how div{flex:1;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;font-size:11.5px;font-weight:700;text-align:center}
+.how div b{display:block;font-size:20px;margin-bottom:4px}
+/* quest */
+.map{margin:4px 18px 0;height:300px;border-radius:24px;background:linear-gradient(160deg,#EFEBE4,#F3EEE5);position:relative;overflow:hidden;border:1px solid var(--line)}
+.fl{position:absolute;left:24px;right:24px;height:64px;border-radius:16px;background:#fff;border:1.5px solid #E6E0D6;transform:skewX(-14deg)}
+.fl span{position:absolute;left:12px;top:6px;font-size:11px;font-weight:800;color:var(--blue);transform:skewX(14deg)}
+.stamp{position:absolute;width:52px;height:52px;border-radius:50%;background:#fff;border:2.5px dashed #C8D2E0;display:grid;place-items:center;overflow:hidden}
+.stamp img{width:100%;height:100%;object-fit:cover;opacity:0}
+.stamp.got{border:3px solid var(--orange)}
+.stamp.got img{opacity:1;animation:stampIn .5s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes stampIn{from{transform:scale(2.2) rotate(-25deg);opacity:0}}
+.stamp.got:after{content:"✓";position:absolute;right:-2px;bottom:-2px;width:18px;height:18px;border-radius:50%;background:var(--mint);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center}
+.me-pin{position:absolute;width:22px;height:22px;border-radius:50%;background:var(--blue);border:4px solid #fff;box-shadow:0 0 0 8px rgba(19,41,75,.2);animation:pulse2 1.6s infinite}
+@keyframes pulse2{50%{box-shadow:0 0 0 14px rgba(19,41,75,0)}}
+.qlist{margin:12px 18px 0;display:flex;flex-direction:column;gap:8px}
+.qi{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:11px 12px}
+.qi .e{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:19px}
+.qi .tx{flex:1}
+.qi .tx b{font-size:13.5px;display:block}
+.qi .tx span{font-size:11.5px;color:var(--mid)}
+.qi .x{font-size:12px;font-weight:800;color:var(--orange)}
+.qi.done{opacity:.55}
+.qi.done .x{color:var(--mint)}
+.banner{margin:0 18px;border-radius:20px;padding:14px 16px;color:#fff;background:linear-gradient(120deg,#1E3A63,#B8975A);display:flex;justify-content:space-between;align-items:center}
+.banner b{font-size:16px;font-weight:800;display:block}
+.banner span{font-size:12px;opacity:.95}
+/* capsule */
+.gacha{position:relative;width:260px;height:390px;margin:0 auto}
+.dome{position:absolute;left:20px;top:0;width:220px;height:200px;border-radius:110px 110px 22px 22px;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.95),rgba(230,224,214,.55) 40%,rgba(230,224,214,.5));border:5px solid #fff;box-shadow:inset 0 -10px 30px rgba(19,41,75,.2),0 10px 30px rgba(19,41,75,.2);overflow:hidden}
+.cap{position:absolute;width:46px;height:46px;border-radius:50%;box-shadow:inset -4px -6px 0 rgba(0,0,0,.12)}
+.cap:after{content:"";position:absolute;left:0;right:0;top:50%;height:50%;border-radius:0 0 46px 46px;background:rgba(255,255,255,.85)}
+.shake .cap{animation:jig .25s 6 alternate}
+@keyframes jig{to{transform:translate(4px,-6px) rotate(18deg)}}
+.body{position:absolute;left:10px;top:190px;width:240px;height:190px;border-radius:26px;background:linear-gradient(180deg,var(--blue),var(--navy));box-shadow:0 14px 30px rgba(11,26,48,.35)}
+.body .lbl{position:absolute;top:14px;left:0;right:0;text-align:center;color:#fff;font-weight:800;letter-spacing:3px;font-size:14px}
+.knob{position:absolute;left:84px;top:52px;width:72px;height:72px;border-radius:50%;background:var(--orange);border:6px solid #E3CFA3;display:grid;place-items:center}
+.knob:before{content:"";width:46px;height:12px;border-radius:6px;background:#fff}
+.turn .knob{animation:turn 1.4s ease-in-out forwards}
+@keyframes turn{to{transform:rotate(540deg)}}
+.chute{position:absolute;left:92px;bottom:14px;width:56px;height:40px;border-radius:12px;background:#0B1F3D}
+.drop{position:absolute;left:107px;top:330px;width:46px;height:46px;border-radius:50%;background:var(--pink);opacity:0;z-index:5}
+.drop:after{content:"";position:absolute;left:0;right:0;top:50%;height:50%;border-radius:0 0 46px 46px;background:rgba(255,255,255,.85)}
+.go .drop{animation:dropout 1s 1.5s cubic-bezier(.5,0,.4,1.4) forwards}
+@keyframes dropout{0%{opacity:1;transform:translateY(-30px) scale(.6)}100%{opacity:1;transform:translateY(40px) scale(1.15)}}
+.reveal{position:absolute;inset:0;background:rgba(14,26,51,.82);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;z-index:30;color:#fff}
+.go .reveal{animation:fadeIn .5s 2.7s forwards}
+@keyframes fadeIn{to{opacity:1}}
+.reveal .ray{position:absolute;width:520px;height:520px;background:repeating-conic-gradient(rgba(217,196,154,.22) 0 10deg,transparent 10deg 20deg);border-radius:50%;animation:spin 12s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.reveal .fig{width:190px;height:190px;border-radius:40px;background:#fff;overflow:hidden;position:relative;transform:scale(.2);box-shadow:0 0 60px rgba(217,196,154,.8)}
+.go .reveal .fig{animation:pop .7s 3s cubic-bezier(.3,1.6,.5,1) forwards}
+@keyframes pop{to{transform:scale(1)}}
+.reveal .fig img{width:100%;height:100%;object-fit:cover}
+.rare{margin-top:18px;font-size:12px;font-weight:800;letter-spacing:3px;background:linear-gradient(90deg,#D9C49A,#C9AD78);color:var(--navy);padding:5px 12px;border-radius:14px;position:relative}
+.reveal h3{font-size:26px;font-weight:800;margin-top:10px;position:relative}
+.reveal p{font-size:13px;opacity:.85;margin-top:4px;position:relative}
+.coll{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:4px 18px}
+.coll div{aspect-ratio:1;border-radius:12px;background:#fff;border:1px solid var(--line);overflow:hidden;display:grid;place-items:center;color:#D8D0C2;font-weight:800}
+.coll img{width:100%;height:100%;object-fit:cover}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;height:52px;border-radius:16px;font-weight:800;font-size:15px;color:#fff;background:linear-gradient(135deg,var(--orange),var(--coral));box-shadow:0 8px 18px rgba(184,151,90,.35)}
+.btn.blue{background:linear-gradient(135deg,var(--blue),#0B1A30);box-shadow:0 8px 18px rgba(19,41,75,.3)}
+.btn.ghost{background:#fff;color:var(--blue);border:1.5px solid var(--blue);box-shadow:none}
+/* scan */
+#scan{background:#0B1220;color:#fff}
+.cam{position:absolute;top:47px;left:0;right:0;height:560px;background:radial-gradient(circle at 50% 40%,#3A4150,#121826 75%)}
+.receipt{position:absolute;left:92px;top:60px;width:206px;height:400px;background:#FBFAF6;color:#222;font-family:"Courier New",monospace;font-size:10.5px;padding:16px 14px;transform:rotate(-4deg);box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.receipt .c{text-align:center}
+.receipt .ln{display:flex;justify-content:space-between;margin-top:5px}
+.receipt hr{border:none;border-top:1px dashed #999;margin:8px 0}
+.frame{position:absolute;left:64px;top:44px;width:262px;height:440px}
+.frame i{position:absolute;width:34px;height:34px;border:4px solid var(--orange)}
+.frame i:nth-child(1){left:0;top:0;border-right:none;border-bottom:none;border-radius:12px 0 0 0}
+.frame i:nth-child(2){right:0;top:0;border-left:none;border-bottom:none;border-radius:0 12px 0 0}
+.frame i:nth-child(3){left:0;bottom:0;border-right:none;border-top:none;border-radius:0 0 0 12px}
+.frame i:nth-child(4){right:0;bottom:0;border-left:none;border-top:none;border-radius:0 0 12px 0}
+.laser{position:absolute;left:70px;width:250px;height:3px;background:var(--orange);box-shadow:0 0 18px 4px rgba(184,151,90,.8);top:60px;animation:laser 1.3s 2 alternate ease-in-out}
+@keyframes laser{to{top:470px}}
+.hl{position:absolute;border:2px solid var(--mint);background:rgba(19,41,75,.15);border-radius:6px;opacity:0;animation:fadeIn .3s forwards}
+.ai-pill{position:absolute;top:66px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.55);backdrop-filter:blur(8px);padding:8px 14px;border-radius:20px;font-size:12.5px;font-weight:700;white-space:nowrap}
+.sheet{position:absolute;left:0;right:0;bottom:0;height:330px;background:#fff;color:var(--ink);border-radius:28px 28px 0 0;padding:12px 20px 20px;transform:translateY(100%);animation:up .6s 2.8s cubic-bezier(.2,.9,.3,1) forwards;z-index:10}
+@keyframes up{to{transform:translateY(0)}}
+.grab{width:40px;height:5px;border-radius:3px;background:#E6E0D6;margin:0 auto 12px}
+.ok{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13px;color:var(--mint)}
+.rcpt{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding:12px;border-radius:16px;background:var(--bg)}
+.rcpt b{font-size:16px}
+.rcpt span{font-size:12px;color:var(--mid)}
+.earn{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+.earn .big{font-size:40px;font-weight:800;color:var(--orange);letter-spacing:-1px}
+.earn .big small{font-size:15px;color:var(--ink)}
+.mult{font-size:11.5px;font-weight:800;color:#fff;background:linear-gradient(135deg,#1E3A63,#13294B);padding:5px 10px;border-radius:12px}
+.qprog{margin-top:10px;font-size:12.5px;font-weight:700;color:var(--mid)}
+.coin{position:absolute;width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#EADDC2,#C9AD78 60%,#8C6E3C);border:2px solid #EADDC2;display:grid;place-items:center;font-size:12px;font-weight:800;color:#6E552A;opacity:0;z-index:40}
+.fly .coin{animation:coin 1.1s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes coin{0%{opacity:1;transform:translate(0,0) scale(.6)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.1)}}
+/* chat */
+.chat{position:absolute;top:110px;left:0;right:0;bottom:150px;padding:0 16px;display:flex;flex-direction:column;gap:10px;overflow:hidden}
+.msg{max-width:78%;padding:11px 14px;border-radius:18px;font-size:13.5px;line-height:1.45;opacity:0;animation:msgIn .4s forwards}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.msg.me{align-self:flex-end;background:var(--blue);color:#fff;border-bottom-right-radius:6px}
+.msg.ai{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:6px}
+.lala{display:flex;align-items:center;gap:10px}
+.av{width:40px;height:40px;border-radius:14px;overflow:hidden;background:#EFEBE4}
+.av img{width:100%;height:100%;object-fit:cover}
+.typing{display:flex;gap:4px;padding:14px;align-self:flex-start;background:#fff;border:1px solid var(--line);border-radius:18px;opacity:0;animation:typ 1.2s forwards}
+@keyframes typ{0%{opacity:0}10%,85%{opacity:1}100%{opacity:0;height:0;padding:0;margin:-5px 0;border:0}}
+.typing i{width:7px;height:7px;border-radius:50%;background:#A09A8E;animation:bl 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes bl{50%{opacity:.2}}
+.pick{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:8px;opacity:0;animation:msgIn .4s forwards;max-width:88%}
+.pick img{width:56px;height:56px;border-radius:12px;object-fit:cover}
+.pick b{font-size:13.5px;display:block}
+.pick span{font-size:11.5px;color:var(--mid)}
+.pick .go{margin-left:auto;font-size:11.5px;font-weight:800;color:#fff;background:var(--blue);padding:7px 10px;border-radius:10px}
+.sugg{position:absolute;left:0;right:0;bottom:150px;display:flex;gap:8px;padding:0 16px;overflow:hidden}
+.sugg span{white-space:nowrap;font-size:12px;font-weight:700;padding:8px 12px;border-radius:16px;background:#EFEBE4;color:var(--blue)}
+.input{position:absolute;left:16px;right:16px;bottom:96px;height:48px;border-radius:16px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;padding:0 8px 0 14px;font-size:13.5px;color:#A09A8E;gap:8px}
+.input .mic{margin-left:auto;width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--orange),var(--coral));display:grid;place-items:center;color:#fff}
+/* buzz */
+.seg{display:flex;gap:8px;padding:0 18px;overflow:hidden}
+.seg span{white-space:nowrap;font-size:12.5px;font-weight:700;padding:8px 13px;border-radius:16px;background:#fff;border:1px solid var(--line)}
+.seg span.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.hero{margin:12px 18px 0;height:180px;border-radius:24px;overflow:hidden;position:relative;color:#fff}
+.hero img{width:100%;height:100%;object-fit:cover}
+.hero .ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,.75));padding:14px;display:flex;flex-direction:column;justify-content:flex-end}
+.hero .k{position:absolute;top:12px;left:12px;font-size:11px;font-weight:800;background:var(--coral);padding:5px 9px;border-radius:10px;letter-spacing:.5px}
+.hero h3{font-size:19px;font-weight:800}
+.hero p{font-size:12.5px;opacity:.95;margin-top:2px}
+.bl{margin:10px 18px 0;display:flex;flex-direction:column;gap:9px}
+.bi{display:flex;gap:12px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:10px;align-items:center}
+.bi .th{width:62px;height:62px;border-radius:14px;display:grid;place-items:center;font-size:28px;overflow:hidden;flex:none}
+.bi .th img{width:100%;height:100%;object-fit:cover}
+.bi .tx{flex:1;min-width:0}
+.bi b{font-size:14.5px;display:block}
+.bi .love{font-size:12px;color:var(--mid);margin-top:2px}
+.bi .meta{display:flex;gap:6px;align-items:center;margin-top:5px;font-size:11px;color:var(--mid)}
+.tr{font-size:11px;font-weight:800;color:var(--mint)}
+.ai-note{margin:10px 18px 0;font-size:11px;color:var(--mid);display:flex;align-items:center;gap:6px}
+/* brand */
+.bhero{height:250px;position:relative}
+.bhero img{width:100%;height:100%;object-fit:cover}
+.bhero .topb{position:absolute;top:47px;left:18px;right:18px;display:flex;justify-content:space-between}
+.bhero .topb div{width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.9);display:grid;place-items:center}
+.bcard{position:absolute;top:210px;left:0;right:0;bottom:0;background:var(--bg);border-radius:26px 26px 0 0;padding:18px}
+.bcard h2{font-size:23px;font-weight:800}
+.tags{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.tags span{font-size:11px;font-weight:700;padding:4px 9px;border-radius:10px;background:#fff;border:1px solid var(--line)}
+.meter{display:flex;gap:12px;align-items:center;margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px}
+.ring{width:64px;height:64px;border-radius:50%;background:conic-gradient(var(--orange) 0 var(--p),#EFEBE4 var(--p));display:grid;place-items:center;flex:none;animation:ringIn 1.4s .3s both}
+@property --p{syntax:'<percentage>';inherits:false;initial-value:0%}
+@keyframes ringIn{from{--p:0%}}
+.ring div{width:50px;height:50px;border-radius:50%;background:#fff;display:grid;place-items:center;font-weight:800;font-size:17px}
+.meter .r b{font-size:14px}
+.meter .r p{font-size:11.5px;color:var(--mid);margin-top:2px;line-height:1.4}
+.love-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.love-chips span{font-size:11.5px;font-weight:700;padding:6px 10px;border-radius:14px;background:#F3EEE5;color:#7A5F30;opacity:0;animation:msgIn .35s forwards}
+.tabs{display:flex;margin-top:14px;background:#EFEBE4;border-radius:14px;padding:4px}
+.tabs span{flex:1;text-align:center;font-size:12.5px;font-weight:800;padding:8px;border-radius:11px;color:var(--mid)}
+.tabs span.on{background:#fff;color:var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.post{background:#fff;border:1px solid var(--line);border-radius:16px;padding:11px 12px;margin-top:9px}
+.post .who{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700}
+.post .who i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;color:#fff;font-size:11px}
+.post .who em{margin-left:auto;font-style:normal;font-size:10.5px;color:var(--mid);font-weight:600}
+.post p{font-size:12.5px;line-height:1.45;margin-top:6px}
+.post .st{font-size:10.5px;color:var(--mid);margin-top:6px;font-weight:600}
+.cta{position:absolute;left:18px;right:18px;bottom:24px;display:flex;gap:10px;z-index:15}
+.cta .btn{flex:1;height:50px;font-size:14px}
+.vb{font-size:10px;font-weight:800;color:var(--mint);background:#EFEBE4;padding:2px 6px;border-radius:8px}
+/* real talk */
+.rt{padding:0 18px}
+.vrf{display:flex;align-items:center;gap:10px;background:#EFEBE4;border-radius:16px;padding:10px 12px;margin-top:4px}
+.vrf b{font-size:13px;color:#1E3A63}
+.vrf span{font-size:11.5px;color:#1E3A63}
+.lab{font-size:13px;font-weight:800;margin:16px 0 8px}
+.rate{display:flex;gap:10px}
+.rate span{font-size:30px;opacity:.25}
+.rate span.on{opacity:1;animation:pop2 .35s both}
+@keyframes pop2{from{transform:scale(.3)}}
+.stick{display:flex;flex-wrap:wrap;gap:8px}
+.stick span{font-size:13px;font-weight:700;padding:9px 12px;border-radius:14px;background:#fff;border:1.5px solid var(--line)}
+.stick span.on{border-color:var(--orange);background:#F3EEE5;color:#7A5F30}
+.ta{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;font-size:14px;line-height:1.5;min-height:92px}
+.caret{display:inline-block;width:2px;height:16px;background:var(--blue);vertical-align:-3px;animation:bl .8s infinite}
+.photos{display:flex;gap:8px}
+.photos div{width:76px;height:76px;border-radius:14px;overflow:hidden;background:#fff;border:1.5px dashed #C8D2E0;display:grid;place-items:center;font-size:22px;color:#A09A8E}
+.photos img{width:100%;height:100%;object-fit:cover}
+.toast{position:absolute;left:50%;top:380px;transform:translate(-50%,0) scale(.6);background:var(--ink);color:#fff;border-radius:22px;padding:18px 26px;text-align:center;opacity:0;z-index:50;box-shadow:0 20px 40px rgba(0,0,0,.35)}
+.toast b{display:block;font-size:30px;color:#D9C49A}
+.toast span{font-size:13px}
+/* level up */
+#levelup{background:radial-gradient(circle at 50% 40%,#1E3A63,#0E1A33 70%);color:#fff}
+.conf{position:absolute;width:9px;height:14px;top:-20px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(900px) rotate(720deg)}}
+.lu{position:absolute;top:120px;left:0;right:0;text-align:center}
+.lu .k{font-size:13px;font-weight:800;letter-spacing:4px;color:#D9C49A;opacity:0;animation:fadeIn .4s .3s forwards}
+.lu h1{font-size:31px;margin-top:6px;opacity:0;animation:msgIn .5s .5s forwards}
+.flip{width:300px;height:190px;margin:30px auto 0;perspective:900px}
+.flip .in{position:relative;width:100%;height:100%;transform-style:preserve-3d;animation:flip 1.2s 1s cubic-bezier(.5,0,.2,1) both}
+@keyframes flip{to{transform:rotateY(180deg)}}
+.flip .tc{position:absolute;inset:0;height:auto;backface-visibility:hidden}
+.flip .t3{transform:rotateY(180deg);box-shadow:0 0 50px rgba(184,151,90,.7)}
+.unl{margin:30px 26px 0;display:flex;flex-direction:column;gap:9px}
+.unl div{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:11px 14px;font-size:13.5px;font-weight:700;opacity:0;animation:msgIn .4s forwards}
+.unl div i{font-style:normal;font-size:20px}
+.unl div em{margin-left:auto;font-style:normal;font-size:11px;color:#D9C49A;font-weight:800}
+/* ================= Interactive app mode ================= */
+html.app,html.app body{width:100%;height:100%;overflow:hidden}
+html.app body{display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 20% 20%,#E6E0D6,#EFEBE4 45%,#F3EEE5)}
+html.app #device{position:relative;width:390px;height:844px;flex:none;border-radius:54px;overflow:hidden;background:var(--bg);
+  box-shadow:0 0 0 12px #0E1A33,0 0 0 14px #2A3550,0 40px 80px rgba(14,26,51,.35);transform-origin:center center}
+html.app .screen{position:absolute;inset:0;overflow:hidden}
+html.app .sc::-webkit-scrollbar,html.app .scroll::-webkit-scrollbar,html.app .chat::-webkit-scrollbar,html.app .bcard::-webkit-scrollbar{display:none}
+html.app .sc{position:absolute;top:47px;left:0;right:0;bottom:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+html.app .sc.nb{bottom:84px}
+html.app .scroll{overflow-y:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+html.app #scan,html.app #ask,html.app #brand,html.app #levelup{overflow:hidden}
+html.app .chat{overflow-y:auto;scrollbar-width:none;padding-bottom:12px}
+html.app .bcard{overflow-y:auto;scrollbar-width:none;padding-bottom:100px}
+html.app [data-go],html.app [data-act],html.app .nav div,html.app .q,html.app .bi,html.app .qi,html.app .sugg span,html.app .seg span,html.app .stick span,html.app .rate span,html.app .tabs span,html.app .coll div,html.app .btn,html.app .back,html.app .d.today{cursor:pointer;-webkit-tap-highlight-color:transparent}
+html.app .btn:active,html.app .q:active,html.app .bi:active,html.app .qi:active{transform:scale(.97)}
+html.app .island-hint{display:block}
+.island-hint{display:none}
+#side{display:none}
+html.app #side{display:block;position:fixed;left:40px;top:50%;transform:translateY(-50%);width:260px;font-family:"Plus Jakarta Sans",sans-serif;color:var(--ink)}
+#side h1{font-size:30px;line-height:1.15}
+#side p{font-size:14px;color:var(--mid);margin-top:10px;line-height:1.6}
+#side .jump{display:flex;flex-direction:column;gap:6px;margin-top:18px}
+#side .jump span{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer}
+#side .jump span:hover{border-color:var(--blue);color:var(--blue)}
+@media (max-width:900px){html.app #side{display:none}}
+@media (max-width:500px){html.app body{display:block;background:var(--bg)}html.app #device{width:100vw;height:100vh;border-radius:0;box-shadow:none;transform:none!important}}
+
+/* overlay: sheet / modal / toast */
+#ov{position:absolute;inset:0;z-index:60;pointer-events:none}
+#ov .dim{position:absolute;inset:0;background:rgba(14,26,51,.45);opacity:0;transition:opacity .25s}
+#ov.open{pointer-events:auto}
+#ov.open .dim{opacity:1}
+#ov .sheet2{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:28px 28px 0 0;padding:12px 20px 34px;transform:translateY(105%);transition:transform .35s cubic-bezier(.2,.9,.3,1)}
+#ov.open .sheet2{transform:none}
+#ov .sheet2 h3{font-size:18px;font-weight:800;margin:4px 0 12px}
+.opt{display:flex;align-items:center;gap:12px;padding:13px 12px;border-radius:16px;border:1.5px solid var(--line);margin-bottom:8px;font-weight:700;font-size:14px;cursor:pointer}
+.opt.sel{border-color:var(--blue);background:#EFEBE4}
+.opt i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.opt small{display:block;font-size:11.5px;color:var(--mid);font-weight:600}
+.qrbox{display:grid;grid-template-columns:repeat(25,1fr);width:220px;height:220px;margin:6px auto 10px;gap:0}
+.qrbox i{display:block}
+.qrcap{text-align:center;font-size:12.5px;color:var(--mid);font-weight:600}
+#tst{position:absolute;left:50%;top:70px;transform:translate(-50%,-30px);background:var(--ink);color:#fff;font-size:13.5px;font-weight:700;padding:11px 18px;border-radius:18px;opacity:0;transition:all .35s cubic-bezier(.3,1.5,.5,1);z-index:80;white-space:nowrap;pointer-events:none;box-shadow:0 10px 24px rgba(0,0,0,.25)}
+#tst.on{opacity:1;transform:translate(-50%,0)}
+
+/* Me */
+.mehead{background:linear-gradient(135deg,#1E3A63,#13294B 65%,#0B1A30);color:#fff;padding:12px 20px 70px;border-radius:0 0 30px 30px;position:relative}
+.mehead .row{display:flex;align-items:center;gap:14px;margin-top:6px}
+.mehead .av2{width:72px;height:72px;border-radius:24px;background:rgba(255,255,255,.2);display:grid;place-items:center;overflow:hidden}
+.mehead .av2 img{width:90%}
+.mehead h2{font-size:21px;font-weight:800}
+.mehead .tierchip{display:inline-block;margin-top:4px;font-size:11px;font-weight:800;letter-spacing:1px;background:rgba(255,255,255,.22);padding:4px 10px;border-radius:12px}
+.mecard{margin:-52px 18px 0;background:#fff;border-radius:22px;padding:16px;box-shadow:0 10px 26px rgba(14,26,51,.12);display:flex;align-items:center;gap:14px;position:relative}
+.mecard .mini{width:74px;height:74px;display:grid;grid-template-columns:repeat(25,1fr)}
+.mecard b{font-size:15px}
+.mecard p{font-size:12px;color:var(--mid);margin-top:3px}
+.grid3{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 18px 0}
+.grid3 div{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 4px 10px;text-align:center;font-size:11.5px;font-weight:700;cursor:pointer}
+.grid3 div b{display:block;font-size:22px;margin-bottom:4px}
+.vch{display:flex;margin:0 18px 10px;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.vch .l{width:92px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:17px;text-align:center;line-height:1.1}
+.vch .r{flex:1;padding:11px 12px;position:relative}
+.vch .r b{font-size:14px;display:block}
+.vch .r span{font-size:11.5px;color:var(--mid)}
+.vch .use{position:absolute;right:12px;bottom:11px;background:var(--orange);color:#fff;font-size:12px;font-weight:800;padding:6px 12px;border-radius:12px;cursor:pointer}
+.menu{margin:6px 18px 0;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.menu div{display:flex;align-items:center;gap:12px;padding:14px 14px;border-top:1px solid var(--line);font-size:14px;font-weight:700;cursor:pointer}
+.menu div:first-child{border-top:none}
+.menu div em{margin-left:auto;font-style:normal;color:#A09A8E;font-size:12.5px;font-weight:600}
+.lang{display:flex;gap:6px;margin-left:auto}
+.lang span{font-size:11.5px;padding:4px 9px;border-radius:10px;background:var(--bg);font-weight:800;color:var(--mid)}
+.lang span.on{background:var(--blue);color:#fff}
+/* parking */
+.car{margin:6px 18px 0;border-radius:24px;padding:18px;color:#fff;background:linear-gradient(135deg,#0B1A30,#13294B)}
+.car .pl{display:inline-block;background:#fff;color:var(--ink);font-weight:800;letter-spacing:2px;padding:6px 12px;border-radius:10px;font-size:16px}
+.car .t{font-size:42px;font-weight:800;margin-top:14px;letter-spacing:-1px}
+.car .t small{font-size:14px;font-weight:600;opacity:.85}
+.car .bar i{animation:none;width:var(--w)}
+.pk{display:flex;gap:10px;margin:12px 18px 0}
+.pk div{flex:1;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;font-size:12px;color:var(--mid);font-weight:600}
+.pk div b{display:block;font-size:17px;color:var(--ink);margin-top:2px}
+/* notif */
+.nt{display:flex;gap:12px;margin:0 18px 9px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;cursor:pointer}
+.nt .e{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:20px;flex:none}
+.nt b{font-size:13.5px;display:block}
+.nt span{font-size:12px;color:var(--mid);line-height:1.4}
+.nt em{font-style:normal;font-size:10.5px;color:#A09A8E;display:block;margin-top:3px}
+.nt.new{border-color:#E3D3B3;background:#FAF7F1}
+/* real talk list in brand */
+.rtp{background:#fff;border:1px solid var(--line);border-radius:16px;padding:11px 12px;margin-top:9px}
+.rtp .who{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700}
+.rtp .who img{width:28px;height:28px;border-radius:50%;background:#EFEBE4;object-fit:contain}
+.rtp .who em{margin-left:auto;font-style:normal;font-size:10.5px;color:var(--mid);font-weight:600}
+.rtp .lan{font-size:12px;margin-top:4px}
+.rtp p{font-size:12.5px;line-height:1.45;margin-top:5px}
+.rtp .tg{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.rtp .tg span{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:10px;background:#F3EEE5;color:#7A5F30}
+html.app .ta{outline:none}
+html.app .input input{flex:1;border:none;outline:none;font:inherit;font-size:13.5px;color:var(--ink);background:transparent}
+.home-more .hs{padding-bottom:4px}
+.ev{min-width:240px;border-radius:20px;overflow:hidden;background:#fff;border:1px solid var(--line);cursor:pointer}
+.ev img{width:100%;height:110px;object-fit:cover;display:block}
+.ev div{padding:10px 12px}
+.ev b{font-size:14px;display:block}
+.ev span{font-size:11.5px;color:var(--mid)}
+html.app .hs{overflow-x:auto;scrollbar-width:none}
+html.app .hs::-webkit-scrollbar,html.app .seg::-webkit-scrollbar,html.app .sugg::-webkit-scrollbar{display:none}
+html.app .seg,html.app .sugg{overflow-x:auto;scrollbar-width:none}
+
+
+/* ================= LUXE THEME (Midnight & Champagne) ================= */
+:root{--navy:#13294B;--gold:#B8975A;--gold2:#D9C49A;--serif:"Cormorant Garamond",Georgia,serif}
+body,.screen{background:var(--bg)}
+h1,.hdr h2,.sec b,.tc .nm,.bk h2,.mehead h2{font-family:var(--serif);font-weight:700;letter-spacing:.2px}
+h1{font-size:30px}
+.sec b{font-size:21px}
+.sec a{color:var(--gold);font-weight:700;letter-spacing:.3px}
+.hdr h2{font-size:24px}
+.hello{margin-top:2px}
+.hello .kick{font-size:10.5px;letter-spacing:2.5px;color:var(--gold);font-weight:800}
+.hello h1{line-height:1.05;margin-top:2px}
+.top .mall{border-color:#E6E0D6;letter-spacing:.2px}
+.icons div{border-color:#E6E0D6}
+.icons svg,.q .e svg,.nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.icons div{color:var(--navy)}
+.dot{background:var(--gold)}
+/* member card */
+.tier{background:radial-gradient(120% 90% at 100% 0%,#24406B 0%,#13294B 45%,#0B1A30 100%);box-shadow:0 18px 36px rgba(11,26,48,.32);border:1px solid rgba(217,196,154,.35);padding:16px 18px 16px;border-radius:22px}
+.tier:after{content:"";position:absolute;inset:7px;border:1px solid rgba(217,196,154,.18);border-radius:16px;pointer-events:none}
+.tier:before{background:linear-gradient(90deg,transparent,rgba(217,196,154,.22),transparent)}
+.tier .brandline{font-size:9.5px;letter-spacing:3px;color:var(--gold2);font-weight:800}
+.tier .tname{font-family:var(--serif);font-size:32px;font-weight:700;line-height:1;margin-top:4px;background:linear-gradient(90deg,#F3E6C8,#D9C49A 50%,#B8975A);-webkit-background-clip:text;color:transparent}
+.tier .badge{display:inline-block;margin-top:8px;background:transparent;border:1px solid rgba(217,196,154,.5);color:var(--gold2);font-size:9.5px;letter-spacing:1.5px;padding:3px 8px}
+.tier .mon{width:96px;height:96px;object-fit:contain;margin:-8px -6px -10px 0;filter:drop-shadow(0 8px 14px rgba(0,0,0,.35));animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-5px)}}
+.cardmid{display:flex;gap:14px;align-items:center;margin-top:12px}
+.qrw{background:#fff;border-radius:14px;padding:8px 8px 5px;text-align:center;flex:none;position:relative;z-index:2}
+.qrbox.sm{width:84px;height:84px;margin:0}
+.qrw span{display:block;font-size:8.5px;font-weight:800;letter-spacing:1px;color:var(--navy);margin-top:4px;text-transform:uppercase}
+.ptsw{flex:1;min-width:0}
+.tier .pts{font-family:var(--serif);font-size:38px;font-weight:700;margin-top:0!important;letter-spacing:0;line-height:1}
+.tier .pts small{font-family:"Plus Jakarta Sans";font-size:11px;letter-spacing:1px;color:var(--gold2);opacity:1}
+.tier .bar{height:5px;background:rgba(255,255,255,.15);margin-top:10px}
+.bar i{background:linear-gradient(90deg,#B8975A,#F3E6C8)}
+.tier .meta{display:flex;justify-content:space-between;font-size:11px;margin-top:8px;opacity:.9}
+.tier .meta b{color:var(--gold2)}
+.tier .chips{margin-top:12px;position:relative;z-index:2}
+.tier .chip{background:transparent;border:1px solid rgba(255,255,255,.22);font-weight:600;font-size:10.5px;padding:5px 9px;letter-spacing:.3px}
+/* quick / cards */
+.q{border-color:#E6E0D6;color:var(--ink);font-weight:600}
+.q .e{background:#F3EEE5;color:var(--navy);border-radius:50%}
+.card,.bz.card{border-color:#E6E0D6}
+.streak .hd{font-family:var(--serif);font-size:18px;font-weight:700}
+.d.today b{background:var(--navy);color:var(--gold2)}
+.d.ok b{background:#F3EEE5;border-color:#D9C49A;color:var(--gold)}
+.qc{border:1px solid rgba(217,196,154,.3)}
+.qc h3{font-family:var(--serif);font-size:20px;font-weight:700}
+.qc .xp{background:var(--gold2);color:#0B1A30}
+.score{background:#F3EEE5;color:#7A5F30}
+.tr{color:var(--gold)}
+.btn{background:var(--navy);box-shadow:0 8px 18px rgba(11,26,48,.22);color:#fff}
+.btn.blue{background:linear-gradient(135deg,#B8975A,#8C6E3C);box-shadow:0 8px 18px rgba(140,110,60,.3)}
+.btn.ghost{background:#fff;color:var(--navy);border-color:var(--navy)}
+/* nav */
+.nav{border-top-color:#E6E0D6}
+.nav div{color:#A09A8E;font-weight:600;letter-spacing:.2px}
+.nav div.act{color:var(--navy)}
+.nav .i{filter:none;opacity:1;height:24px}
+.nav .fab .b{background:var(--navy);border-radius:50%;box-shadow:0 8px 18px rgba(11,26,48,.35);color:var(--gold2);border:2px solid var(--gold2)}
+.nav .fab .b svg{width:26px;height:26px}
+.nav .fab span{color:var(--navy)}
+/* tier cards */
+.t1{background:linear-gradient(135deg,#F4F1EA,#DCD6CA);color:#13294B}
+.t1 .lv{background:rgba(19,41,75,.08)}
+.t2{background:linear-gradient(135deg,#3A5683,#13294B 70%)}
+.t3{background:linear-gradient(135deg,#E3CFA3,#B8975A 55%,#8C6E3C)}
+.t4{background:linear-gradient(135deg,#050B16,#14213A 55%,#050B16);border:1.5px solid #C9AD78}
+.tc .nm{font-size:30px}
+.lang span.on,.opt.sel{background:var(--navy)}
+.pdr{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:10.5px;color:var(--mid);background:#fff;border:1px solid #E6E0D6;border-radius:20px;padding:4px 10px}
+.pdr i{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px rgba(184,151,90,.2)}
+.pdr b{color:var(--navy);letter-spacing:1px}
+.pdx{font-size:9.5px!important;letter-spacing:1.2px;font-weight:800;color:var(--gold)!important;margin:0 0 2px!important}
+
+/* ===== v4: core / add-on, LaLa Park (LPR), LaLa Go (bus) ===== */
+.ao{font-style:normal;font-size:9px;font-weight:800;letter-spacing:1.2px;color:#8C6E3C;background:#F3EAD8;border:1px solid #E3D3B3;padding:2px 7px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.core{font-style:normal;font-size:9px;font-weight:800;letter-spacing:1.2px;color:#fff;background:var(--navy);padding:2px 7px;border-radius:10px;margin-left:6px;vertical-align:middle}
+html.coreonly .addon{display:none!important}
+.strip{margin:10px 18px 0;display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:11px 14px}
+.strip .ic{width:38px;height:38px;border-radius:12px;background:var(--navy);color:#E8D6AE;display:grid;place-items:center;font-weight:800;font-size:16px;flex:none}
+.strip b{font-size:13.5px;display:block}
+.strip span{font-size:11.5px;color:var(--mid)}
+.strip .rt{margin-left:auto;text-align:right;font-weight:800;font-size:15px;color:var(--navy);white-space:nowrap}
+.strip>div:nth-child(2){min-width:0;flex:1}.strip b,.strip span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.strip .rt small{display:block;font-size:10px;color:var(--mid);font-weight:600}
+.plate{display:inline-block;background:#fff;color:var(--ink);font-weight:800;letter-spacing:2px;padding:5px 11px;border-radius:9px;font-size:15px;border:1.5px solid #1A1F2B}
+.lpr{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;opacity:.9;margin-top:10px}
+.lpr i{width:7px;height:7px;border-radius:50%;background:#7FE0B5;box-shadow:0 0 0 3px rgba(127,224,181,.25)}
+.cars{margin:0 18px;display:flex;flex-direction:column;gap:8px}
+.cr{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:11px 12px}
+.cr .tx{flex:1}.cr .tx b{font-size:13px;display:block}.cr .tx span{font-size:11px;color:var(--mid)}
+.cr.add{justify-content:center;border-style:dashed;color:var(--navy);font-weight:800;font-size:13px}
+.payw{margin:0 18px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:4px 14px}
+.pr{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}
+.pr:last-child{border-bottom:none}
+.pr .tx{flex:1}.pr .tx b{display:block;font-size:13.5px}.pr .tx span{font-size:11px;color:var(--mid)}
+.tog{width:44px;height:26px;border-radius:13px;background:#D9D3C8;position:relative;flex:none;transition:background .25s}
+.tog:after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .25s}
+.tog.on{background:var(--navy)}.tog.on:after{left:21px}
+.steps4{display:flex;margin:4px 18px 0;gap:6px}
+.steps4 div{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:9px 4px;text-align:center;font-size:10px;font-weight:700;color:var(--mid);line-height:1.3}
+.steps4 b{display:block;font-size:17px;margin-bottom:3px}
+.push{position:absolute;left:10px;right:10px;top:10px;z-index:70;background:rgba(255,255,255,.97);border-radius:20px;padding:11px 13px;display:flex;gap:11px;box-shadow:0 14px 34px rgba(11,26,48,.28);transform:translateY(-140%);transition:transform .55s cubic-bezier(.2,1.2,.4,1)}
+.push.on{transform:none}
+.push .ap{width:36px;height:36px;border-radius:10px;background:var(--navy);color:#E8D6AE;display:grid;place-items:center;font-family:"Cormorant Garamond",serif;font-weight:700;font-size:18px;flex:none}
+.push b{font-size:13px;display:block}.push span{font-size:12px;color:var(--mid);line-height:1.35;display:block}
+.push em{font-style:normal;font-size:10.5px;color:#A09A8E;margin-left:auto;white-space:nowrap}
+.exitsheet{position:absolute;left:0;right:0;bottom:0;z-index:40;background:#fff;border-radius:28px 28px 0 0;padding:14px 20px 30px;box-shadow:0 -12px 30px rgba(11,26,48,.18);transform:translateY(105%);transition:transform .5s cubic-bezier(.2,.9,.3,1)}
+.exitsheet.on{transform:none}
+.exitsheet h3{font-size:18px;font-weight:800;margin:4px 0 4px}
+.exitsheet .ln{display:flex;justify-content:space-between;font-size:13.5px;padding:9px 0;border-bottom:1px dashed var(--line);opacity:0;transform:translateY(6px);transition:all .35s}
+.exitsheet.on .ln{opacity:1;transform:none}
+.exitsheet .ln b{font-weight:800}
+.exitsheet .gate{margin-top:14px;display:flex;align-items:center;gap:10px;background:#EEF6F1;color:#1F6B49;border-radius:16px;padding:12px 14px;font-weight:800;font-size:14px;opacity:0;transition:opacity .4s}
+.exitsheet.done .gate{opacity:1}
+.route{margin:0 18px;background:linear-gradient(135deg,#0B1A30,#13294B);color:#fff;border-radius:22px;padding:16px}
+.route .r1{display:flex;align-items:center;gap:10px}
+.route .st{flex:1}.route .st small{display:block;font-size:10.5px;opacity:.7;font-weight:700;letter-spacing:1px}.route .st b{font-size:17px}
+.route .sw{width:34px;height:34px;border-radius:50%;border:1.5px solid #B8975A;display:grid;place-items:center;color:#E8D6AE}
+.route .r2{display:flex;gap:8px;margin-top:12px}
+.route .r2 span{flex:1;background:rgba(255,255,255,.12);border-radius:12px;padding:8px 10px;font-size:12px;font-weight:700}
+.route .r2 span small{display:block;font-size:10px;opacity:.7;font-weight:600}
+.dep{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 13px;margin:0 18px 8px}
+.dep .tm{font-size:19px;font-weight:800;color:var(--navy);width:58px}
+.dep .tm small{display:block;font-size:10px;color:var(--mid);font-weight:600}
+.dep .tx{flex:1}.dep .tx b{font-size:13px;display:block}.dep .tx span{font-size:11px;color:var(--mid)}
+.dep .fr{text-align:right;font-weight:800;font-size:15px}
+.dep .fr small{display:block;font-size:9.5px;color:#8C6E3C;font-weight:800}
+.dep.sel{border-color:var(--navy);box-shadow:0 0 0 2px rgba(19,41,75,.15)}
+.tkt{margin:0 18px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.tkt .tp{background:linear-gradient(135deg,#0B1A30,#13294B);color:#fff;padding:14px 16px}
+.tkt .tp .k{font-size:10.5px;letter-spacing:1.4px;font-weight:800;color:#E8D6AE}
+.tkt .tp .rw{display:flex;justify-content:space-between;align-items:flex-end;margin-top:6px}
+.tkt .tp .rw b{font-size:24px;font-weight:800}
+.tkt .tp .rw small{display:block;font-size:11px;opacity:.75;font-weight:600}
+.tkt .bt{display:flex;gap:12px;padding:12px 16px;align-items:center;border-top:2px dashed var(--line)}
+.tkt .bt .qrbox{width:84px;height:84px;flex:none}
+.tkt .bt .inf{flex:1;font-size:11.5px;color:var(--mid);line-height:1.55}
+.tkt .bt .inf b{color:var(--ink)}
+.cd{margin:10px 18px 0;display:flex;align-items:center;gap:10px;background:#FAF7F1;border:1px solid #E3D3B3;border-radius:16px;padding:10px 14px;font-size:12.5px;font-weight:700}
+.cd b{font-size:20px;color:var(--navy);margin-left:auto}
+.rem .pr{padding:9px 0}
+.ev2{display:flex;margin:0 18px 8px;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.ev2 .l{width:78px;background:linear-gradient(135deg,#B8975A,#8C6E3C);color:#fff;display:grid;place-items:center;font-weight:800;font-size:15px;text-align:center;line-height:1.1}
+.ev2 .r{flex:1;padding:10px 12px}.ev2 .r b{font-size:13px;display:block}.ev2 .r span{font-size:11px;color:var(--mid)}
+html.app #side .mode{display:flex;gap:6px;margin:14px 0 4px}
+html.app #side .mode span{flex:1;text-align:center;font-size:12px;font-weight:800;padding:8px 6px;border-radius:12px;border:1.5px solid #13294B;color:#13294B;cursor:pointer}
+html.app #side .mode span.on{background:#13294B;color:#fff}
+html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-weight:800;color:#8C6E3C;margin:10px 0 2px}
+.wo-tabs{display:flex;gap:6px;margin:0 18px 10px;overflow:hidden}
+.wo-tabs span{font-size:11.5px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--mid);white-space:nowrap}
+.wo-tabs span.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.wo-hero{margin:0 18px;border-radius:18px;overflow:hidden;position:relative;box-shadow:0 6px 18px rgba(19,41,75,.15)}
+.wo-hero .trk{display:flex;transition:transform .6s cubic-bezier(.6,0,.2,1)}
+.wo-hero .sl{flex:0 0 100%;position:relative}
+.wo-hero img{width:100%;height:200px;object-fit:cover;display:block}
+.wo-hero .wcap{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 12px;background:linear-gradient(transparent,rgba(8,16,32,.85));color:#fff}
+.wo-hero .wcap b{display:block;font-size:15px}.wo-hero .wcap span{font-size:11px;opacity:.85}
+.wo-tag{font-style:normal;position:absolute;top:10px;left:10px;font-size:9.5px;font-weight:800;letter-spacing:1px;padding:3px 8px;border-radius:6px;background:#fff;color:var(--navy)}
+.wo-tag.g{background:#B8975A;color:#fff}
+.wo-hero .dots{position:absolute;right:12px;bottom:12px;display:flex;gap:4px}
+.wo-hero .dots i{width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.5);transition:width .3s}
+.wo-hero .dots i.on{width:16px;background:#fff}
+.wo-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 18px 0}
+.wo-c{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;position:relative}
+.wo-c img{width:100%;height:100px;object-fit:cover;display:block}
+.wo-c div{padding:7px 9px 9px}.wo-c b{font-size:11.5px;display:block;line-height:1.3}.wo-c span{font-size:10px;color:var(--mid)}
+
+/* ===== v7: mission wall, receipts, pushes ===== */
+.mhero{margin:4px 18px 0;border-radius:24px;padding:18px 18px 16px;color:#fff;position:relative;overflow:hidden;background:radial-gradient(120% 90% at 100% 0%,#2F4E7A 0%,#13294B 45%,#0B1A30 100%)}
+.mhero:before{content:"";position:absolute;right:-40px;top:22px;width:220px;height:46px;background:linear-gradient(90deg,rgba(217,196,154,0),rgba(217,196,154,.55),rgba(217,196,154,.15));transform:rotate(-18deg);border-radius:30px}
+.mhero .k{font-size:10px;letter-spacing:2px;font-weight:800;color:var(--gold2)}
+.mhero h1{font-family:var(--serif);font-size:30px;line-height:1.02;margin-top:6px;font-weight:700}
+.mhero .tkt2{position:absolute;right:14px;top:58px;width:92px;height:56px;border-radius:10px;background:linear-gradient(135deg,#E8D6AE,#B8975A);color:#0B1A30;display:grid;place-items:center;text-align:center;font-weight:800;font-size:10.5px;line-height:1.15;transform:rotate(8deg);box-shadow:0 8px 18px rgba(0,0,0,.3)}
+.mhero .tkt2:before,.mhero .tkt2:after{content:"";position:absolute;top:21px;width:14px;height:14px;border-radius:50%;background:#13294B}
+.mhero .tkt2:before{left:-7px}.mhero .tkt2:after{right:-7px}
+.mhero .pg{margin-top:16px;display:flex;justify-content:space-between;font-size:12px;font-weight:700}
+.mhero .pb{height:8px;border-radius:4px;background:rgba(255,255,255,.18);margin-top:7px;overflow:hidden}
+.mhero .pb i{display:block;height:100%;width:57%;border-radius:4px;background:linear-gradient(90deg,#D9C49A,#B8975A)}
+.mtabs{display:flex;gap:7px;padding:12px 18px 2px;overflow:hidden}
+.mtabs span{white-space:nowrap;font-size:11.5px;font-weight:700;padding:7px 11px;border-radius:12px;background:#fff;border:1px solid var(--line);color:var(--mid)}
+.mtabs span.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.minv{margin:12px 18px 0;background:#fff;border:1px solid #E3D3B3;border-radius:18px;padding:12px 14px;display:flex;align-items:center;gap:12px}
+.minv .e{width:40px;height:40px;border-radius:12px;background:#FAF3E4;display:grid;place-items:center;font-size:20px;flex:none}
+.minv b{font-size:13.5px;display:block}.minv span{font-size:11.5px;color:var(--mid)}
+.minv a{margin-left:auto;font-size:12px;font-weight:800;color:var(--gold);white-space:nowrap}
+.mg{margin:14px 18px 0;background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.mg .h{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#FAF7F1;border-bottom:1px solid var(--line)}
+.mg .h b{font-family:var(--serif);font-size:19px;font-weight:700}
+.mg .h b:after{content:" ✦";color:var(--gold);font-size:14px}
+.mg .h em{font-style:normal;font-size:10.5px;font-weight:800;padding:4px 9px;border-radius:10px;background:var(--navy);color:#fff}
+.mg .h em.g{background:var(--gold)}
+.mg.main .h{background:linear-gradient(90deg,#13294B,#1E3A63)}.mg.main .h b{color:#fff}
+.mr{display:flex;gap:11px;align-items:center;padding:11px 14px;border-bottom:1px solid #F0EBE2}
+.mr:last-child{border-bottom:0}
+.mr .e{width:36px;height:36px;border-radius:11px;background:#F3EEE5;display:grid;place-items:center;font-size:17px;flex:none}
+.mr .tx{flex:1;min-width:0}.mr .tx b{font-size:13px;display:block}.mr .tx span{font-size:11px;color:var(--mid)}
+.mr .ok{font-size:11px;font-weight:800;color:#2E7D4F;white-space:nowrap}
+.mr .lk{font-size:10.5px;font-weight:700;color:#A09A8E;white-space:nowrap;background:#F3EEE5;padding:4px 8px;border-radius:9px}
+.mr .gb{font-size:11px;font-weight:800;padding:6px 11px;border-radius:11px;background:var(--navy);color:#fff;white-space:nowrap}
+.mr .gb.out{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+.mspend{padding:13px 14px 12px;border-bottom:1px solid #F0EBE2}
+.mspend .t{display:flex;justify-content:space-between;align-items:baseline}
+.mspend .t b{font-size:13.5px}.mspend .t span{font-size:11px;color:var(--mid)}
+.mspend .amt{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px}
+.mspend .amt b{font-family:var(--serif);font-size:26px;color:var(--navy)}.mspend .amt b small{font-family:inherit;font-size:14px;color:var(--mid);font-weight:600}
+.mspend .chip2{font-size:11.5px;font-weight:800;padding:5px 10px;border-radius:10px;background:#FFF1C9;color:#8C6E3C;transition:all .4s}
+.mspend .chip2.done{background:#2E7D4F;color:#fff}
+.mspend .bar2{height:10px;border-radius:5px;background:#EEE8DD;margin-top:8px;overflow:hidden}
+.mspend .bar2 i{display:block;height:100%;width:73%;border-radius:5px;background:linear-gradient(90deg,#13294B,#2F4E7A);transition:width 1.6s cubic-bezier(.5,0,.2,1)}
+.mspend .bar2.gold i{background:linear-gradient(90deg,#B8975A,#D9C49A)}
+.mspend .rw{font-size:11px;color:var(--mid);margin-top:7px}.mspend .rw b{color:var(--gold)}
+.picks{display:flex;gap:8px;margin-top:10px}
+.mpk{flex:1;border-radius:13px;overflow:hidden;border:1px solid var(--line);background:#fff}
+.mpk img{width:100%;height:58px;object-fit:cover;display:block}
+.mpk div{padding:5px 7px 6px}.mpk b{font-size:10.5px;display:block;line-height:1.2}.mpk span{font-size:9.5px;color:var(--mid)}
+.mnote{text-align:center;font-size:10.5px;color:#A09A8E;margin:12px 0 0;text-decoration:underline}
+.claimov{position:absolute;inset:0;z-index:60;background:rgba(11,26,48,.55);display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .35s}
+.claimov.on{opacity:1;pointer-events:auto}
+.claimbox{width:300px;border-radius:26px;background:#fff;padding:22px 20px 18px;text-align:center;transform:scale(.85);transition:transform .45s cubic-bezier(.3,1.5,.5,1)}
+.claimov.on .claimbox{transform:none}
+.claimbox .ck{width:64px;height:64px;border-radius:50%;margin:0 auto;background:var(--navy);color:var(--gold2);display:grid;place-items:center;font-size:30px;border:3px solid var(--gold2)}
+.claimbox h3{font-family:var(--serif);font-size:26px;margin-top:10px}
+.claimbox .big{margin:12px auto 0;border-radius:18px;padding:12px;background:linear-gradient(135deg,#13294B,#0B1A30);color:#fff}
+.claimbox .big b{font-family:var(--serif);font-size:28px;display:block}.claimbox .big span{font-size:11.5px;color:var(--gold2)}
+.claimbox .gift{display:flex;gap:8px;margin-top:10px}
+.claimbox .gift div{flex:1;border:1.5px dashed #D9C49A;border-radius:14px;padding:8px 4px;font-size:11px;color:var(--mid)}
+.claimbox .gift b{display:block;font-size:16px;color:var(--navy)}
+.claimbox .btn{margin-top:14px;height:46px;transition:transform .2s}
+.claimbox.done .btn{background:#2E7D4F}
+.strip.mis{border-color:#E3D3B3}
+.strip.mis .ic{background:linear-gradient(135deg,#B8975A,#8C6E3C);color:#fff;font-size:16px}
+.strip.mis .mb{height:5px;border-radius:3px;background:#EEE8DD;margin-top:6px;overflow:hidden;width:150px}.strip.mis .mb i{display:block;height:100%;width:73%;background:var(--navy)}
+/* paycode */
+.payc{margin:6px 18px 0;border-radius:26px;background:linear-gradient(160deg,#13294B,#0B1A30);color:#fff;padding:18px;text-align:center}
+.payc .k{font-size:10px;letter-spacing:2px;color:var(--gold2);font-weight:800}
+.payc .nm{font-family:var(--serif);font-size:26px;margin-top:4px}
+.payc .qrbox{width:210px;height:210px;margin:14px auto 0;background:#fff;border-radius:18px;padding:12px}
+.payc .tm{font-size:11.5px;opacity:.8;margin-top:10px}
+.trk2{margin:12px 18px 0;background:#fff;border:1.5px solid #E3D3B3;border-radius:18px;padding:12px 14px}
+.trk2 .t{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800}
+.trk2 .t .dot{width:8px;height:8px;border-radius:50%;background:#2E7D4F;box-shadow:0 0 0 4px rgba(46,125,79,.15)}
+.trk2 p{font-size:11.5px;color:var(--mid);margin-top:5px;line-height:1.45}
+/* receipt submit */
+.rcard{margin:0 18px 12px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px}
+.rcard h4{font-family:var(--serif);font-size:19px;font-weight:700;margin-bottom:8px}
+.rcard .lab{font-size:10px;letter-spacing:1.6px;font-weight:800;color:var(--gold);margin-bottom:6px}
+.ropt{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:8px}
+.ropt .rd{width:18px;height:18px;border-radius:50%;border:2px solid #C9C2B6;flex:none;position:relative}
+.ropt.on{border-color:var(--navy);background:#F6F8FB}.ropt.on .rd{border-color:var(--navy)}
+.ropt.on .rd:after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--navy)}
+.ropt b{font-size:12.5px;display:block}.ropt span{font-size:11px;color:var(--mid)}
+.ropt .mini{margin-left:auto;font-size:10.5px;font-weight:800;color:#8C6E3C;background:#FFF1C9;padding:4px 8px;border-radius:9px;white-space:nowrap}
+.rq{font-size:12.5px;line-height:1.45}
+.yn{display:flex;gap:8px;margin-top:10px}.yn span{flex:1;text-align:center;padding:10px;border-radius:12px;border:1.5px solid var(--line);font-weight:800;font-size:13px;transition:all .3s}
+.yn span.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.rwarn{display:flex;gap:10px;background:#13294B;color:#fff;border-radius:14px;padding:10px 12px;font-size:11.5px;line-height:1.4}
+.rwarn b{color:var(--gold2)}
+.slots{display:flex;gap:10px;margin-top:12px}
+.slot{width:128px;height:170px;border-radius:16px;background:#EFEAE1;display:grid;place-items:center;position:relative;overflow:hidden;flex:none}
+.slot .cm{width:52px;height:52px;border-radius:16px;background:var(--navy);display:grid;place-items:center;color:var(--gold2);font-size:24px}
+.slot.add{background:#fff;border:1.5px dashed #C9C2B6;color:var(--mid);font-size:12px;font-weight:700;text-align:center}
+.slot .thumb{position:absolute;inset:0;background:#FFFDF8;padding:10px 9px;font-family:"Courier New",monospace;font-size:7.5px;line-height:1.35;color:#333;opacity:0;transition:opacity .4s}
+.slot.got .thumb{opacity:1}.slot.got .cm{display:none}
+.slot .pg{position:absolute;left:6px;top:6px;background:#fff;border-radius:8px;font-size:9.5px;font-weight:800;padding:3px 6px;box-shadow:0 2px 6px rgba(0,0,0,.12);display:none}
+.slot .ac{position:absolute;right:6px;top:6px;display:none;gap:4px}.slot .ac span{background:var(--gold);color:#fff;font-size:9.5px;font-weight:800;padding:3px 7px;border-radius:8px}
+.slot.got .pg,.slot.got .ac{display:flex}
+.agree{display:flex;align-items:center;gap:10px;font-size:12px;margin-top:4px}
+.agree a{color:var(--gold);font-weight:700}
+.rcam{position:absolute;inset:0;z-index:65;background:#0A0A0A;color:#fff;opacity:0;pointer-events:none;transition:opacity .35s}
+.rcam.on{opacity:1;pointer-events:auto}
+.rcam .paper{position:absolute;left:78px;top:120px;width:234px;height:440px;background:#FFFDF8;color:#333;font-family:"Courier New",monospace;font-size:10px;line-height:1.45;padding:16px 14px;transform:rotate(-2deg);box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.rcam .paper .c{text-align:center}.rcam .paper hr{border:0;border-top:1px dashed #999;margin:6px 0}.rcam .paper .ln{display:flex;justify-content:space-between}
+.rcam .edge{position:absolute;left:70px;top:112px;width:250px;height:456px;border:3px solid #4F8BFF;border-radius:6px;opacity:0;transition:opacity .3s}
+.rcam.lock .edge{opacity:1}
+.rcam .pill{position:absolute;left:50%;top:80px;transform:translateX(-50%);background:rgba(40,40,40,.85);font-size:12.5px;padding:7px 14px;border-radius:16px;white-space:nowrap}
+.rcam .ctl{position:absolute;left:0;right:0;bottom:46px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.rcam .sh{width:70px;height:70px;border-radius:50%;border:4px solid #fff;display:grid;place-items:center}.rcam .sh i{width:56px;height:56px;border-radius:50%;background:#fff;transition:transform .15s}
+.rcam.snap .sh i{transform:scale(.8)}
+.rcam .md{display:flex;gap:6px;background:rgba(60,60,60,.8);border-radius:16px;padding:4px}.rcam .md span{font-size:11.5px;padding:5px 12px;border-radius:12px}.rcam .md span.on{background:#fff;color:#111;font-weight:700}
+.rcam .fl{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.rcam.snap .fl{animation:flash .5s}
+@keyframes flash{0%{opacity:.9}100%{opacity:0}}
+.rhsum{display:flex;gap:8px;margin:0 18px 12px}.rhsum div{flex:1;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 12px}
+.rhsum b{font-family:var(--serif);font-size:20px;display:block;color:var(--navy)}.rhsum span{font-size:10.5px;color:var(--mid)}
+.rh{margin:0 18px 10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 14px;transition:all .5s}
+.rh .t{display:flex;justify-content:space-between;align-items:center}
+.rh .st{font-size:13.5px;font-weight:800;display:flex;align-items:center;gap:6px}
+.rh .dt{font-size:11.5px;color:var(--mid);text-align:right}
+.rh .am{display:flex;justify-content:space-between;align-items:baseline;margin-top:4px}
+.rh .am b{font-size:15px}.rh .am span{font-size:11.5px;color:var(--mid)}
+.rh .ms{font-size:11.5px;margin-top:6px;line-height:1.4}
+.rh.pend{border-color:#E3D3B3;background:#FFFCF5}.rh.pend .ms{color:#8C6E3C}
+.rh.okk .ms{color:#2E7D4F}.rh.rej .ms{color:#B3261E}
+.rh.new{box-shadow:0 0 0 3px rgba(184,151,90,.35)}
+.aitip{margin:6px 18px 0;border-radius:18px;padding:12px 14px;background:linear-gradient(120deg,#13294B,#2F4E7A);color:#fff;display:flex;gap:10px;align-items:center}
+.aitip b{font-size:13px;display:block}.aitip span{font-size:11px;opacity:.85}
+.dep .fr .bell{font-size:11px;font-weight:800;color:var(--navy);border:1.5px solid var(--navy);border-radius:10px;padding:4px 8px;display:inline-block}
+.dep.sel .fr .bell{background:var(--navy);color:#fff}
+.push{cursor:pointer}
+</style>
+</head>
+<body>
+<div id="side"><h1>LaLa Quest<br><span style="color:#13294B">MSP App 3.0</span></h1><p>Clickable prototype. Tap, scroll and swipe like a real app.<br>AI 示意・資料為示意</p>
+<div class="mode"><span class="on" data-m="full">Core + Add-ons</span><span data-m="core">Core only</span></div><div class="jump"><em class="ag">CORE</em><span data-j="home">🏠 Home</span><span data-j="missions">🎯 Mission Wall</span><span data-j="tiers">🏅 Member levels</span><span data-j="parking">🅿️ LaLa Park · LPR</span><span data-j="bus">🚌 LaLa Go · Bus times</span><span data-j="busticket">⏰ Trip reminder</span><span data-j="receipt">🧾 Submit receipt</span><span data-j="rhist">📋 My receipts</span><span data-j="me">👤 Me &amp; vouchers</span><em class="ag">ADD-ONS · AI</em><span data-j="scan">🧾 AI · Receipt Scan</span><span data-j="ask">✨ AI · Ask LaLa</span><span data-j="buzz">💬 AI · LaLa Buzz</span><span data-j="akiba">🍜 AI · Buzz tenant page</span><em class="ag">ADD-ONS · PLAY</em><span data-j="quest">🗺️ Play · Stamp Rally</span><span data-j="capsule">🎰 Play · LaLa Capsule</span></div></div>
+<div id="device">
+
+<!-- HOME -->
+<section class="screen" id="home">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="scroll"><div class="inner" id="homeInner">
+    <div class="top">
+      <div class="mall"><i></i>LaLaport BBCC ▾</div>
+      <div class="icons"><div><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0112 0v5l2 2H4z"/><path d="M10 20a2 2 0 004 0"/></svg><span class="dot"></span></div><div><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><path d="M14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2"/></svg></div></div>
+    </div>
+    <div class="pad hello"><div class="kick">GOOD AFTERNOON</div><h1>Shu Hoong</h1></div>
+    <div class="tier">
+      <div class="row">
+        <div><div class="brandline">MSP MEMBER</div><div class="tname">Explorer</div><span class="badge">LV 2 · SINCE 2024</span></div>
+        <img class="mon" src="../assets/app/char_explorer.png" alt="">
+      </div>
+      <div class="cardmid">
+        <div class="qrw"><div class="qrbox sm" id="homeqr"></div><span>Tap to scan</span></div>
+        <div class="ptsw">
+          <div class="pts">1,884<small>MSP pts</small></div>
+          <div class="bar" style="--w:75%"><i></i></div>
+          <div class="meta"><span>616 pts to <b>SENPAI</b></span><span>1.2x</span></div>
+        </div>
+      </div>
+      <div class="chips"><span class="chip">4H free parking</span><span class="chip">1.2x points</span><span class="chip">Birthday 2x</span></div>
+    </div>
+    <div class="strip mis" data-go="missions"><div class="ic">🎯</div><div><b>Fiesta mission · RM80 to go</b><span>RM300 spend → RM30 + 300 pts</span><div class="mb"><i></i></div></div><div class="rt">73%<small>done</small></div></div>
+    <div class="strip park"><div class="ic">P</div><div><b><span class="plate" style="font-size:11px;padding:2px 7px;letter-spacing:1.5px">WXY 1234</span>&nbsp; parked · P2</b><span>Ticketless LPR · points pay the rest</span></div><div class="rt">2h 31m<small>free left</small></div></div>
+    <div class="quick">
+      <div class="q"><div class="e"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M10 16V8h3a2.5 2.5 0 010 5h-3"/></svg></div>My<br>Parking</div>
+      <div class="q"><div class="e"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="3"/><path d="M5 11h14M8 18v2M16 18v2"/><circle cx="8.5" cy="14.5" r=".8"/><circle cx="15.5" cy="14.5" r=".8"/></svg></div>Bus &amp;<br>Shuttle</div>
+      <div class="q"><div class="e"><svg viewBox="0 0 24 24"><path d="M3 8a2 2 0 002-2h14a2 2 0 002 2v2a2 2 0 000 4v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2a2 2 0 000-4z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg></div>My<br>Vouchers</div>
+      <div class="q"><div class="e"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></div>Submit<br>Receipt</div>
+    </div>
+    <div class="strip trip"><div class="ic"><svg style="width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="3"/><path d="M5 11h14M8 18v2M16 18v2"/><circle cx="8.5" cy="14.5" r=".8"/><circle cx="15.5" cy="14.5" r=".8"/></svg></div><div><b>Singapore · 3:30 PM</b><span>Bay 3, LTH LG1 · reminder on</span></div><div class="rt">1h 25m<small>to board</small></div></div>
+    <div class="sec addon"><b>Today's Quests <em class="ao">PLAY</em></b><a>See all</a></div>
+    <div class="hs addon">
+      <div class="qc" style="background:linear-gradient(135deg,#0B1A30,#1E3A63)"><span class="xp">+300 XP</span><div class="t">ACG MATSURI · 7–9 NOV</div><h3>Stamp Rally:<br>collect 5 stamps</h3><div class="p"><i class="on">🎐</i><i class="on">🍜</i><i class="on">⛩️</i><i>?</i><i>?</i></div></div>
+      <div class="qc" style="background:linear-gradient(135deg,#8C6E3C,#B8975A)"><span class="xp">+50 XP</span><div class="t">MAKAN QUEST</div><h3>Try 2 new F&amp;B<br>this week</h3><div class="p"><i class="on">🍜</i><i>?</i></div></div>
+    </div>
+    <div class="sec addon"><b>Trending on LaLa Buzz <em class="ao">AI</em></b><a>More</a></div>
+    <div class="bz card addon" style="padding:10px">
+      <img src="../assets/app/ramen.jpg">
+      <div><h4>Akiba Ramen</h4><span class="score">★ 4.8 Buzz</span> <span class="tr">▲ 128 posts</span><div class="qt">"Found a hidden ramen gem in KL 🍜"</div><div class="src">via Instagram · Pandora AI</div></div>
+    </div>
+    <div class="bz card addon" style="padding:10px">
+      <img src="../assets/app/collabcafe.jpg">
+      <div><h4>Doko Koko Café</h4><span class="score">★ 4.7 Buzz</span> <span class="tr">▲ 98 posts</span><div class="qt">"So well themed, huge merch section!"</div><div class="src">via Instagram · Pandora AI</div></div>
+    </div>
+    <div class="sec" style="margin-top:6px"><b>What's On at LaLaport</b><a>See all</a></div>
+    <div class="wo-tabs"><span class="on">All</span><span>Events</span><span>Promotions</span><span>Dining</span><span>Pop-ups</span></div>
+    <div class="wo-hero" id="woHero"><div class="trk">
+      <div class="sl"><img src="../assets/app/ev_pink.jpg"><em class="wo-tag">EVENT</em><div class="wcap"><b>LUV IT PINK · Rooftop Garden</b><span>6–9 Nov · 12 PM–10 PM · Level 4</span></div></div>
+      <div class="sl"><img src="../assets/app/ev_sports.jpg"><em class="wo-tag g">PROMO</em><div class="wcap"><b>Sports Direct · Year-End Sale up to 50%</b><span>Until 3 Jan · Members earn 1.2x pts</span></div></div>
+      <div class="sl"><img src="../assets/app/ev_peace.jpg"><em class="wo-tag">POP-UP</em><div class="wcap"><b>PEACEMINUSONE × ZO&amp;FRIENDS</b><span>6–16 Nov · Ground Floor</span></div></div>
+    </div><div class="dots"><i class="on"></i><i></i><i></i></div></div>
+    <div class="wo-grid">
+      <div class="wo-c"><img src="../assets/app/ev_focus.jpg"><div><b>Focus Point · Buy 1 Free 1</b><span>Until 3 Jan</span></div></div>
+      <div class="wo-c"><img src="../assets/app/ev_deepavali.jpg"><div><b>Deepavali Promo · Hot &amp; Roll</b><span>4–9 Nov · RM3 off</span></div></div>
+      <div class="wo-c"><img src="../assets/app/ev_boost.jpg"><div><b>Boost Juice · Blends with Benefits</b><span>Until 4 Dec</span></div></div>
+      <div class="wo-c"><img src="../assets/app/ev_swnk.jpg"><div><b>SWNK Houze · Member privileges</b><span>From 6 Nov</span></div></div>
+    </div>
+    <div style="height:30px"></div>
+  </div></div>
+  <div class="nav"><div class="act"><span class="i">🏠</span>Home</div><div><span class="i">🗺️</span>Quest</div><div class="fab"><div class="b">🧾</div><span>Scan</span></div><div><span class="i">💬</span>Buzz</div><div><span class="i">👤</span>Me</div></div>
+</section>
+
+<!-- TIERS -->
+<section class="screen" id="tiers">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="hdr"><div class="back">‹</div><h2>Your Level</h2></div>
+  <div class="stack anim-stack">
+    <div class="tc t1" style="top:0;animation-delay:.1s"><div class="nm">ROOKIE</div><div class="lv">LV 1</div></div>
+    <div class="tc t2" style="top:46px;animation-delay:.25s"><div class="nm">EXPLORER</div><div class="lv">LV 2 · YOU</div></div>
+    <div class="tc t3" style="top:92px;animation-delay:.4s"><div class="nm">SENPAI</div><div class="lv">LV 3</div></div>
+    <div class="tc t4" style="top:138px;animation-delay:.55s"><div class="nm">LEGEND</div><div class="lv">LV 4</div><div class="ds">The ones the mall knows by name.</div><div class="ml">RM 12,000 / year · Legend Lounge · Legend Night</div></div>
+  </div>
+  <div class="perk" style="margin-top:-6px"><table>
+    <tr><th style="background:#8F8A80;text-align:left;padding-left:12px">Perks</th><th style="background:#4A5F80">Rookie</th><th style="background:#1E3A63">Explorer</th><th style="background:#B8975A">Senpai</th><th style="background:#0B1A30">Legend</th></tr>
+    <tr><td>Points</td><td>1x</td><td class="me">1.2x</td><td>1.5x</td><td>2x</td></tr>
+    <tr><td>Free parking (LPR)</td><td>3H</td><td class="me">4H</td><td>5H</td><td>All day</td></tr>
+    <tr><td>Mission bonus</td><td>1x</td><td class="me">1.2x</td><td>1.5x</td><td>2x</td></tr>
+    <tr class="addon"><td>Capsule spins</td><td>1/day</td><td class="me">1/day</td><td>2/day</td><td>3/day</td></tr>
+    <tr><td>Event entry</td><td>–</td><td class="me">–</td><td>Priority</td><td>VIP</td></tr>
+    <tr><td>Unlock at</td><td>Sign up</td><td class="me">RM1.5k</td><td>RM5k</td><td>RM12k</td></tr>
+  </table></div>
+  <div class="sec" style="margin-top:12px"><b>3 ways to level up</b></div>
+  <div class="how"><div><b>🧾</b>Spend &amp; scan receipts</div><div><b>📍</b>Visit &amp; check in</div><div><b>🎯</b>Clear quests</div></div>
+  <div class="pad" style="margin-top:6px"><div class="btn blue">616 pts more to SENPAI →</div></div>
+</section>
+
+<!-- QUEST -->
+<section class="screen" id="quest">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="hdr"><div class="back">‹</div><div><h2>ACG Matsuri Stamp Rally</h2><div class="sub" style="font-size:12px">7–9 Nov · LaLaport BBCC <em class="ao">PLAY ADD-ON</em></div></div></div>
+  <div class="map">
+    <div class="fl" style="top:22px"><span>L4 · Garden Dining</span></div>
+    <div class="fl" style="top:100px"><span>L2 · ACG Base</span></div>
+    <div class="fl" style="top:178px"><span>L1 · Doko Koko</span></div>
+    <div class="fl" style="top:256px;height:40px;opacity:.5"><span>G · WoW Plaza</span></div>
+    <div class="stamp got" style="left:200px;top:28px"><img src="../assets/app/fig_ramen.jpg" style="animation-delay:.4s"></div>
+    <div class="stamp got" style="left:100px;top:106px"><img src="../assets/app/fig_lantern.jpg" style="animation-delay:.8s"></div>
+    <div class="stamp got" style="left:260px;top:106px"><img src="../assets/app/fig_cat.jpg" style="animation-delay:1.2s"></div>
+    <div class="stamp" style="left:150px;top:184px"><img src="../assets/app/fig_cloud.jpg"></div>
+    <div class="stamp" style="left:280px;top:184px"><img src="../assets/app/fig_hibiscus.jpg"></div>
+    <div class="me-pin" style="left:206px;top:205px"></div>
+  </div>
+  <div class="banner" style="margin-top:12px"><div><b>3 / 5 stamps</b><span>Finish all → Limited Matsuri capsule + 300 XP</span></div><div style="font-size:30px">🎐</div></div>
+  <div class="qlist">
+    <div class="qi done"><div class="e" style="background:#F3EEE5">🍜</div><div class="tx"><b>Makan at Akiba Ramen</b><span>Scan your receipt</span></div><div class="x">✓ +50</div></div>
+    <div class="qi"><div class="e" style="background:#EFEBE4">⛩️</div><div class="tx"><b>Check in at Doko Koko Café</b><span>You're 40m away · L1</span></div><div class="x">+30 XP</div></div>
+    <div class="qi"><div class="e" style="background:#F3EEE5">👯</div><div class="tx"><b>Squad up: bring 1 kawan</b><span>Both get +100 XP</span></div><div class="x">+100 XP</div></div>
+  </div>
+  <div class="nav"><div><span class="i">🏠</span>Home</div><div class="act"><span class="i">🗺️</span>Quest</div><div class="fab"><div class="b">🧾</div><span>Scan</span></div><div><span class="i">💬</span>Buzz</div><div><span class="i">👤</span>Me</div></div>
+</section>
+
+<!-- CAPSULE -->
+<section class="screen" id="capsule">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="hdr"><div class="back">‹</div><div><h2>LaLa Capsule</h2><div class="sub" style="font-size:12px">Matsuri Series <em class="ao">PLAY ADD-ON</em></div></div><div style="margin-left:auto" class="score">🎟️ 1 free spin</div></div>
+  <div class="gacha" id="gacha">
+    <div class="dome">
+      <div class="cap" style="left:20px;top:120px;background:var(--pink)"></div>
+      <div class="cap" style="left:62px;top:136px;background:var(--orange)"></div>
+      <div class="cap" style="left:106px;top:124px;background:var(--blue)"></div>
+      <div class="cap" style="left:148px;top:136px;background:var(--mint)"></div>
+      <div class="cap" style="left:40px;top:84px;background:#D9C49A"></div>
+      <div class="cap" style="left:86px;top:90px;background:#4A5F80"></div>
+      <div class="cap" style="left:128px;top:82px;background:var(--coral)"></div>
+      <div class="cap" style="left:70px;top:48px;background:var(--mint)"></div>
+      <div class="cap" style="left:114px;top:46px;background:var(--pink)"></div>
+    </div>
+    <div class="body"><div class="lbl">LALA CAPSULE</div><div class="knob"></div><div class="chute"></div></div>
+    <div class="drop"></div>
+  </div>
+  <div class="pad" style="margin-top:8px;display:flex;gap:10px"><div class="btn" style="flex:1">Spin · FREE today</div><div class="btn ghost" style="width:120px">50 pts</div></div>
+  <div class="sec" style="margin-top:14px"><b>My collection 6/24</b><a>Trade with kawan</a></div>
+  <div class="coll">
+    <div><img src="../assets/app/fig_cloud.jpg"></div><div><img src="../assets/app/fig_lantern.jpg"></div><div><img src="../assets/app/fig_ramen.jpg"></div><div><img src="../assets/app/fig_cat.jpg"></div><div><img src="../assets/app/fig_bag.jpg"></div><div><img src="../assets/app/fig_plane.jpg"></div>
+    <div>?</div><div>?</div><div>?</div><div>?</div><div>?</div><div>?</div>
+  </div>
+  <div class="reveal"><div class="ray"></div><div class="fig"><img src="../assets/app/fig_durian.jpg"></div><div class="rare">★ RARE ★</div><h3>Durian-chan</h3><p>Matsuri Series · 7 / 24 collected</p></div>
+  <div class="nav"><div><span class="i">🏠</span>Home</div><div class="act"><span class="i">🗺️</span>Quest</div><div class="fab"><div class="b">🧾</div><span>Scan</span></div><div><span class="i">💬</span>Buzz</div><div><span class="i">👤</span>Me</div></div>
+</section>
+
+<!-- SCAN -->
+<section class="screen" id="scan">
+  <div class="status" style="color:#fff"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="cam">
+    <div class="receipt">
+      <div class="c"><b>AKIBA RAMEN</b><br>LaLaport BBCC L4-FC-14<br>Kuala Lumpur</div><hr>
+      <div class="ln"><span>06/11/2026</span><span>19:42</span></div>
+      <div class="ln"><span>Inv #A-08172</span><span>T04</span></div><hr>
+      <div class="ln"><span>Chicken Paitan</span><span>12.90</span></div>
+      <div class="ln"><span>Tempura Set</span><span>8.90</span></div>
+      <div class="ln"><span>Matcha Latte</span><span>7.10</span></div><hr>
+      <div class="ln"><span>SST 0%</span><span>0.00</span></div>
+      <div class="ln"><b>TOTAL</b><b>RM 28.90</b></div><hr>
+      <div class="c">Terima kasih!<br>Thank you, come again</div>
+      <div class="c" style="margin-top:14px;letter-spacing:2px">||| ||||| || |||| |||</div>
+    </div>
+    <div class="frame"><i></i><i></i><i></i><i></i></div>
+    <div class="laser"></div>
+    <div class="hl" style="left:104px;top:72px;width:150px;height:28px;animation-delay:1.4s"></div>
+    <div class="hl" style="left:106px;top:150px;width:180px;height:18px;animation-delay:1.7s"></div>
+    <div class="hl" style="left:118px;top:300px;width:170px;height:22px;animation-delay:2s"></div>
+    <div class="ai-pill">✨ AI is reading your receipt…</div>
+  </div>
+  <div class="sheet" id="sheet">
+    <div class="grab"></div>
+    <div class="ok">✓ AI matched your receipt in 1.2s</div>
+    <div class="rcpt"><div><b>Akiba Ramen</b><br><span>L4-FC-14 · 6 Nov 2026, 7:42pm</span></div><b>RM 28.90</b></div>
+    <div class="earn"><div class="big">+35 <small>pts</small></div><div class="mult">EXPLORER 1.2x</div></div>
+    <div class="qprog">🍜 Makan Quest 2/2 complete · +50 XP bonus<br>⭐ Share a Real Talk on Akiba Ramen for +20 pts</div>
+    <div class="btn" style="margin-top:12px">Done · Shiok!</div>
+  </div>
+  <div id="coins"></div>
+</section>
+
+<!-- ASK LALA -->
+<section class="screen" id="ask">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="hdr"><div class="back">‹</div><div class="lala"><div class="av"><img src="../assets/app/fig_cloud.jpg"></div><div><h2>Ask LaLa ✨</h2><div class="sub" style="font-size:11.5px">EN / BM / 中文 <em class="ao">AI ADD-ON</em></div></div></div></div>
+  <div class="chat" id="chat">
+    <div class="msg me" style="animation-delay:.3s">Jom makan! Any halal ramen under RM15 near me? 🍜</div>
+    <div class="typing" style="animation-delay:1s"><i></i><i></i><i></i></div>
+    <div class="msg ai" style="animation-delay:2.2s">Ada! You're on L2, so here are 2 picks on <b>L4 Garden Dining</b>, both Muslim-friendly 👇</div>
+    <div class="pick" style="animation-delay:2.8s"><img src="../assets/app/ramen.jpg"><div><b>Akiba Ramen</b><span>From RM9.90 · ★4.8 Buzz · 2 min</span></div><div class="go">Go</div></div>
+    <div class="pick" style="animation-delay:3.2s"><img src="../assets/app/fig_ramen.jpg"><div><b>Garden Ramen Bar</b><span>From RM13.90 · ★4.5 Buzz · 3 min</span></div><div class="go">Go</div></div>
+    <div class="msg ai" style="animation-delay:3.8s">Tip: scan your receipt after makan, you'll finish the <b>Makan Quest</b> (+50 XP) 😉</div>
+  </div>
+  <div class="sugg"><span>🗓️ Plan my Saturday</span><span>🎤 K-pop event today?</span><span>🅿️ Nearest exit</span></div>
+  <div class="input">Ask anything, lah…<div class="mic">🎙️</div></div>
+  <div class="nav"><div class="act"><span class="i">🏠</span>Home</div><div><span class="i">🗺️</span>Quest</div><div class="fab"><div class="b">🧾</div><span>Scan</span></div><div><span class="i">💬</span>Buzz</div><div><span class="i">👤</span>Me</div></div>
+</section>
+
+<!-- BUZZ -->
+<section class="screen" id="buzz">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="scroll"><div class="inner" id="buzzInner">
+  <div class="pad" style="padding-top:6px"><h1>LaLa Buzz</h1><div class="sub">What Malaysians love here, from real social posts. <em class="ao">AI ADD-ON</em></div><div class="pdr"><i></i>Powered by <b>PANDORA</b> social listening · updated daily</div></div>
+  <div class="seg" style="margin-top:12px"><span class="on">All</span><span>🍜 Makan</span><span>🎌 ACG</span><span>👟 Outlet</span><span>👨‍👩‍👧 Family</span></div>
+  <div class="hero"><img src="../assets/app/acg_event.jpg"><div class="ov"><span class="k">BUZZ OF THE WEEK</span><h3>ACG Base turns 1 🎉</h3><p>223 posts · "Heaven for anime fans"</p></div></div>
+  <div class="sec"><b>Top rated this month</b><a>Map view</a></div>
+  <div class="bl">
+    <div class="bi"><div class="th"><img src="../assets/app/ramen.jpg"></div><div class="tx"><b>Akiba Ramen</b><div class="love">Creamy paitan · from RM9.90 · halal-friendly</div><div class="meta"><span class="score">★ 4.8</span><span>128 posts</span><span class="tr">▲ 32%</span></div></div></div>
+    <div class="bi"><div class="th"><img src="../assets/app/collabcafe.jpg"></div><div class="tx"><b>Doko Koko Café</b><div class="love">Themed menus · big merch corner</div><div class="meta"><span class="score">★ 4.7</span><span>98 posts</span><span class="tr">▲ 18%</span></div></div></div>
+    <div class="bi"><div class="th" style="background:#F3EEE5">🎌</div><div class="tx"><b>Animate Café</b><div class="love">Malaysia's first · collab menus</div><div class="meta"><span class="score">★ 4.6</span><span>57 posts</span><span class="tr">▲ 9%</span></div></div></div>
+    <div class="bi"><div class="th" style="background:#EFEBE4">🧸</div><div class="tx"><b>Ngam Ngam Neighbourhood</b><div class="love">Play area right next to the tables · L2</div><div class="meta"><span class="score">★ 4.6</span><span>24 posts</span><span class="tr">▲ 12%</span></div></div></div>
+  </div>
+  <div class="ai-note">✨ Curated by AI from public IG &amp; Threads posts · updated daily</div>
+  <div style="height:40px"></div>
+  </div></div>
+  <div class="nav"><div><span class="i">🏠</span>Home</div><div><span class="i">🗺️</span>Quest</div><div class="fab"><div class="b">🧾</div><span>Scan</span></div><div class="act"><span class="i">💬</span>Buzz</div><div><span class="i">👤</span>Me</div></div>
+</section>
+
+<!-- BRAND -->
+<section class="screen" id="brand">
+  <div class="bhero"><img src="../assets/app/ramen.jpg"><div class="topb"><div>‹</div><div>♡</div></div></div>
+  <div class="bcard">
+    <h2>Akiba Ramen</h2>
+    <div class="tags"><span>📍 L4-FC-14</span><span>🕌 Muslim-friendly</span><span>💸 RM9.90+</span></div>
+    <div class="meter"><div class="ring" style="--p:92%"><div>4.8</div></div><div class="r"><b>92% love it · 128 posts</b><p class="pdx">PANDORA AI · 128 posts analysed</p><p>People rave about the creamy chicken broth and the price. Some say it gets busy at lunch.</p></div></div>
+    <div class="love-chips"><span style="animation-delay:.6s">🍜 Creamy paitan</span><span style="animation-delay:.8s">💸 Value for money</span><span style="animation-delay:1s">🍤 Mix &amp; match tempura</span><span style="animation-delay:1.2s">✅ No pork, no lard</span></div>
+    <div class="tabs"><span class="on">🌐 Web Buzz</span><span>🗣️ Real Talk (36)</span></div>
+    <div class="post"><div class="who"><i style="background:linear-gradient(135deg,#F58529,#DD2A7B)">IG</i>@yuumi_kato <em>Aug 2026 · 1.9k ❤</em></div><p>"Found a hidden ramen gem in KL 🍜✨ seriously satisfying, from only RM9.90!"</p></div>
+    <div class="post"><div class="who"><i style="background:#111">@</i>Threads user <em>Aug 2026</em></div><p>"Congrats on the opening! No pork, no lard, Muslim friendly 🙌"</p></div>
+  </div>
+  <div class="cta"><div class="btn ghost">🧭 Take me there</div><div class="btn">✍️ Real Talk +20</div></div>
+</section>
+
+<!-- REAL TALK -->
+<section class="screen" id="realtalk">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="hdr"><div class="back">✕</div><h2>Real Talk · Akiba Ramen</h2></div>
+  <div class="rt">
+    <div class="vrf"><span style="font-size:22px">🧾</span><div><b>Verified purchase ✓</b><br><span>RM 28.90 · 6 Nov 2026 · matched by AI</span></div></div>
+    <div class="lab">How was it?</div>
+    <div class="rate" id="rate"><span>🏮</span><span>🏮</span><span>🏮</span><span>🏮</span><span>🏮</span></div>
+    <div class="lab">Pick your vibe</div>
+    <div class="stick" id="stick"><span>🤤 Sedap gila</span><span>💸 Worth it</span><span>✅ Halal-friendly</span><span>⏳ Long queue</span><span>📸 IG-worthy</span><span>👨‍👩‍👧 Family-friendly</span></div>
+    <div class="lab">Say it your way</div>
+    <div class="ta"><span id="typed"></span><span class="caret"></span></div>
+    <div class="lab">Photos</div>
+    <div class="photos"><div><img src="../assets/app/ramen.jpg"></div><div>＋</div></div>
+    <div class="btn" style="margin-top:18px">Post Real Talk · +20 pts</div>
+  </div>
+  <div class="toast" id="toast"><b>+20 pts</b><span>Thanks for keeping it real! 🙌</span></div>
+</section>
+
+<!-- LEVEL UP -->
+<section class="screen" id="levelup">
+  <div class="status" style="color:#fff"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div id="confetti"></div>
+  <div class="lu">
+    <div class="k">LEVEL UP!</div>
+    <h1>You're a Senpai now 🎉</h1>
+    <div class="flip"><div class="in">
+      <div class="tc t2"><div class="nm">EXPLORER</div><div class="lv">LV 2</div></div>
+      <div class="tc t3"><div class="nm">SENPAI</div><div class="lv">LV 3</div><div class="ds">Shu Hoong · Member since 2024</div><div class="ml">5,012 pts this year</div></div>
+    </div></div>
+    <div class="unl">
+      <div style="animation-delay:2.4s"><i>🅿️</i>Free parking 4H → <b>5H</b><em>NEW</em></div>
+      <div style="animation-delay:2.7s"><i>⚡</i>Points 1.2x → <b>1.5x</b><em>NEW</em></div>
+      <div style="animation-delay:3s"><i>🎟️</i>Priority entry at Bon Odori<em>NEW</em></div>
+      <div style="animation-delay:3.3s"><i>🎰</i>2 capsule spins a day<em>NEW</em></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ME -->
+<section class="screen hasnav" id="me">
+  <div class="status" style="background:#13294B;color:#fff"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="mehead">
+    <div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:17px">My LaLa</b><span data-act="settings" style="font-size:20px">⚙️</span></div>
+    <div class="row"><div class="av2"><img src="../assets/app/char_explorer.png"></div>
+      <div><h2>Yap Shu Hoong</h2><span class="tierchip">EXPLORER · LV 2</span><div style="font-size:12px;opacity:.9;margin-top:6px">Member since 2024 · LaLaport BBCC</div></div></div>
+  </div>
+  <div class="mecard" data-act="qr"><div class="mini" id="miniqr"></div><div><b>My Member QR</b><p>Show at counter to earn &amp; redeem.<br><span class="score" style="margin-top:6px">1,884 MSP pts</span></p></div><div style="margin-left:auto;color:#A09A8E;font-size:20px">›</div></div>
+  <div class="grid3">
+    <div data-go="tiers"><b>🏅</b>My Level</div><div data-act="vouchers"><b>🎟️</b>Vouchers</div><div data-go="bus"><b>🚌</b>Bus times</div><div data-go="rhist"><b>🧾</b>Receipts</div>
+  </div>
+  <div class="sec" id="vouchers"><b>My Vouchers (4)</b><a data-act="collect">Collect more</a></div>
+  <div class="vch"><div class="l" style="background:#8C6E3C">RM30<br><small style="font-size:11px">FIESTA</small></div><div class="r"><b>Anniversary Fiesta reward</b><span>Unlocks at RM300 · RM80 to go</span><div class="use" data-go="missions">View</div></div></div>
+  <div class="vch"><div class="l" style="background:#13294B">RM20<br><small style="font-size:11px">OFF</small></div><div class="r"><b>Sasa</b><span>Min. spend RM100 · till 29 Nov</span><div class="use" data-act="usev" data-v="RM20 OFF · Sasa">Use</div></div></div>
+  <div class="vch"><div class="l" style="background:#13294B">RM10<br><small style="font-size:11px">OFF</small></div><div class="r"><b>ACG Chapter</b><span>ACG Matsuri special · till 27 Nov</span><div class="use" data-act="usev" data-v="RM10 OFF · ACG Chapter">Use</div></div></div>
+  <div class="vch"><div class="l" style="background:#8C6E3C">5%<br><small style="font-size:11px">OFF</small></div><div class="r"><b>Kickers</b><span>MSP Special · till 14 Dec</span><div class="use" data-act="usev" data-v="5% OFF · Kickers">Use</div></div></div>
+  <div class="sec"><b>More</b></div>
+  <div class="menu">
+    <div data-go="notif">🔔 Notifications <em>2 new</em></div>
+    <div data-act="mall">🏬 My Malls <em id="meMall">LaLaport BBCC</em></div>
+    <div data-act="myrt">🗣️ My Real Talk <em id="rtCount">0 posts</em></div>
+    <div>🌐 Language <span class="lang"><span class="on" data-act="lang">EN</span><span data-act="lang">BM</span><span data-act="lang">中文</span></span></div>
+    <div data-act="help">❓ Help &amp; FAQ <em>›</em></div>
+  </div>
+  <div style="height:20px"></div>
+  <div class="nav"><div data-go="home"><span class="i">🏠</span>Home</div><div data-go="quest"><span class="i">🗺️</span>Quest</div><div class="fab" data-go="scan"><div class="b">🧾</div><span>Scan</span></div><div data-go="buzz"><span class="i">💬</span>Buzz</div><div class="act" data-go="me"><span class="i">👤</span>Me</div></div>
+</section>
+
+<!-- PARKING (LPR) -->
+<section class="screen" id="parking">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="push" id="pkPush"><div class="ap">L</div><div><b>Welcome to LaLaport BBCC 🅿️</b><span>WXY 1234 recognised at P2 entry. Explorer 4H free parking has started.</span></div><em>now</em></div>
+  <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>LaLa Park</h2><div class="sub" style="font-size:12px">Ticketless parking · licence plate recognition</div></div></div>
+  <div class="car">
+    <div style="display:flex;justify-content:space-between;align-items:center"><span class="pl">WXY 1234</span><span class="badge">EXPLORER · 4H FREE</span></div>
+    <div class="t" id="pkTime">2h 31m <small>free time left</small></div>
+    <div class="bar" style="--w:37%"><i></i></div>
+    <div class="meta" style="display:flex;justify-content:space-between;font-size:12px;margin-top:8px;opacity:.9"><span>In 2:14 PM · P2 Jalan Hang Tuah</span><span>Free till 6:14 PM</span></div>
+    <div class="lpr"><i></i>Plate read by LPR camera · no ticket, no card tap</div>
+  </div>
+  <div class="steps4"><div><b>🚗</b>Drive in</div><div><b>📷</b>Plate read</div><div><b>🎁</b>Tier hours free</div><div><b>💎</b>Points pay rest</div></div>
+  <div class="sec"><b>Pay at exit</b><a>Rates</a></div>
+  <div class="payw">
+    <div class="pr"><div class="tx"><b>Use MSP points first</b><span>100 pts = RM1 · balance 1,884 pts</span></div><div class="tog on" data-act="tog"></div></div>
+    <div class="pr"><div class="tx"><b>Then auto-charge</b><span>Touch 'n Go eWallet · •••• 6411</span></div><div class="tog on" data-act="tog"></div></div>
+    <div class="pr"><div class="tx"><b>If you leave now</b><span>Within free 4H</span></div><b style="font-size:17px">RM 0.00</b></div>
+  </div>
+  <div class="banner" style="margin-top:12px;background:linear-gradient(120deg,#B8975A,#8C6E3C)"><div><b>Senpai parks 5H free 🅿️</b><span>616 pts more to level up</span></div><div style="font-size:28px">⬆️</div></div>
+  <div class="sec"><b>My cars (2/2)</b><a data-act="addplate">Edit</a></div>
+  <div class="cars">
+    <div class="cr"><span class="plate">WXY 1234</span><div class="tx"><b>Honda City · default</b><span>Registered 12 Nov · verified</span></div><div style="font-size:12px;font-weight:800;color:#1F6B49">● Parked</div></div>
+    <div class="cr"><span class="plate">VCB 8812</span><div class="tx"><b>Perodua Myvi</b><span>Family car · shares your tier</span></div></div>
+    <div class="cr add" data-act="addplate">＋ Add a plate · up to 2 per member</div>
+  </div>
+  <div class="sec"><b>Getting out</b></div>
+  <div class="qlist" style="margin-top:0">
+    <div class="qi" data-act="toast" data-msg="🧭 Route to P2 Zone B: 3 min walk"><div class="e" style="background:#EFEBE4">🧭</div><div class="tx"><b>Find my car</b><span>P2 · Zone B · near lift</span></div><div class="x">Go</div></div>
+    <div class="qi" data-act="exitsim"><div class="e" style="background:#EFEBE4">🚪</div><div class="tx"><b>Simulate exit</b><span>See how the gate opens by itself</span></div><div class="x">›</div></div>
+  </div>
+  <div style="height:24px"></div>
+  <div class="exitsheet" id="pkExit"><div class="grab"></div><h3>Drive safe, Shu Hoong 👋</h3><div class="sub" style="font-size:12px;margin-bottom:6px">WXY 1234 · exit P2 Jalan Hang Tuah · 7:26 PM</div>
+    <div class="ln" style="transition-delay:.3s"><span>Parked</span><b>5h 12m</b></div>
+    <div class="ln" style="transition-delay:.6s"><span>Explorer free 4H</span><b style="color:#1F6B49">− RM 16.00</b></div>
+    <div class="ln" style="transition-delay:.9s"><span>Remaining 1h 12m</span><b>RM 8.00</b></div>
+    <div class="ln" style="transition-delay:1.2s"><span>Paid with points</span><b>800 pts ✓</b></div>
+    <div class="gate">✓ Gate opened automatically · RM 0.00 charged</div>
+  </div>
+  <div class="nav"><div>x</div></div>
+</section>
+
+<!-- BUS: LaLa Go -->
+<section class="screen" id="bus">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>LaLa Go</h2><div class="sub" style="font-size:12px">Bus &amp; shuttle times · boarding reminders</div></div></div>
+  <div class="seg" style="margin-bottom:12px"><span class="on" data-act="bustab" data-t="lth">🚌 LTH Express Bus</span><span data-act="bustab" data-t="klia">✈️ KLIA Shuttle · MOP</span></div>
+  <div id="busLTH">
+  <div class="route">
+    <div class="r1"><div class="st"><small>FROM</small><b>LaLaport BBCC</b><div style="font-size:11px;opacity:.75">LTH · LG1 East Atrium</div></div><div class="sw">⇄</div><div class="st" style="text-align:right"><small>TO</small><b>Singapore</b><div style="font-size:11px;opacity:.75">Woodlands · Jurong East</div></div></div>
+    <div class="r2"><span><small>Date</small>Sat, 21 Nov</span><span><small>Operators</small>6 at LTH</span><span><small>Bay info</small>Live</span></div>
+  </div>
+  <div class="banner" style="margin-top:10px;background:linear-gradient(120deg,#13294B,#2F4E7A)"><div><b>Got your ticket? Set a reminder</b><span>We ping you before boarding, with the bay and food nearby</span></div><div style="font-size:26px">⏰</div></div>
+  <div class="sec"><b>Departures · 21 Nov</b><a>Filter</a></div>
+  <div class="dep" data-act="pickdep"><div class="tm">09:00<small>~5h 30m</small></div><div class="tx"><b>Super Nice Express</b><span>To Woodlands · Bay 1</span></div><div class="fr"><span class="bell">🔔 Remind</span></div></div>
+  <div class="dep" data-act="pickdep"><div class="tm">12:30<small>~5h 30m</small></div><div class="tx"><b>KKKL Express</b><span>To Jurong East · Bay 2</span></div><div class="fr"><span class="bell">🔔 Remind</span></div></div>
+  <div class="dep sel" data-act="pickdep"><div class="tm">15:30<small>~5h 30m</small></div><div class="tx"><b>Transtar Express</b><span>To Woodlands · Bay 3</span></div><div class="fr"><span class="bell">🔔 Reminder on</span></div></div>
+  <div class="dep" data-act="pickdep"><div class="tm">23:45<small>overnight</small></div><div class="tx"><b>707 Inc</b><span>To Jurong East · Bay 1</span></div><div class="fr"><span class="bell">🔔 Remind</span></div></div>
+  <div class="pad" style="margin-top:6px"><div class="btn" data-go="busticket">⏰ Remind me · 15:30 Transtar →</div></div><div style="text-align:center;font-size:11px;color:var(--mid);margin-top:8px">Tickets are sold by each bus operator · times shown for planning</div>
+  </div>
+  <div id="busKLIA" style="display:none">
+  <div class="route"><div class="r1"><div class="st"><small>FROM</small><b>MOP KLIA Sepang</b><div style="font-size:11px;opacity:.75">Shuttle stop · Main entrance</div></div><div class="sw">⇄</div><div class="st" style="text-align:right"><small>TO</small><b>KLIA T1 · klia2</b><div style="font-size:11px;opacity:.75">~10 / 20 min</div></div></div>
+    <div class="r2"><span><small>Fare</small>FREE shuttle</span><span><small>Every</small>20–30 min</span><span><small>Last bus</small>11:00 PM</span></div></div>
+  <div class="sec"><b>✈️ Catch my flight</b></div>
+  <div class="payw"><div class="pr"><div class="tx"><b>MH 603 · KLIA T1 → Tokyo</b><span>Departs 10:10 PM · check-in closes 9:10 PM</span></div><b style="color:var(--navy)">Added</b></div>
+    <div class="pr"><div class="tx"><b>Leave MOP by 7:40 PM</b><span>We'll ping you 30 min before · shuttle 7:40 / 8:00</span></div><div class="tog on" data-act="tog"></div></div></div>
+  <div class="sec"><b>Next shuttles</b></div>
+  <div class="dep"><div class="tm">17:20</div><div class="tx"><b>To KLIA T1 → klia2</b><span>Free · ~10 min to T1</span></div><div class="fr">FREE</div></div>
+  <div class="dep"><div class="tm">17:40</div><div class="tx"><b>To KLIA T1 → klia2</b><span>Free · ~10 min to T1</span></div><div class="fr">FREE</div></div>
+  <div class="ev2"><div class="l">Tax<br>refund</div><div class="r"><b>Tourist Privilege Pass</b><span>Show passport at Customer Service · extra % off at 100+ brands</span></div></div>
+  </div>
+  <div style="height:24px"></div>
+  <div class="nav"><div>x</div></div>
+</section>
+
+<!-- BUS TICKET + REMINDER -->
+<section class="screen" id="busticket">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="push" id="busPush"><div class="ap">L</div><div><b>🚌 30 min to boarding</b><span>Transtar to Singapore · Bay 3, LTH LG1 East Atrium. Grab a bite at L1 on the way.</span></div><em>3:00 PM</em></div>
+  <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>Trip Reminder</h2><div class="sub" style="font-size:12px">Bus times · boarding alerts</div></div></div>
+  <div class="tkt">
+    <div class="tp"><div class="k">TRANSTAR EXPRESS · FIRST CLASS</div><div class="rw"><div><small>LaLaport BBCC</small><b>15:30</b></div><div style="font-size:20px;color:#E8D6AE">→</div><div style="text-align:right"><small>Singapore</small><b>21:00</b></div></div></div>
+    <div class="bt"><div style="width:84px;height:84px;flex:none;border-radius:16px;background:#F3EEE5;display:grid;place-items:center;text-align:center;font-weight:800;color:var(--navy);font-size:12px;line-height:1.2"><span style="font-size:26px">3</span>BAY</div><div class="inf"><b>Sat, 21 Nov 2026</b><br>Board at <b>Bay 3 · LTH, LG1 East Atrium</b><br>Show your operator e-ticket at the bay<br>Live updates from <b>Transtar</b></div></div>
+  </div>
+  <div class="cd">⏱ Boarding opens 3:15 PM<b id="busCd">1h 25m</b></div>
+  <div class="sec"><b>Remind me</b><a>Push + SMS</a></div>
+  <div class="payw rem">
+    <div class="pr"><div class="tx"><b>2 hours before</b><span>1:30 PM · time to wrap up shopping</span></div><div class="tog" data-act="tog"></div></div>
+    <div class="pr"><div class="tx"><b>30 min before</b><span>3:00 PM · head to LG1 East Atrium</span></div><div class="tog on" data-act="tog" id="tog30"></div></div>
+    <div class="pr"><div class="tx"><b>Last call · 15 min</b><span>3:15 PM · boarding opens</span></div><div class="tog on" data-act="tog"></div></div>
+  </div>
+  <div class="sec"><b>Before you board 🍱</b><a data-go="me">Wallet</a></div>
+  <div class="ev2" data-act="toast" data-msg="🍱 Grab-and-go at LG1 · 2 min walk from Bay 3"><div class="l">10%<br><small style="font-size:10px">OFF</small></div><div class="r"><b>Grab-and-go near Bay 3</b><span>Members · bento, bubble tea, snacks</span></div></div>
+  <div class="ev2" data-act="toast" data-msg="🛍️ Watsons L1 · 4 min walk from LTH"><div class="l" style="background:linear-gradient(135deg,#13294B,#0B1A30)">Trip<br><small style="font-size:10px">PICKS</small></div><div class="r"><b>Travel picks · Watsons, Uniqlo</b><span>On your way to LG1 · open till 10 PM</span></div></div>
+  <div style="height:24px"></div>
+  <div class="nav"><div>x</div></div>
+</section>
+
+<!-- MISSION WALL -->
+<section class="screen" id="missions">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="scroll"><div class="inner" id="msInner">
+    <div class="mhero"><div class="k">ANNIVERSARY FIESTA · 1–30 NOV</div><h1>Member Rewards<br>Mission Wall</h1>
+      <div class="tkt2">LaLaport<br>BBCC<br>FIESTA</div>
+      <div class="pg"><span>4 of 7 missions complete</span><span id="msPct">57%</span></div><div class="pb"><i id="msPb"></i></div></div>
+    <div class="mtabs"><span class="on">Member Missions</span><span>Anime Collection</span><span>Family Fun</span><span>Japanese Style</span></div>
+    <div class="minv" data-act="msinv"><div class="e">💌</div><div><b>Your anniversary offers</b><span>Shown for Explorer members</span></div><a>View invitation ›</a></div>
+    <div class="mg"><div class="h"><b>Warm-Up</b><em>2 / 2</em></div>
+      <div class="mr"><div class="e">📅</div><div class="tx"><b>View the Fiesta preview</b><span>1 / 1</span></div><span class="ok">✓ Completed</span></div>
+      <div class="mr"><div class="e">⭐</div><div class="tx"><b>Save 1 favourite brand</b><span>1 / 1 brand</span></div><span class="ok">✓ Completed</span></div>
+    </div>
+    <div class="mg main" id="msMain"><div class="h"><b>Main Event</b><em class="g" id="msBadge">In progress</em></div>
+      <div class="mspend"><div class="t"><b>🛍️ Exclusive spend reward</b><span>by 30 Nov</span></div>
+        <div class="amt"><b id="msAmt">RM220 <small>/ RM300</small></b><span class="chip2" id="msGap">RM80 to go</span></div>
+        <div class="bar2"><i id="msBar"></i></div>
+        <div class="rw">Reward: <b>RM30 voucher + 300 bonus pts</b></div>
+        <div class="picks"><div class="mpk"><img src="../assets/app/ramen.jpg"><div><b>Akiba Ramen</b><span>Set RM28 · L4</span></div></div>
+          <div class="mpk"><img src="../assets/app/collabcafe.jpg"><div><b>Doko Koko Café</b><span>Collab menu · L3</span></div></div>
+          <div class="mpk"><img src="../assets/app/ev_boost.jpg"><div><b>Boost Juice</b><span>RM12+ · LG</span></div></div></div>
+      </div>
+      <div class="mspend"><div class="t"><b>👑 Senpai upgrade</b><span>this year</span></div>
+        <div class="amt"><b>RM4,380 <small>/ RM5,000</small></b><span class="chip2">RM620 to go</span></div>
+        <div class="bar2 gold"><i style="width:88%"></i></div>
+        <div class="rw">Unlocks <b>5H free parking · 1.5x points</b> · <a data-go="tiers" style="color:var(--navy);font-weight:800">View tier benefits</a></div>
+      </div>
+      <div class="mr"><div class="e">🧾</div><div class="tx"><b>Submit 1 receipt in the app</b><span>1 / 1 receipt</span></div><span class="ok">✓ Completed</span></div>
+    </div>
+    <div class="mg"><div class="h"><b>Comeback</b><em>Available</em></div>
+      <div class="mr"><div class="e">💎</div><div class="tx"><b>Redeem expiring points</b><span>300 pts expire 30 Nov · use 200 for a dining voucher</span></div><span class="gb" data-act="toast" data-msg="💎 RM10 dining voucher added">Redeem</span></div>
+      <div class="mr"><div class="e">🎟️</div><div class="tx"><b>Use next-month voucher</b><span>RM15 off · any store</span></div><span class="lk">🔒 Opens 1 Dec</span></div>
+      <div class="mr"><div class="e">🛍️</div><div class="tx"><b>New arrivals for you</b><span>Beauty &amp; lifestyle picks</span></div><span class="gb out" data-act="toast" data-msg="🛍️ 12 new arrivals picked for you">Explore</span></div>
+    </div>
+    <div class="mnote">Illustrative offers and progress</div>
+    <div style="height:30px"></div>
+  </div></div>
+  <div class="claimov" id="msClaim"><div class="claimbox" id="msCbox"><div class="ck">✓</div><h3>Reward unlocked</h3>
+    <div class="big"><b>RM300 reached</b><span>Anniversary Fiesta · exclusive spend reward</span></div>
+    <div class="gift"><div><b>RM30</b>voucher</div><div><b>+300</b>bonus pts</div></div>
+    <div class="btn" id="msCbtn" data-act="claim">Claim reward</div></div></div>
+  <div class="nav"><div>x</div></div>
+</section>
+
+<!-- MY QR / PAY CODE -->
+<section class="screen" id="paycode">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>My Member QR</h2><div class="sub" style="font-size:12px">Show at checkout to earn &amp; redeem</div></div></div>
+  <div class="payc"><div class="k">MSP MEMBER · EXPLORER</div><div class="nm">Shu Hoong</div><div class="qrbox" id="payqr"></div><div class="tm">Refreshes in 0:58 · 1.2x points</div></div>
+  <div class="trk2"><div class="t"><span class="dot"></span>Mission tracking on</div><p>This purchase counts toward <b>Anniversary Fiesta</b>: RM80 to your RM30 + 300 pts reward.</p></div>
+  <div class="sec" style="margin-top:14px"><b>Apply a voucher</b><a data-go="me">All</a></div>
+  <div class="ev2"><div class="l">RM10<br><small style="font-size:10px">OFF</small></div><div class="r"><b>Akiba Ramen · dining pick</b><span>Min. spend RM60 · today only</span></div></div>
+  <div class="nav"><div>x</div></div>
+</section>
+
+<!-- SUBMIT RECEIPT (core) -->
+<section class="screen" id="receipt">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="scroll" style="bottom:0"><div class="inner" id="rcInner">
+    <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>Submit Receipt</h2><div class="sub" style="font-size:12px">Earn points · count it toward missions</div></div></div>
+    <div class="rcard"><div class="lab">STEP 1 · COUNT IT TOWARD</div>
+      <div class="ropt on" data-act="ropt"><span class="rd"></span><div><b>Anniversary Fiesta</b><span>Spend RM300 mission</span></div><span class="mini">RM80 to go</span></div>
+      <div class="ropt" data-act="ropt"><span class="rd"></span><div><b>Points only</b><span>Skip campaign entry</span></div></div>
+    </div>
+    <div class="rcard"><div class="lab">STEP 2 · QUICK CHECK</div>
+      <div class="rq">Is this <b>one receipt</b> from a LaLaport BBCC store, dated within the last 7 days?</div>
+      <div class="yn"><span id="rcYes" data-act="ryes">Yes</span><span data-act="toast" data-msg="Only LaLaport BBCC receipts from the last 7 days earn points">No</span></div>
+    </div>
+    <div class="rcard" id="rcUp"><div class="lab">STEP 3 · UPLOAD</div>
+      <div class="rwarn"><span>ℹ️</span><div>Long receipt? <b>Snap each page</b> in the next box. Keep the original until your points arrive.</div></div>
+      <div class="slots"><div class="slot" id="rcSlot" data-act="rcam"><div class="cm">📷</div>
+          <div class="thumb"><div style="text-align:center"><b>AKIBA RAMEN</b><br>LaLaport BBCC L4-FC-14</div>------------------<br>18/11/2026 19:42<br>Inv #A-09231<br>------------------<br>Chicken Paitan x2 25.80<br>Tempura Set x2 &nbsp;17.80<br>Gyoza &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 12.90<br>Matcha Latte x3 21.30<br>Ramune x2 &nbsp; &nbsp; &nbsp; 20.70<br>------------------<br><b>TOTAL &nbsp; &nbsp; RM 98.50</b></div>
+          <span class="pg">Page 1 of 1</span><span class="ac"><span>Retake</span><span>🗑</span></span></div>
+        <div class="slot add" data-act="toast" data-msg="📷 Add the next page of a long receipt">＋<br>Add page</div></div>
+    </div>
+    <div class="rcard"><div class="agree"><div class="tog" id="rcTog" data-act="tog"></div><div>I agree to the <a>Terms &amp; Conditions</a></div></div>
+      <div class="btn" id="rcSubmit" style="margin-top:12px" data-act="rsubmit">Submit receipt</div></div>
+    <div style="height:30px"></div>
+  </div></div>
+  <div class="rcam" id="rcCam"><div class="pill" id="rcPill">Position the receipt in the frame</div>
+    <div class="paper"><div class="c"><b>AKIBA RAMEN</b><br>LaLaport BBCC L4-FC-14<br>Kuala Lumpur</div><hr>
+      <div class="ln"><span>18/11/2026</span><span>19:42</span></div><div class="ln"><span>Inv #A-09231</span><span>T07</span></div><hr>
+      <div class="ln"><span>Chicken Paitan x2</span><span>25.80</span></div><div class="ln"><span>Tempura Set x2</span><span>17.80</span></div>
+      <div class="ln"><span>Gyoza</span><span>12.90</span></div><div class="ln"><span>Matcha Latte x3</span><span>21.30</span></div>
+      <div class="ln"><span>Ramune x2</span><span>20.70</span></div><hr><div class="ln"><b>TOTAL</b><b>RM 98.50</b></div><hr>
+      <div class="c">Member: 6018-xxxx-2307<br>Terima kasih!</div></div>
+    <div class="edge"></div><div class="fl"></div>
+    <div class="ctl"><div class="sh"><i></i></div><div class="md"><span>Manual</span><span class="on">Auto capture</span></div></div></div>
+</section>
+
+<!-- MY RECEIPTS -->
+<section class="screen" id="rhist">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>My Receipts</h2><div class="sub" style="font-size:12px">Checked within 24 h · we'll notify you</div></div></div>
+  <div class="rhsum"><div><b>RM 318.50</b><span>Fiesta spend this month</span></div><div><b>+382</b><span>pts from receipts</span></div></div>
+  <div class="rh pend new" id="rhNew"><div class="t"><span class="st" id="rhSt">⏳ Pending</span><span class="dt">18 Nov 2026<br>7:46 PM</span></div>
+    <div class="am"><b>RM 98.50</b><span>Akiba Ramen · L4</span></div><div class="ms" id="rhMs">We're checking your receipt. Usually within 24 hours.</div></div>
+  <div class="rh okk"><div class="t"><span class="st">✅ Approved</span><span class="dt">16 Nov 2026<br>3:12 PM</span></div>
+    <div class="am"><b>RM 221.90</b><span>Uniqlo · L1</span></div><div class="ms">+266 pts · counted toward Anniversary Fiesta</div></div>
+  <div class="rh rej"><div class="t"><span class="st">⛔ Rejected</span><span class="dt">08 Nov 2026<br>6:01 PM</span></div>
+    <div class="am"><b>RM 43.00</b><span>Unknown store</span></div><div class="ms">Not from a participating LaLaport BBCC store. <a style="color:var(--navy);font-weight:800">Resubmit ›</a></div></div>
+  <div class="aitip addon" data-go="scan"><div style="font-size:24px">✨</div><div><b>Skip the wait with AI Receipt Scan</b><span>AI add-on · points land in 1 second</span></div></div>
+  <div class="pad" style="margin-top:14px"><div class="btn" data-go="receipt">＋ Submit another receipt</div></div>
+</section>
+
+<!-- NOTIFICATIONS -->
+<section class="screen" id="notif">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="hdr"><div class="back" data-act="back">‹</div><h2>Notifications</h2></div>
+  <div class="nt new" data-go="missions"><div class="e" style="background:#FAF3E4">🎯</div><div><b>RM80 to your next reward</b><span>Anniversary Fiesta · dining picks near you: Akiba Ramen set RM28.</span><em>Just now</em></div></div>
+  <div class="nt new" data-go="rhist"><div class="e" style="background:#F3EEE5">🧾</div><div><b>Receipt approved · +118 pts</b><span>Akiba Ramen RM98.50 now counts toward your Fiesta mission.</span><em>5 min ago</em></div></div>
+  <div class="nt" data-go="busticket"><div class="e" style="background:#F3EEE5">🚌</div><div><b>30 min to boarding</b><span>Transtar to Singapore · Bay 3, LTH LG1 East Atrium.</span><em>Just now</em></div></div>
+  <div class="nt new" data-go="parking"><div class="e" style="background:#F3EEE5">🅿️</div><div><b>WXY 1234 recognised at P2</b><span>Explorer 4H free parking has started. No ticket needed.</span><em>2:14 PM</em></div></div>
+  <div class="nt addon" data-go="quest"><div class="e" style="background:#F3EEE5">🎐</div><div><b>ACG Matsuri Stamp Rally is live!</b><span>Collect 5 stamps this weekend for a limited capsule.</span><em>10 min ago</em></div></div>
+  <div class="nt" data-go="tiers"><div class="e" style="background:#F3EEE5">🔥</div><div><b>616 pts to SENPAI</b><span>Scan 2 more receipts this week to level up.</span><em>1 h ago</em></div></div>
+  <div class="nt addon" data-go="buzz"><div class="e" style="background:#EFEBE4">💬</div><div><b>Trending on LaLa Buzz</b><span>Akiba Ramen is the most-loved makan spot this week.</span><em>Yesterday</em></div></div>
+  <div class="nt" data-go="tiers"><div class="e" style="background:#EFEBE4">🅿️</div><div><b>MSP Member Free Parking</b><span>Explorers park 4 hours free until 31 Dec.</span><em>2 days ago</em></div></div>
+  <div class="nt addon" data-go="capsule"><div class="e" style="background:#EFEBE4">🎰</div><div><b>Your free spin is ready</b><span>Matsuri Series · 6/24 collected</span><em>2 days ago</em></div></div>
+</section>
+
+<div id="ov"><div class="dim" data-act="close"></div><div class="sheet2"><div class="grab"></div><div id="ovBody"></div></div></div>
+<div id="tst"></div>
+
+</div>
+<script>
+(()=>{const h=document.getElementById('woHero');if(!h)return;let i=0;const tr=h.querySelector('.trk'),ds=h.querySelectorAll('.dots i');setInterval(()=>{i=(i+1)%3;tr.style.transform=`translateX(${-100*i}%)`;ds.forEach((d,j)=>d.classList.toggle('on',j===i));},2200);})();
+
+/* shared: luxe line icons + home QR (both modes) */
+(function(){
+  const I={Home:'<path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/>',Quest:'<path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/>',
+    Buzz:'<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',Me:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>',
+    Scan:'<path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3"/><path d="M4 12h16"/>'};
+  const sv=k=>'<svg viewBox="0 0 24 24">'+I[k]+'</svg>';
+  I.Park='<rect x="4" y="3" width="16" height="18" rx="3"/><path d="M10 16V8h3a2.5 2.5 0 010 5h-3"/>';
+  I.Bus='<rect x="5" y="3" width="14" height="15" rx="3"/><path d="M5 11h14M8 18v2M16 18v2"/>';
+  I.QR='<rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><path d="M14 14h2v2h-2zM18 18h2v2h-2z"/>';
+  I.Missions='<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/><circle cx="17.5" cy="17.5" r="2.5"/>';
+  const ACT={home:0,parking:1,missions:3,me:4};
+  document.querySelectorAll('.nav').forEach(n=>{
+    const sid=n.closest('.screen').id, act=ACT[sid]===undefined?-1:ACT[sid];
+    const L=[['Home','Home'],['Park','Parking'],['QR','My QR'],['Missions','Missions'],['Me','Me']];
+    n.innerHTML=L.map(([k,lab],i)=>k==='QR'?'<div class="fab"><div class="b">'+sv(k)+'</div><span>My QR</span></div>':'<div'+(i===act?' class="act"':'')+'><span class="i">'+sv(k)+'</span>'+lab+'</div>').join('');
+  });
+  // add nav to parking/bus screens
+  const pq=document.getElementById('payqr');if(pq){let o='',x=23,n=25;for(let r=0;r<n;r++)for(let c=0;c<n;c++){let f=-1;for(const[R,C]of[[0,0],[0,n-7],[n-7,0]]){const a=r-R,b=c-C;if(a>=0&&a<7&&b>=0&&b<7)f=(a===0||a===6||b===0||b===6||(a>1&&a<5&&b>1&&b<5))?1:0}if(f<0){x=(x*9301+49297)%233280;f=x/233280>.52?1:0}o+='<i style="background:'+(f?'#13294B':'#fff')+'"></i>'}pq.innerHTML=o}
+  const tq=document.getElementById('tktqr');if(tq){let o='',x=5,n=25;for(let r=0;r<n;r++)for(let c=0;c<n;c++){let f=-1;for(const[R,C]of[[0,0],[0,n-7],[n-7,0]]){const a=r-R,b=c-C;if(a>=0&&a<7&&b>=0&&b<7)f=(a===0||a===6||b===0||b===6||(a>1&&a<5&&b>1&&b<5))?1:0}if(f<0){x=(x*9301+49297)%233280;f=x/233280>.52?1:0}o+='<i style="background:'+(f?'#13294B':'#fff')+'"></i>'}tq.innerHTML=o}
+  if(new URLSearchParams(location.search).get('core')==='1')document.documentElement.classList.add('coreonly');
+  const h=document.getElementById('homeqr');
+  if(h){let o='',x=11,n=25;const F=(r,c)=>{for(const[R,C]of[[0,0],[0,n-7],[n-7,0]]){const a=r-R,b=c-C;if(a>=0&&a<7&&b>=0&&b<7)return(a===0||a===6||b===0||b===6||(a>1&&a<5&&b>1&&b<5))?1:0}return -1};
+    for(let r=0;r<n;r++)for(let c=0;c<n;c++){let f=F(r,c);if(f<0){x=(x*9301+49297)%233280;f=x/233280>.52?1:0}o+='<i style="background:'+(f?'#13294B':'#fff')+'"></i>'}h.innerHTML=o}
+})();
+
+
+const PUSH={invite:['🎉 You\'re invited · Anniversary Fiesta','Explorer exclusive: spend RM300 by 30 Nov, get RM30 + 300 bonus pts. Tap to see your missions.','now','missions'],
+  gap:['🍜 RM80 to your next reward','Dining picks near you: Akiba Ramen set RM28 · Doko Koko Café. Ends Sunday.','now','missions'],
+  approved:['🧾 Receipt approved · +118 pts','Akiba Ramen RM98.50 now counts toward Anniversary Fiesta.','now','rhist'],
+  reward:['✅ Reward unlocked · RM300 reached','Your RM30 voucher + 300 bonus pts are ready. Tap to claim.','now','missions'],
+  tier:['🏅 Next tier: Senpai · RM620 to go','5H free parking and 1.5x points are close. See your tier benefits.','now','tiers']};
+function gpush(scr,k,on=true){let p=scr.querySelector('.push.gp');if(!p){p=document.createElement('div');p.className='push gp';scr.appendChild(p)}
+  const d=PUSH[k];p.innerHTML='<div class="ap">L</div><div><b>'+d[0]+'</b><span>'+d[1]+'</span></div><em>'+d[2]+'</em>';p.dataset.go=d[3];
+  if(on){p.classList.remove('on');void p.offsetWidth;setTimeout(()=>p.classList.add('on'),30)}return p}
+const q=new URLSearchParams(location.search);if(q.get('z'))document.documentElement.style.zoom=q.get('z');if(q.has('s')){const s=q.get('s')||'home';if(q.get('y')){const ii=document.querySelector('#'+s+' .inner');if(ii){ii.style.transition='none';ii.style.transform='translateY(-'+q.get('y')+'px)'}}const play=q.get('play')==='1';
+document.getElementById(s).classList.add('on');
+function later(ms,fn){setTimeout(fn,ms)}
+
+const SCR=document.getElementById(s);
+if(q.get('push')&&!play){const p=gpush(SCR,q.get('push'),false);p.style.transition='none';p.classList.add('on')}
+if(q.get('claim')){msBar.style.transition='none';msBar.style.width='100%';msAmt.innerHTML='RM318.50 <small>/ RM300</small>';msGap.textContent='Reward unlocked';msGap.classList.add('done');msClaim.style.transition='none';msClaim.classList.add('on')}
+if(s==='missions'&&play){later(700,()=>gpush(SCR,'gap'));later(3600,()=>SCR.querySelector('.push.gp').classList.remove('on'));
+  later(4000,()=>msInner.style.transform='translateY(-250px)');
+  later(5600,()=>{msBar.style.width='100%';msAmt.innerHTML='RM318.50 <small>/ RM300</small>'});
+  later(6900,()=>{msGap.textContent='Reward unlocked';msGap.classList.add('done');msBadge.textContent='Ready to claim'});
+  later(7700,()=>msClaim.classList.add('on'));
+  later(9300,()=>{msCbtn.style.transform='scale(.94)'});later(9500,()=>{msCbtn.style.transform='';msCbox.classList.add('done');msCbtn.textContent='✓ Claimed · added to My Vouchers'});
+  later(10700,()=>msClaim.classList.remove('on'));later(11300,()=>gpush(SCR,'tier'));}
+if(s==='receipt'&&play){later(1300,()=>rcYes.classList.add('on'));
+  later(2300,()=>rcInner.style.transform='translateY(-330px)');
+  later(3900,()=>{rcSlot.style.boxShadow='0 0 0 4px rgba(184,151,90,.45)'});later(4300,()=>rcCam.classList.add('on'));
+  later(5300,()=>{rcPill.textContent='Scanning… hold steady';rcCam.classList.add('lock')});
+  later(6700,()=>{rcPill.textContent='✓ Captured';rcCam.classList.add('snap')});
+  later(7500,()=>{rcCam.classList.remove('on');rcSlot.classList.add('got');rcSlot.style.boxShadow=''});
+  later(8600,()=>rcInner.style.transform='translateY(-470px)');
+  later(9500,()=>rcTog.classList.add('on'));later(10300,()=>{rcSubmit.style.transform='scale(.95)'});
+  later(10600,()=>{SCR.classList.remove('on');const R=document.getElementById('rhist');R.classList.add('on')});
+  later(12600,()=>{rhSt.textContent='✅ Approved';rhNew.className='rh okk new';rhMs.textContent='+118 pts · counted toward Anniversary Fiesta'});
+  later(13400,()=>gpush(document.getElementById('rhist'),'reward'));}
+if(s==='rhist'&&q.get('st')==='ok'){rhSt.textContent='✅ Approved';rhNew.className='rh okk new';rhMs.textContent='+118 pts · counted toward Anniversary Fiesta'}
+if(s==='rcam'){}
+if(s==='receipt'&&q.get('cam')){rcCam.style.transition='none';rcCam.classList.add('on','lock');rcPill.textContent='Scanning… hold steady'}
+if(s==='receipt'&&q.get('got')){rcSlot.classList.add('got');rcYes.classList.add('on');rcTog.classList.add('on')}
+if(s==='home'&&play){later(3000,()=>homeInner.style.transform='translateY(-300px)');later(5400,()=>homeInner.style.transform='translateY(-640px)');later(7800,()=>homeInner.style.transform='translateY(-1074px)');}
+if(s==='tiers'&&play){const T=document.getElementById('tiers');const w=document.createElement('div');w.style.transition='transform 1.4s cubic-bezier(.45,0,.2,1)';[...T.children].filter(c=>!c.matches('.status')).forEach(c=>w.appendChild(c));T.appendChild(w);
+  const t3=T.querySelector('.tc.t3');later(1700,()=>{t3.style.transition='box-shadow .8s';t3.style.boxShadow='0 0 0 3px #E8D6AE, 0 18px 34px rgba(184,151,90,.55)'});
+  const rows=[...T.querySelectorAll('.perk tr')];rows.forEach((r,i)=>{const c=r.children[3];if(!c)return;c.style.transition='background .5s, color .5s';later(2700+i*220,()=>{c.style.background=i?'#F3E7CF':'#8C6E3C';if(i)c.style.fontWeight='800'})});
+  const bt=T.querySelector('.pad .btn');bt.style.transition='transform .25s, box-shadow .4s';later(6000,()=>{bt.style.transform='scale(.95)';bt.style.boxShadow='0 0 0 5px rgba(184,151,90,.45)'});later(6280,()=>bt.style.transform='scale(1)');}
+if(s==='parking'&&play){later(500,()=>pkPush.classList.add('on'));later(3300,()=>pkPush.classList.remove('on'));later(4300,()=>pkExit.classList.add('on'));later(6200,()=>pkExit.classList.add('done'));}
+if(s==='busticket'&&play){later(1200,()=>busPush.classList.add('on'));later(2600,()=>{tog30.style.boxShadow='0 0 0 4px rgba(184,151,90,.45)'});later(5200,()=>busPush.classList.remove('on'));}
+if(s==='bus'&&play){const ds=[...document.querySelectorAll('#bus .dep')];ds.forEach(d=>d.classList.remove('sel'));later(1400,()=>ds[2].classList.add('sel'));}
+if(s==='buzz'&&play){later(2500,()=>buzzInner.style.transform='translateY(-250px)');}
+if(s==='capsule'){const g=document.getElementById('gacha');const sc=document.getElementById('capsule');
+  later(play?800:0,()=>{g.classList.add('shake','turn');sc.classList.add('go')});}
+if(s==='scan'){const c=document.getElementById('coins');const sc=document.getElementById('scan');
+  for(let i=0;i<10;i++){const e=document.createElement('div');e.className='coin';e.textContent='★';e.style.left=(150+Math.random()*80)+'px';e.style.top=(580+Math.random()*40)+'px';e.style.setProperty('--dx',(-80-Math.random()*60)+'px');e.style.setProperty('--dy',(-560-Math.random()*40)+'px');e.style.animationDelay=(3.6+i*.07)+'s';c.appendChild(e)}
+  sc.classList.add('fly');}
+if(s==='realtalk'){const r=[...document.querySelectorAll('#rate span')];r.forEach((e,i)=>later(400+i*180,()=>e.classList.add('on')));
+  const st=[...document.querySelectorAll('#stick span')];[0,1,2].forEach((k,i)=>later(1500+i*350,()=>st[k].classList.add('on')));
+  const txt="Broth damn creamy, tempura crunchy. RM9.90 can't beat lah! Will come back with my kawan 🍜";let n=0;
+  later(2600,()=>{const t=setInterval(()=>{typed.textContent=txt.slice(0,++n);if(n>=txt.length)clearInterval(t)},play?38:1)});
+  if(play){later(7000,()=>{toast.style.transition='all .4s cubic-bezier(.3,1.5,.5,1)';toast.style.opacity=1;toast.style.transform='translate(-50%,0) scale(1)'})}}
+if(s==='levelup'){const cs=['#D9C49A','#1E3A63','#2F4E7A','#B8975A','#C9D3E0','#fff'];for(let i=0;i<70;i++){const e=document.createElement('div');e.className='conf';e.style.left=Math.random()*390+'px';e.style.background=cs[i%6];e.style.animationDuration=(2.5+Math.random()*2.5)+'s';e.style.animationDelay=(.8+Math.random()*2)+'s';e.style.borderRadius=i%3?'2px':'50%';confetti.appendChild(e)}}
+}else{
+/* ================= Interactive app mode ================= */
+(function () {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  document.documentElement.classList.add('app');
+  const dev = $('#device');
+  function fit() {
+    if (innerWidth <= 500) { dev.style.zoom = 1; return; }
+    const s = Math.min((innerHeight - 60) / 844, (innerWidth - 60) / 390, 1.15);
+    dev.style.zoom = s;
+  }
+  addEventListener('resize', fit); fit();
+  // wrap scrollable content (status + nav stay put)
+  ['me', 'parking', 'bus', 'busticket', 'notif', 'tiers', 'quest', 'capsule', 'realtalk', 'paycode', 'rhist'].forEach(id => {
+    const scr = document.getElementById(id), w = document.createElement('div');
+    w.className = 'sc' + (scr.querySelector(':scope > .nav') ? ' nb' : '');
+    [...scr.children].filter(c => !c.matches('.status,.nav,.reveal,#toast,.push,.exitsheet')).forEach(c => w.appendChild(c));
+    scr.querySelector(':scope > .status').after(w);
+  });
+
+  // ---------- state ----------
+  let pts = 1884, streak = 5, mall = 'LaLaport BBCC', rtPosts = 0, spun = false;
+  const stack = [];
+  let cur = null;
+  const enter = {};
+
+  function go(id, push = true) {
+    const nx = document.getElementById(id); if (!nx) return;
+    if (cur && push && cur !== id) stack.push(cur);
+    $$('.screen.on').forEach(e => e.classList.remove('on'));
+    nx.classList.add('on'); $$('.scroll,.sc', nx).forEach(e => e.scrollTop = 0);
+    cur = id;
+    if (enter[id]) enter[id]();
+  }
+  function back() { const p = stack.pop(); go(p || 'home', false); }
+  let tt;
+  function toast(msg) { const t = $('#tst'); t.textContent = msg; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 2200); }
+  function sheet(html) { $('#ovBody').innerHTML = html; $('#ov').classList.add('open'); }
+  function closeSheet() { $('#ov').classList.remove('open'); }
+  function setPts(d) {
+    pts += d;
+    const n = pts.toLocaleString();
+    const p = $('#home .tier .pts'); if (p) p.firstChild.textContent = n;
+    $$('#me .score').forEach(e => e.textContent = n + ' MSP pts');
+    const m = $('#home .tier .meta span'); if (m) m.innerHTML = `${Math.max(0, 2500 - pts)} pts to <b>SENPAI</b>`;
+    const bar = $('#home .tier .bar'); if (bar) bar.style.setProperty('--w', Math.min(100, (pts - 1500) / 1000 * 100 + 37) + '%');
+  }
+  function qrHTML(n = 25, seed = 7) {
+    let h = '', x = seed;
+    const finder = (r, c) => { for (const [R, C] of [[0, 0], [0, n - 7], [n - 7, 0]]) { const a = r - R, b = c - C; if (a >= 0 && a < 7 && b >= 0 && b < 7) return (a === 0 || a === 6 || b === 0 || b === 6 || (a > 1 && a < 5 && b > 1 && b < 5)) ? 1 : 0; } return -1; };
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) {
+      let f = finder(r, c); if (f < 0) { x = (x * 9301 + 49297) % 233280; f = x / 233280 > .52 ? 1 : 0; }
+      h += `<i style="background:${f ? '#1A1F2B' : '#fff'}"></i>`;
+    }
+    return h;
+  }
+  $('#miniqr').innerHTML = qrHTML();
+
+  // ---------- data ----------
+  const BR = {
+    akiba: {name: 'Akiba Ramen', img: '../assets/app/ramen.jpg', tags: ['📍 L4-FC-14', '🕌 Muslim-friendly', '💸 RM9.90+'], score: 4.8, p: 92, n: 128,
+      sum: 'People rave about the creamy chicken broth and the price. Some say it gets busy at lunch.',
+      chips: ['🍜 Creamy paitan', '💸 Value for money', '🍤 Mix & match tempura', '✅ No pork, no lard'],
+      web: [['IG', '@yuumi_kato', 'Aug 2026 · 629 ❤', '"Found a hidden ramen gem in KL 🍜✨ seriously satisfying, from only RM9.90!"'],
+            ['@', 'Threads user', 'Aug 2026', '"Congrats on the opening! No pork, no lard, Muslim friendly 🙌"']],
+      rt: [['rookie', 'Aina R.', 'Rookie', 5, 'Sedap gila! Broth very creamy, portion big for the price.', ['🤤 Sedap gila', '💸 Worth it']],
+           ['senpai', 'Marcus L.', 'Senpai', 4, 'Came after ACG Base. Queue 10 min at 1pm but moves fast.', ['⏳ Long queue', '✅ Halal-friendly']]]},
+    doko: {name: 'Doko Koko Café', img: '../assets/app/collabcafe.jpg', tags: ['📍 L1', '🎌 Collab café', '🛍️ Merch corner'], score: 4.7, p: 90, n: 98,
+      sum: 'Fans love the themed menus and the huge merch section. Weekends get packed, so book ahead.',
+      chips: ['🎀 Themed menus', '🛍️ Huge merch', '📸 IG-worthy', '⏳ Weekend queue'],
+      web: [['IG', '@fayejimeno', 'Aug 2026 · 4,585 ❤', '"The food was so well themed! Don\'t forget the huge merch section 🩵"'],
+            ['IG', '@yushirocos', 'Oct 2026', '"The sukiyaki soup is so goooood!!"']],
+      rt: [['explorer', 'Hui Min', 'Explorer', 5, 'Collab menu so cute, got the limited coaster. Will come back next collab!', ['📸 IG-worthy', '🤤 Sedap gila']]]},
+    animate: {name: 'Animate Café', img: '../assets/app/acg_event.jpg', tags: ['📍 L2 · ACG Base', '🇯🇵 Malaysia\'s first', '🎌 Collab menus'], score: 4.6, p: 89, n: 57,
+      sum: 'Malaysia\'s first official Animate Café. Fans enjoy the rotating collabs and the comfort food.',
+      chips: ['🎌 Rotating collabs', '🍙 Comfort food', '🎁 Free coasters', '👀 Anime heaven'],
+      web: [['IG', '@mijuyq', 'Jul 2026 · 492 ❤', '"This mall is secretly heaven for anime fans 👀"']],
+      rt: []},
+    ngam: {name: 'Ngam Ngam Neighbourhood', img: null, emoji: '🧸', tags: ['📍 L2-59', '👨‍👩‍👧 Family', '🥗 Healthy bowls'], score: 4.6, p: 94, n: 24,
+      sum: 'Parents love that the play area is right next to the tables. Kids meals from RM10.90.',
+      chips: ['🛝 Play area', '👶 Kids meals RM10.90', '🥗 Healthy bowls', '📚 Reading corner'],
+      web: [['IG', '@mymamapicks', 'Sep 2026 · 165 ❤', '"Loved how the play area is RIGHT by the tables 🤎"']],
+      rt: []}
+  };
+  let brandKey = 'akiba', brandTab = 'web';
+  function renderBrand() {
+    const b = BR[brandKey];
+    const hero = $('#brand .bhero');
+    hero.querySelector('img').style.display = b.img ? 'block' : 'none';
+    if (b.img) hero.querySelector('img').src = b.img;
+    hero.style.background = b.img ? '' : 'linear-gradient(135deg,#EFEBE4,#F3EEE5)';
+    let em = hero.querySelector('.bigem'); if (!em) { em = document.createElement('div'); em.className = 'bigem'; em.style.cssText = 'position:absolute;inset:0;display:grid;place-items:center;font-size:110px'; hero.appendChild(em); }
+    em.textContent = b.img ? '' : b.emoji;
+    const list = brandTab === 'web'
+      ? b.web.map(w => `<div class="post"><div class="who"><i style="background:${w[0] === 'IG' ? 'linear-gradient(135deg,#F58529,#DD2A7B)' : '#111'}">${w[0]}</i>${w[1]} <em>${w[2]}</em></div><p>${w[3]}</p><div class="st">Source: public post · curated by Pandora AI</div></div>`).join('')
+      : (b.rt.length ? b.rt.map(r => `<div class="rtp"><div class="who"><img src="../assets/app/char_${r[0]}.png">${r[1]} <span class="vb">Verified ✓</span><em>${r[2]}</em></div><div class="lan">${'🏮'.repeat(r[3])}</div><p>${r[4]}</p><div class="tg">${r[5].map(t => `<span>${t}</span>`).join('')}</div></div>`).join('')
+        : `<div class="post" style="text-align:center;color:var(--mid)">No Real Talk yet. Be the first! ✍️</div>`);
+    $('#brand .bcard').innerHTML = `<h2>${b.name}</h2><div class="tags">${b.tags.map(t => `<span>${t}</span>`).join('')}</div>
+      <div class="meter"><div class="ring" style="--p:${b.p}%"><div>${b.score}</div></div><div class="r"><b>${b.p}% love it · ${b.n} posts</b><p class="pdx">PANDORA AI · ${b.n} posts analysed</p><p>${b.sum}</p></div></div>
+      <div class="love-chips">${b.chips.map((c, i) => `<span style="animation-delay:${.3 + i * .15}s">${c}</span>`).join('')}</div>
+      <div class="tabs"><span class="${brandTab === 'web' ? 'on' : ''}" data-act="btab" data-t="web">🌐 Web Buzz</span><span class="${brandTab === 'rt' ? 'on' : ''}" data-act="btab" data-t="rt">🗣️ Real Talk (${b.rt.length})</span></div>${list}`;
+  }
+  function openBrand(k) { brandKey = k; brandTab = 'web'; go('brand'); }
+  enter.brand = renderBrand;
+
+  // ---------- wire existing markup ----------
+  const navMap = {Home: 'home', Parking: 'parking', Missions: 'missions', Me: 'me'};
+  $$('.nav > div').forEach(d => { const sp = d.querySelector('span:not(.i)'); const t = (sp ? sp.textContent : d.lastChild.textContent).trim(); if (navMap[t]) d.dataset.go = navMap[t]; if (t === 'My QR') d.dataset.go = 'paycode'; });
+  $$('.back').forEach(b => b.dataset.act = 'back');
+  $('#home .mall').dataset.act = 'mall';
+  $$('#home .icons div')[0].dataset.go = 'notif';
+  $$('#home .icons div')[1].dataset.act = 'qr';
+  $('#home .tier').dataset.go = 'tiers'; $('#home .qrw').dataset.act = 'qr';
+  { const t = $('#home .d.today'); if (t) t.dataset.act = 'checkin'; }
+  ['parking', 'bus', 'me', 'receipt'].forEach((g, i) => $$('#home .q')[i].dataset.go = g);
+  $('#home .strip.park').dataset.go = 'parking'; $('#home .strip.trip').dataset.go = 'busticket';
+  $$('#home .qc').forEach(e => e.dataset.go = 'quest');
+  $$('#home .bz').forEach((e, i) => { e.dataset.act = 'brand'; e.dataset.k = ['akiba', 'doko'][i]; });
+  // more home sections
+  const homeMore = `<div class="home-more"><div class="sec"><b>Vouchers for you 🎟️</b><a data-go="me">My wallet</a></div>
+    <div class="hs">${[['#13294B', 'RM20 OFF', 'Sasa · min RM100'], ['#13294B', 'RM10 OFF', 'ACG Chapter'], ['#8C6E3C', '5% OFF', 'Kickers · MSP Special']].map(v =>
+      `<div class="vch" style="min-width:250px;margin:0" data-act="collectv" data-v="${v[1]} · ${v[2]}"><div class="l" style="background:${v[0]};width:84px">${v[1].replace(' ', '<br>')}</div><div class="r"><b>${v[2]}</b><span>Tap to collect · free</span></div></div>`).join('')}</div>
+    </div>`;
+  const spacer = $('#homeInner > div:last-child'); spacer.insertAdjacentHTML('beforebegin', homeMore); spacer.style.height = '110px';
+  // tiers
+  $('#tiers .btn.blue').dataset.go = 'levelup';
+  $('#tiers .btn.blue').textContent = 'Preview: what Senpai unlocks →';
+  $$('#tiers .tc').forEach(c => c.dataset.act = 'tiercard');
+  // quest
+  const qis = $$('#quest .qi');
+  qis[0].dataset.act = 'brand'; qis[0].dataset.k = 'akiba';
+  qis[1].dataset.act = 'stamp';
+  qis[2].dataset.act = 'squad';
+  $('#quest .banner').dataset.go = 'capsule';
+  // capsule
+  $$('#capsule .btn')[0].dataset.act = 'spin';
+  $$('#capsule .btn')[1].dataset.act = 'spin50';
+  $('#capsule .reveal').dataset.act = 'closereveal';
+  $('#capsule .sec a').dataset.act = 'toast'; $('#capsule .sec a').dataset.msg = '🔁 Share a trade link with your kawan';
+  // scan
+  $('#scan .sheet .btn').dataset.act = 'scandone';
+  $('#scan').insertAdjacentHTML('beforeend', '<div class="back" data-act="back" style="position:absolute;top:58px;left:18px;z-index:30;background:rgba(0,0,0,.45);color:#fff;border:none">✕</div>');
+  // ask
+  $$('#ask .sugg span').forEach(s => s.dataset.act = 'ask');
+  $('#ask .input').innerHTML = '<input id="askIn" placeholder="Ask anything, lah…"><div class="mic" data-act="asksend">➤</div>';
+  $('#askIn').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); askSend(); } });
+  // buzz
+  $$('#buzz .seg span').forEach(s => s.dataset.act = 'seg');
+  $('#buzz .hero').dataset.act = 'brand'; $('#buzz .hero').dataset.k = 'animate';
+  $$('#buzz .bi').forEach((e, i) => { e.dataset.act = 'brand'; e.dataset.k = ['akiba', 'doko', 'animate', 'ngam'][i]; });
+  // brand
+  const tb = $$('#brand .topb div'); tb[0].dataset.act = 'back'; tb[1].dataset.act = 'fav';
+  $('#brand .cta .btn.ghost').dataset.act = 'route';
+  $$('#brand .cta .btn')[1].dataset.go = 'realtalk';
+  // real talk
+  $$('#rate span').forEach((s, i) => { s.dataset.act = 'rate'; s.dataset.i = i; });
+  $$('#stick span').forEach(s => s.dataset.act = 'vibe');
+  $('#realtalk .ta').setAttribute('contenteditable', 'true');
+  $('#realtalk .btn').dataset.act = 'post';
+  // level up
+  $('#levelup .unl').insertAdjacentHTML('afterend', '<div class="pad" style="margin-top:22px"><div class="btn" data-act="lvdone">Shiok! Let\'s go 🎉</div></div>');
+
+  // ---------- enter hooks ----------
+  enter.capsule = () => { $('#gacha').classList.remove('shake', 'turn'); $('#capsule').classList.remove('go'); spun = false; };
+  enter.scan = () => {
+    const c = $('#coins'), sc = $('#scan'); c.innerHTML = ''; sc.classList.remove('fly');
+    for (let i = 0; i < 10; i++) { const e = document.createElement('div'); e.className = 'coin'; e.textContent = '★'; e.style.left = (150 + Math.random() * 80) + 'px'; e.style.top = (580 + Math.random() * 40) + 'px'; e.style.setProperty('--dx', (-80 - Math.random() * 60) + 'px'); e.style.setProperty('--dy', (-560 - Math.random() * 40) + 'px'); e.style.animationDelay = (3.6 + i * .07) + 's'; c.appendChild(e); }
+    void sc.offsetWidth; sc.classList.add('fly');
+  };
+  enter.realtalk = () => {
+    $('#realtalk .hdr h2').textContent = 'Real Talk · ' + BR[brandKey].name.replace(' Neighbourhood', '');
+    $$('#rate span').forEach(s => s.classList.remove('on')); $$('#stick span').forEach(s => s.classList.remove('on'));
+    const ta = $('#realtalk .ta'); ta.dataset.ph = '1'; ta.innerHTML = '<span id="typed" style="color:#A09A8E">Tap to write… e.g. "Broth damn creamy, can come back lah!"</span>';
+    $('#toast').style.opacity = 0;
+  };
+  $('#realtalk .ta').addEventListener('focus', e => { const t = e.target; if (t.dataset.ph) { t.innerHTML = ''; delete t.dataset.ph; } });
+  enter.levelup = () => {
+    const cf = $('#confetti'); cf.innerHTML = '';
+    const cs = ['#D9C49A', '#1E3A63', '#2F4E7A', '#B8975A', '#C9D3E0', '#fff'];
+    for (let i = 0; i < 70; i++) { const e = document.createElement('div'); e.className = 'conf'; e.style.left = Math.random() * 390 + 'px'; e.style.background = cs[i % 6]; e.style.animationDuration = (2.5 + Math.random() * 2.5) + 's'; e.style.animationDelay = (.8 + Math.random() * 2) + 's'; e.style.borderRadius = i % 3 ? '2px' : '50%'; cf.appendChild(e); }
+  };
+  enter.parking = () => { $('#pkExit').classList.remove('on', 'done'); const p = $('#pkPush'); p.classList.remove('on'); if (!p.dataset.shown) { p.dataset.shown = 1; setTimeout(() => p.classList.add('on'), 300); setTimeout(() => p.classList.remove('on'), 3200); } };
+  enter.busticket = () => { const p = $('#busPush'); p.classList.remove('on'); setTimeout(() => p.classList.add('on'), 700); setTimeout(() => p.classList.remove('on'), 4500); };
+  let rewardReady = false, claimed = false;
+  enter.missions = () => { const sc = $('#missions .scroll'); sc.scrollTop = 0;
+    if (rewardReady && !claimed) { claimed = true; $('#msBar').style.width = '100%'; $('#msAmt').innerHTML = 'RM318.50 <small>/ RM300</small>'; $('#msGap').textContent = 'Reward unlocked'; $('#msGap').classList.add('done'); $('#msBadge').textContent = 'Ready to claim';
+      setTimeout(() => sc.scrollTo({top: 250, behavior: 'smooth'}), 300); setTimeout(() => $('#msClaim').classList.add('on'), 1300); } };
+  enter.receipt = () => { $('#rcSlot').classList.remove('got'); $('#rcYes').classList.remove('on'); $('#rcTog').classList.remove('on'); $('#rcCam').classList.remove('on'); };
+  let invited = false;
+  enter.home = () => { if (invited) return; invited = true; setTimeout(() => gpush($('#home'), 'invite'), 1400); setTimeout(() => { const p = $('#home .push.gp'); if (p) p.classList.remove('on'); }, 7000); };
+  enter.me = () => { $('#meMall').textContent = mall; $('#rtCount').textContent = rtPosts + (rtPosts === 1 ? ' post' : ' posts'); };
+
+  // ---------- ask ----------
+  const REPLY = {
+    plan: `Shiok, here's your Saturday 🗓️<br><b>11:00</b> Animate Café · ACG stamp 🎐<br><b>13:00</b> Akiba Ramen · makan quest 🍜<br><b>15:00</b> Doko Koko collab café 🎀<br><b>17:00</b> Free capsule spin 🎰<br>Want me to add these to your Quest?`,
+    kpop: `Ada! 🎤 <b>GSC LaLaport BBCC</b> has a K-pop live viewing tonight at 8pm. Grab the exclusive wristband with your ticket. Senpai & Legend get priority seats 😉`,
+    exit: `Nearest exit is <b>P2 · Jalan Hang Tuah</b>, about 3 min walk. Your <b>4H free parking</b> is active, 2h 31m left 🅿️`,
+    any: `Got it! Here's what's trending on LaLa Buzz that matches 👇`
+  };
+  function chatPush(html, cls, delay = 0) {
+    const c = $('#chat'); const e = document.createElement('div'); e.className = cls; e.style.animationDelay = delay + 's'; e.innerHTML = html; c.appendChild(e);
+    setTimeout(() => c.scrollTo({top: c.scrollHeight, behavior: 'smooth'}), delay * 1000 + 60);
+    return e;
+  }
+  function askSend(text) {
+    const inp = $('#askIn'); text = text || inp.value.trim(); if (!text) return; inp.value = '';
+    chatPush(text, 'msg me');
+    const ty = chatPush('<i></i><i></i><i></i>', 'typing');
+    const k = /saturday|plan/i.test(text) ? 'plan' : /k-?pop|event|concert/i.test(text) ? 'kpop' : /exit|park/i.test(text) ? 'exit' : 'any';
+    setTimeout(() => { ty.remove(); chatPush(REPLY[k], 'msg ai');
+      if (k === 'any') { const p = chatPush(`<img src="../assets/app/ramen.jpg"><div><b>Akiba Ramen</b><span>From RM9.90 · ★4.8 Buzz · 2 min</span></div><div class="go">Go</div>`, 'pick', .3); p.dataset.act = 'brand'; p.dataset.k = 'akiba'; }
+      if (k === 'plan') { const p = chatPush(`<div style="font-weight:800;color:var(--blue)">➕ Add 4 stops to Quest</div>`, 'pick', .3); p.dataset.act = 'addplan'; }
+    }, 1100);
+  }
+  $$('#ask .pick').forEach(p => { p.dataset.act = 'brand'; p.dataset.k = 'akiba'; });
+
+  // ---------- capsule ----------
+  function spin(cost) {
+    if (spun) return;
+    if (cost) { if (pts < 50) return toast('Not enough pts lah 😅'); setPts(-50); }
+    spun = true;
+    const g = $('#gacha'), sc = $('#capsule');
+    g.classList.remove('shake', 'turn'); sc.classList.remove('go'); void g.offsetWidth;
+    g.classList.add('shake', 'turn'); sc.classList.add('go');
+  }
+
+  // ---------- click router ----------
+  document.addEventListener('click', e => {
+    const g = e.target.closest('[data-go]'), a = e.target.closest('[data-act]');
+    const t = a && g ? (a.contains(g) ? g : a) : (a || g);
+    if (!t) return;
+    if (t === g) return go(g.dataset.go);
+    return act(a, e);
+  });
+  function act(el, e) {
+    const k = el.dataset.act;
+    switch (k) {
+      case 'msinv': return $('#missions .scroll').scrollTo({top: 260, behavior: 'smooth'});
+      case 'claim': { const b = $('#msCbox'); if (b.classList.contains('done')) { $('#msClaim').classList.remove('on'); setTimeout(() => gpush($('#missions'), 'tier'), 500); return; } b.classList.add('done'); el.textContent = '✓ Claimed · tap to close'; setPts(300); return toast('🎁 RM30 voucher + 300 pts added'); }
+      case 'ropt': $$('#receipt .ropt').forEach(o => o.classList.toggle('on', o === el)); return;
+      case 'ryes': return el.classList.add('on');
+      case 'rcam': { if (el.classList.contains('got')) return toast('Retake or add another page'); const c = $('#rcCam'); c.classList.remove('lock', 'snap'); $('#rcPill').textContent = 'Position the receipt in the frame'; c.classList.add('on');
+        setTimeout(() => { c.classList.add('lock'); $('#rcPill').textContent = 'Scanning… hold steady'; }, 900); setTimeout(() => { c.classList.add('snap'); $('#rcPill').textContent = '✓ Captured'; }, 2100);
+        setTimeout(() => { c.classList.remove('on'); el.classList.add('got'); }, 2800); return; }
+      case 'rsubmit': { if (!$('#rcSlot').classList.contains('got')) return toast('📷 Add a photo of your receipt first'); if (!$('#rcTog').classList.contains('on')) return toast('Please agree to the Terms & Conditions');
+        go('rhist'); setTimeout(() => { $('#rhSt').textContent = '✅ Approved'; $('#rhNew').className = 'rh okk new'; $('#rhMs').textContent = '+118 pts · counted toward Anniversary Fiesta'; setPts(118); rewardReady = true; gpush($('#rhist'), 'reward'); }, 2600); return; }
+      case 'back': return back();
+      case 'close': return closeSheet();
+      case 'toast': return toast(el.dataset.msg);
+      case 'brand': return openBrand(el.dataset.k);
+      case 'btab': brandTab = el.dataset.t; return renderBrand();
+      case 'fav': el.textContent = el.textContent === '♡' ? '♥' : '♡'; el.style.color = el.textContent === '♥' ? '#8C6E3C' : ''; return toast(el.textContent === '♥' ? '♥ Saved to favourites' : 'Removed from favourites');
+      case 'route': return toast('🧭 ' + BR[brandKey].name + ': ' + (BR[brandKey].tags[0].replace('📍 ', '')) + ' · 2 min walk');
+      case 'mall': {
+        const ms = [['LaLaport BBCC', '#13294B', 'Bukit Bintang City Centre'], ['Mitsui Outlet Park BBCC', '#B8975A', 'Bukit Bintang City Centre'], ['Mitsui Outlet Park KLIA Sepang', '#B8975A', 'Near KLIA · Tourist Privilege Pass']];
+        return sheet(`<h3>Switch mall</h3>${ms.map(m => `<div class="opt ${m[0] === mall ? 'sel' : ''}" data-act="setmall" data-m="${m[0]}" data-c="${m[1]}"><i style="background:${m[1]}"></i><div>${m[0]}<small>${m[2]}</small></div></div>`).join('')}<div class="qrcap">Your level & points work in all 3 malls ✨</div>`);
+      }
+      case 'setmall': mall = el.dataset.m; $('#home .mall').innerHTML = `<i style="background:${el.dataset.c}"></i>${mall.replace('Mitsui Outlet Park', 'MOP')} ▾`; closeSheet(); return toast('📍 Switched to ' + mall);
+      case 'qr': return sheet(`<h3>My Member QR</h3><div class="qrbox">${qrHTML(25, 11)}</div><div class="qrcap">${el.dataset.cap || 'Explorer · 1.2x points · show at counter'}</div><div class="btn" style="margin-top:14px" data-act="close">Done</div>`);
+      case 'usev': return sheet(`<h3>${el.dataset.v}</h3><div class="qrbox">${qrHTML(25, 3)}</div><div class="qrcap">Show this to the cashier · valid 10 min</div><div class="btn" style="margin-top:14px" data-act="close">Done</div>`);
+      case 'collectv': el.querySelector('.r span').textContent = '✓ Collected to My Vouchers'; return toast('🎟️ ' + el.dataset.v + ' collected');
+      case 'collect': return toast('🎟️ 3 more vouchers on the Home page');
+      case 'vouchers': return $('#vouchers').scrollIntoView({behavior: 'smooth'});
+      case 'checkin': { if (el.dataset.done) return; el.dataset.done = 1; el.querySelector('b').textContent = '✓'; el.classList.remove('today'); el.classList.add('ok'); streak++;  setPts(10); return toast('🔥 Checked in! +10 pts'); }
+      case 'tiercard': return toast('🏅 ' + el.querySelector('.nm').textContent + ' · ' + (el.querySelector('.ml') ? el.querySelector('.ml').textContent : 'see perks table below'));
+      case 'stamp': {
+        const st = $$('#quest .stamp')[3]; if (st.classList.contains('got')) return toast('Already stamped ✓');
+        st.classList.add('got'); el.classList.add('done'); el.querySelector('.x').textContent = '✓ +30';
+        $('#quest .banner b').textContent = '4 / 5 stamps'; return toast('⛩️ Stamp collected! +30 XP');
+      }
+      case 'squad': return sheet(`<h3>Squad up with a kawan 👯</h3><div class="opt">💬 WhatsApp<small style="margin-left:auto">Most used in MY</small></div><div class="opt">📷 Instagram DM</div><div class="opt">🔗 Copy invite link</div><div class="qrcap">You both get +100 XP when they scan their first receipt</div>`);
+      case 'spin': return spin(false);
+      case 'spin50': return spin(true);
+      case 'closereveal': {
+        $('#capsule').classList.remove('go'); $('#gacha').classList.remove('shake', 'turn');
+        const empty = $$('#capsule .coll div').find(d => !d.querySelector('img'));
+        if (empty && !$('#capsule .coll img[src*=durian]')) { empty.innerHTML = '<img src="../assets/app/fig_durian.jpg">'; $('#capsule .sec b').textContent = 'My collection 7/24'; }
+        spun = false; return toast('★ Durian-chan added to your collection');
+      }
+      case 'scandone': setPts(35); go('home', false); stack.length = 0; return toast('✓ +35 pts added · Makan Quest done');
+      case 'ask': return askSend(el.textContent.replace(/^\S+\s/, ''));
+      case 'asksend': return askSend();
+      case 'addplan': el.innerHTML = '<div style="font-weight:800;color:var(--mint)">✓ Added to Quest</div>'; delete el.dataset.act; return toast('🗺️ 4 stops added to your Quest');
+      case 'seg': $$('#buzz .seg span').forEach(s => s.classList.toggle('on', s === el)); return;
+      case 'rate': { const i = +el.dataset.i; $$('#rate span').forEach((s, j) => s.classList.toggle('on', j <= i)); return; }
+      case 'vibe': return el.classList.toggle('on');
+      case 'post': {
+        const ta = $('#realtalk .ta'); const txt = ta.dataset.ph ? 'Can come back lah! 👍' : (ta.innerText.trim() || 'Can come back lah! 👍');
+        const stars = $$('#rate span.on').length || 5; const tags = $$('#stick span.on').map(s => s.textContent);
+        BR[brandKey].rt.unshift(['explorer', 'Shu Hoong (you)', 'Explorer', stars, txt.replace(/</g, '&lt;'), tags.length ? tags : ['💸 Worth it']]);
+        rtPosts++; setPts(20); brandTab = 'rt';
+        const t = $('#toast'); t.style.transition = 'all .4s cubic-bezier(.3,1.5,.5,1)'; t.style.opacity = 1; t.style.transform = 'translate(-50%,0) scale(1)';
+        return setTimeout(() => { t.style.opacity = 0; back(); }, 1300);
+      }
+      case 'tog': return el.classList.toggle('on');
+      case 'exitsim': { const x = $('#pkExit'); x.classList.remove('on', 'done'); void x.offsetWidth; x.classList.add('on'); setTimeout(() => x.classList.add('done'), 1800); setTimeout(() => { x.classList.remove('on', 'done'); }, 5200); return; }
+      case 'addplate': return sheet(`<h3>Add a car plate 🚗</h3><div class="opt" style="justify-content:center"><span class="plate" style="font-size:20px">VCB 8812</span></div><div class="opt">🚙 Car type<small style="margin-left:auto">Perodua Myvi</small></div><div class="opt">🪪 Verify owner<small style="margin-left:auto">MyKad / grant · 1 min</small></div><div class="qrcap">Up to 2 plates per member · LPR cameras at every LaLaport &amp; MOP entrance</div><div class="btn" style="margin-top:12px" data-act="close">Save plate</div>`);
+      case 'bustab': { $$('#bus .seg span').forEach(s => s.classList.toggle('on', s === el)); $('#busLTH').style.display = el.dataset.t === 'lth' ? '' : 'none'; $('#busKLIA').style.display = el.dataset.t === 'klia' ? '' : 'none'; return; }
+      case 'pickdep': { $$('#bus .dep').forEach(d => d.classList.toggle('sel', d === el)); const tm = el.querySelector('.tm').firstChild.textContent, fr = el.querySelector('.fr').firstChild.textContent; $('#bus [data-act=buybus]').textContent = `Book ${tm} · ${fr} →`; return; }
+      case 'buybus': return sheet(`<h3>Pay RM 59.00</h3><div class="opt sel">💎 Use 1,000 pts<small style="margin-left:auto">− RM 10.00</small></div><div class="opt">💳 Touch 'n Go eWallet<small style="margin-left:auto">RM 49.00</small></div><div class="qrcap">You get: e-ticket + RM10 F&amp;B e-Voucher + 59 pts · reminders on</div><div class="btn" style="margin-top:12px" data-act="busok">Confirm &amp; pay</div>`);
+      case 'busok': closeSheet(); go('busticket'); return toast('🎫 Booked! RM10 e-Voucher added');
+      case 'lvdone': stack.length = 0; return go('home', false);
+      case 'lang': $$('.lang span').forEach(s => s.classList.toggle('on', s === el)); return toast(el.textContent === 'BM' ? 'Bahasa Melayu dipilih ✓' : el.textContent === '中文' ? '已切換中文 ✓' : 'English selected ✓');
+      case 'myrt': return rtPosts ? openBrand(brandKey) : toast('Scan a receipt, then share your first Real Talk ✍️');
+      case 'help': return toast('💬 Ask LaLa can answer most questions 24/7');
+      case 'settings': return toast('⚙️ Settings');
+    }
+  }
+  $$('#side .mode span').forEach(m => m.addEventListener('click', () => { $$('#side .mode span').forEach(x => x.classList.toggle('on', x === m)); document.documentElement.classList.toggle('coreonly', m.dataset.m === 'core'); toast(m.dataset.m === 'core' ? 'Core package: tiers, parking, bus, vouchers' : 'Core + Play, AI & Buzz add-ons'); }));
+  // side jump links (desktop)
+  $$('#side [data-j]').forEach(s => s.addEventListener('click', () => { stack.length = 0; const j = s.dataset.j; if (BR[j]) openBrand(j); else go(j); }));
+
+  go('home', false);
+})();
+
+}
+</script>
+</body>
+</html>

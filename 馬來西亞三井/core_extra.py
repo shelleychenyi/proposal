@@ -33,7 +33,7 @@ def add_core_extra(d, lang, phone, A, PAGES):
     d.tx(s, 7.15, 1.35, 5.6, 0.35, T("What members see", "會員看到什麼"), 13, color="frame", bold=True)
     pts = [(T("01  Progress at a glance", "01  進度一目了然"), T("Warm-Up, Main Event, Comeback: done, in progress or locked", "暖身、主活動、回訪：完成、進行中、未開放一眼看懂")),
            (T("02  Spend gap + picks", "02  差額＋推薦店家"), T("\"RM80 to go\", with dining picks that close the gap", "「還差 RM80」，附上剛好補齊差額的餐飲推薦")),
-           (T("03  Claim in one tap", "03  一鍵領獎"), T("Receipt approved → RM300 reached → RM30 voucher + 300 pts", "發票審核通過 → 達到 RM300 → RM30 券＋300 點")),
+           (T("03  Claim in one tap", "03  一鍵領獎"), T("RM300 reached → \"Reward unlocked\" → RM30 voucher + 300 bonus pts", "達到 RM300 →「Reward unlocked」→ RM30 券＋300 點")),
            (T("04  Next tier, always in sight", "04  下一級永遠看得到"), T("Senpai is RM620 away: the next goal is never hidden", "距離 Senpai 只差 RM620：下一個目標不會被藏起來")),
            (T("05  Same tab for every campaign", "05  每檔活動同一個入口"), T("Anniversary, Anime, Family, Japanese Style: the Missions tab replaces Bus in the nav bar", "週年慶、動漫、親子、日式：任務分頁取代底部選單的 Bus"))]
     d.callouts(s, 7.15, 1.85, 5.6, pts, gap=0.86)
@@ -72,22 +72,22 @@ def add_core_extra(d, lang, phone, A, PAGES):
     PAGES["push"] = d.n
 
     # ------------------------------------------------------------ Receipt submission
-    s = d.info(T("Submit Receipt: snap it, submit it, see when the points land",
-                 "發票登錄：拍照、送出、隨時看到點數什麼時候入帳"),
-               label=T("Core | Receipts", "核心｜發票登錄"),
-               banner=T("Receipts capture spend without touching every tenant's POS. Core makes it easy; the AI add-on makes it instant",
-                        "發票是不改店家 POS 也能記到消費的方法：核心版讓它好用，AI 加購讓它即時"),
-               source=T("Flow benchmarked on a KL mall loyalty app (Pavilion Bukit Jalil \"Submit Spend\", Nov 2026). Review time and amounts are illustrative.",
-                        "流程參考吉隆坡商場會員 App（Pavilion Bukit Jalil「Submit Spend」，2026/11）；審核時間與金額為示意。"))
+    s = d.info(T("Submit Receipt: snap it, get a clear \"Approved\", you're in the lucky draw",
+                 "發票登錄：拍照送出，看到清楚的「Approved」，就能參加抽獎"),
+               label=T("Core | Receipts · Lucky Draw", "核心｜發票登錄・抽獎"),
+               banner=T("Receipts become lucky-draw entries: more spend we can see, no tenant POS changes, no points to manage",
+                        "發票變成抽獎資格：看得到更多消費、不用改店家 POS、也不用管點數"),
+               source=T("Flow benchmarked on a KL mall loyalty app (Pavilion Bukit Jalil \"Submit Spend\", Nov 2026). Draw rules (RM50 = 1 entry), prizes and dates are illustrative.",
+                        "流程參考吉隆坡商場會員 App（Pavilion Bukit Jalil「Submit Spend」，2026/11）；抽獎規則（每 RM50 一次）、獎項與日期皆為示意。"))
     x = 0.9
     w = phone(s, "receipt", x, 1.3, 4.35)
     x += w + 0.45
-    still(s, "rh_ok", x, 1.3, 4.35, T("UI mock-up", "UI 示意"))
+    still(s, "rok", x, 1.3, 4.35, T("UI mock-up", "UI 示意"))
     d.tx(s, 7.15, 1.35, 5.6, 0.35, T("The flow", "流程"), 13, color="frame", bold=True)
-    pts = [(T("1  Count it toward a mission", "1  先選要計入的活動"), T("Pick the campaign, or skip for points only", "選擇週年慶任務，或只累積點數")),
+    pts = [(T("1  Choose the draw", "1  選擇抽獎活動"), T("Anniversary Lucky Draw: every RM50 = 1 entry", "週年慶抽獎：每 RM50 一次抽獎機會")),
            (T("2  Quick check", "2  快速確認"), T("One receipt, LaLaport BBCC store, last 7 days", "一張發票、LaLaport BBCC 店家、7 天內")),
            (T("3  Snap every page", "3  每一頁都拍"), T("Auto-capture scanner; add pages, retake or delete", "自動對焦掃描；可加頁、重拍、刪除")),
-           (T("4  Track the status", "4  追蹤審核狀態"), T("Pending → approved (+pts) or rejected, with the reason", "審核中 → 通過（入點、計入任務）或退件並說明原因")),
-           (T("AI add-on: skip the wait", "AI 加購：不用等"), T("AI Receipt Scan reads it in 1 second, points land instantly", "AI 發票掃描 1 秒讀完，點數立刻入帳"))]
+           (T("4  A big, clear \"Approved\"", "4  大大的「Approved」"), T("Green tick, the receipt, entry number and draw date", "綠色大勾、發票資訊、抽獎序號與開獎日")),
+           (T("5  My entries", "5  我的抽獎紀錄"), T("Every receipt with its status; rejected ones show the reason", "每張發票的狀態；退件會說明原因"))]
     d.callouts(s, 7.15, 1.85, 5.6, pts, gap=0.86)
     PAGES["receipt"] = d.n

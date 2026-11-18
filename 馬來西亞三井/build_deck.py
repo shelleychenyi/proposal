@@ -407,7 +407,7 @@ whats_new("App 3.0 更新一覽：9 項升級，其中 6 項是全新功能", "W
            ("停車", "紙本票卡；免費 3H 藏在 News 裡", "LaLa Park：車牌即會員、依等級免費停、點數折抵、閘門自動開", "核心・NEW", "park"),
            ("巴士・接駁", "班次只在業者網站，跟商場無關", "LaLa Go：巴士＋KLIA 接駁時刻、上車提醒、順路逛店", "核心・NEW", "go"),
            ("任務", "活動只是一則 News 貼文", "任務牆＋智慧推播：差額提醒、推薦店家、領獎與升級通知", "核心・NEW", "missions"),
-           ("發票・點數", "只有 5% 會員在 App 集點", "拍照登錄發票、追蹤審核狀態；點數可抵停車", "核心", "receipt"),
+           ("發票・抽獎", "發票要拿到服務台登記", "拍照登錄發票、清楚顯示 Approved、自動取得抽獎資格", "核心", "receipt"),
            ("遊戲", "—", "來店打卡、任務、Stamp Rally、LaLa Capsule", "遊戲・NEW", "play"),
            ("AI", "—", "1 秒發票掃描、Ask LaLa 管家、For You 推薦", "AI・NEW", "ai"),
            ("口碑", "好評散在 IG、Threads，App 裡看不到", "LaLa Buzz：Pandora Buzz Score＋Real Talk 真心話", "AI・NEW", "buzz")])

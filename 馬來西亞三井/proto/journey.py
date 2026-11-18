@@ -6,7 +6,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)) + "/..")
 B = "file://" + os.path.abspath("proto/app.html")
 J = {"j1": "s=home&push=invite", "j2": "s=missions", "j3": "s=missions&y=250&push=gap", "j4": "s=paycode",
      "j5": "s=missions&y=250&claim=1", "j6": "s=tiers&push=tier", "rc_got": "s=receipt&got=1&y=330", "rc_cam": "s=receipt&cam=1",
-     "rh_ok": "s=rhist&st=ok&push=approved"}
+     "rok": "s=rok"}
 async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch(channel="chrome")
