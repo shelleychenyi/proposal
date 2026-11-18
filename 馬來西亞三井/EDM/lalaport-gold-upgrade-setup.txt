@@ -1,0 +1,40 @@
+LaLaport BBCC | Anniversary Fiesta
+Silver-to-Gold upgrade reminder · English EDM
+
+SUBJECT
+You're just {{AMOUNT_TO_GOLD}} away from Gold
+Preview example: You're just RM500 away from Gold
+
+PREHEADER
+Upgrade from Silver to Gold this month and unlock a Gold Gift Pack, double points on Members’ Day and three hours of complimentary parking.
+
+MA FIELDS
+AMOUNT_TO_GOLD: Display amount including the currency prefix, e.g. RM500. Use the latest qualifying spend balance at send time.
+MEMBER_PROGRESS_URL: The approved signed-in app or mobile membership page for the member's upgrade progress.
+HERO_IMAGE_URL: The recipient-accessible HTTPS URL for assets/gold-upgrade-hero.jpg.
+COMCOCA_IMAGE_URL: The recipient-accessible HTTPS URL for assets/comcoca.jpg.
+EARTH_IMAGE_URL: The recipient-accessible HTTPS URL for assets/earth.jpg.
+IKUKO_IMAGE_URL: The recipient-accessible HTTPS URL for assets/ikuko.jpg.
+UNSUBSCRIBE_URL: Your MA platform’s unsubscribe tag or URL.
+
+HANDOFF
+The preview uses RM500. Its progress button points to the preview note. Brand links point to official directory pages.
+The Gold progress graphic illustrates a near-upgrade reminder. Its segment lengths are fixed and have no percentage scale. The amount displayed above the graphic uses AMOUNT_TO_GOLD.
+The Gold benefits and monthly upgrade rule are supplied campaign terms. Confirm eligibility and final benefit wording with the campaign owner before sending.
+Before sending, confirm image usage for the campaign, host the approved images and map the fields. Test-send to verify personalisation and links.
+The template makes no claim that purchases at a featured store qualify. Use the actual spend eligibility rules.
+Enter the subject and preheader separately if your platform provides dedicated fields. Import MJML or the compiled HTML as supported by your MA platform.
+
+OFFICIAL STORE AND IMAGE SOURCES
+comcoca | Ground Floor · G-06 / G-07
+https://mitsui-shopping-park.com.my/LaLaportBBCC/Brand/brandDetail?dian_id=1&id=1818
+https://storagelpklpiweb.blob.core.windows.net/lpkl/Image/Upload/20240701/6385542527162954683809305.jpg
+
+earth music & ecology | Ground Floor · G-45
+https://mitsui-shopping-park.com.my/LaLaportBBCC/Brand/brandDetail?dian_id=1&id=2315
+https://storagelpklpiweb.blob.core.windows.net/lpkl/Image/Upload/20250730/6388946709136016567915872.jpeg
+
+IKUKO Japan Beauty | Level 3 · L3-05
+https://mitsui-shopping-park.com.my/LaLaportBBCC/Brand/brandDetail?dian_id=1&id=1834
+https://storagelpklpiweb.blob.core.windows.net/lpkl/Image/Upload/20240718/6385689082681079587913885.jpg
+

@@ -1,0 +1,127 @@
+<mjml lang="en">
+  <mj-head>
+    <mj-title>You're just {{AMOUNT_TO_GOLD}} away from Gold</mj-title>
+    <mj-preview>Upgrade from Silver to Gold this month and unlock a Gold Gift Pack, double points on Members’ Day and three hours of complimentary parking.</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="Arial, Helvetica, sans-serif" />
+      <mj-section padding="0" />
+      <mj-text padding="0" color="#263f64" font-size="16px" line-height="155%" />
+    </mj-attributes>
+    <mj-style>
+      @media only screen and (max-width: 479px) {
+        .main-title h1 {font-size: 34px !important;}
+        .gold-perk {margin-bottom: 6px !important;}
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body width="640px" background-color="#edf6fc">
+    <mj-section background-color="#0d2d65" padding="13px 25px">
+      <mj-column>
+        <mj-text font-size="13px" color="#ffffff" line-height="20px"><strong>LaLaport BBCC</strong> &nbsp;|&nbsp; Anniversary Fiesta</mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#eff7ff" padding="24px 25px">
+      <mj-column>
+        <mj-text font-size="12px" line-height="17px" font-weight="bold" letter-spacing="1.7px" color="#174c9b">MEMBERSHIP UPGRADE</mj-text>
+        <mj-text css-class="main-title" color="#102c62" padding-top="7px">
+          <h1 style="margin:0;font-size:42px;line-height:108%;letter-spacing:-1px;">You’re just <span style="color:#174c9b;">{{AMOUNT_TO_GOLD}}</span> away from Gold</h1>
+        </mj-text>
+        <mj-text padding-top="17px">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="background-color:#ffffff;border:1px solid #d9e6f5;border-radius:12px;">
+            <tr>
+              <td style="padding:13px 15px 12px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td valign="middle" style="padding:0 8px 9px 0;color:#27446e;font-size:12px;line-height:17px;font-weight:bold;letter-spacing:0.6px;">YOUR PATH TO GOLD</td>
+                    <td align="right" valign="middle" style="padding:0 0 9px;color:#102c62;font-size:13px;line-height:18px;font-weight:bold;">{{AMOUNT_TO_GOLD}} to go</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <table role="presentation" aria-hidden="true" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;table-layout:fixed;border-collapse:separate;">
+                        <tr>
+                          <td width="89%" height="14" bgcolor="#eeb63c" style="width:89%;height:14px;background-color:#eeb63c;background-image:linear-gradient(90deg,#d7a328,#f3c453);border-radius:8px 2px 2px 8px;font-size:0;line-height:0;">&nbsp;</td>
+                          <td width="1%" style="width:1%;font-size:0;line-height:0;">&nbsp;</td>
+                          <td width="10%" height="14" bgcolor="#fff8df" style="width:10%;height:14px;background-color:#fff8df;border:1px dashed #bd8d22;border-radius:2px 8px 8px 2px;font-size:0;line-height:0;">&nbsp;</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:7px 8px 0 0;color:#506687;font-size:12px;line-height:17px;"><strong style="color:#263f64;">Silver</strong> · Current tier</td>
+                    <td align="right" style="padding:7px 0 0;color:#7d560a;font-size:12px;line-height:17px;"><strong>Gold</strong> · Next tier</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </mj-text>
+        <mj-text padding-top="12px">Spend another {{AMOUNT_TO_GOLD}} in qualifying purchases this month to move from Silver to Gold at LaLaport BBCC.</mj-text>
+        <mj-button href="{{MEMBER_PROGRESS_URL}}" target="_blank" align="left" background-color="#123f9c" color="#ffffff" padding="17px 0 0" inner-padding="13px 19px" font-weight="bold" font-size="15px" border-radius="8px">Check my upgrade progress</mj-button>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#c7efff">
+      <mj-column>
+        <mj-image src="{{HERO_IMAGE_URL}}" alt="A woman in a cream blazer and navy trousers walks through a sunlit shopping plaza." width="640px" padding="0" />
+      </mj-column>
+    </mj-section>
+
+    <mj-wrapper background-color="#fff4c5" padding="21px 25px 19px">
+      <mj-section>
+        <mj-column>
+          <mj-text color="#102c62" padding-bottom="10px">
+            <h2 style="margin:0;font-size:24px;line-height:122%;letter-spacing:-0.35px;">What you’ll unlock with Gold</h2>
+          </mj-text>
+          <mj-text padding-bottom="6px"><strong style="color:#102c62;">Gold Gift Pack</strong> · Food court dining vouchers and a member gift</mj-text>
+          <mj-text padding-bottom="6px"><strong style="color:#102c62;">2× points</strong> · On Members’ Day</mj-text>
+          <mj-text><strong style="color:#102c62;">3 hours of complimentary parking</strong></mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+
+    <mj-wrapper background-color="#f2f7fd" padding="25px 19px 13px">
+      <mj-section padding="0 6px 14px">
+        <mj-column>
+          <mj-text color="#102c62" padding-bottom="5px">
+            <h2 style="margin:0;font-size:24px;line-height:122%;letter-spacing:-0.35px;">Japanese style for your workweek</h2>
+          </mj-text>
+          <mj-text font-size="14px" line-height="21px">Find an easy office look or unwind with a little after-work skincare.</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section>
+      <mj-column width="33.33%" padding="0 6px 12px">
+        <mj-image href="https://mitsui-shopping-park.com.my/LaLaportBBCC/Brand/brandDetail?dian_id=1&amp;id=1818" src="{{COMCOCA_IMAGE_URL}}" alt="A model wears a relaxed neutral blouse and carries a structured handbag." padding="0" border-radius="9px 9px 0 0" />
+        <mj-text container-background-color="#ffffff" padding="12px 11px 2px" color="#102c62" font-size="16px" line-height="20px" font-weight="bold">comcoca</mj-text>
+        <mj-text container-background-color="#ffffff" padding="0 11px 7px" color="#506687" font-size="12px" line-height="18px">Ground Floor · G-06 / G-07</mj-text>
+        <mj-text container-background-color="#ffffff" padding="0 11px 6px" font-size="13px" line-height="19px">Japanese fashion for the workweek. Look for easy separates that pair well with your everyday favourites.</mj-text>
+        <mj-text container-background-color="#ffffff" padding="0 11px 13px" font-size="13px" line-height="19px"><a href="https://mitsui-shopping-park.com.my/LaLaportBBCC/Brand/brandDetail?dian_id=1&amp;id=1818" style="font-weight:bold;color:#103f9b;text-decoration:underline;" aria-label="View comcoca store details">Store details →</a></mj-text>
+      </mj-column>
+      <mj-column width="33.33%" padding="0 6px 12px">
+        <mj-image href="https://mitsui-shopping-park.com.my/LaLaportBBCC/Brand/brandDetail?dian_id=1&amp;id=2315" src="{{EARTH_IMAGE_URL}}" alt="A model wears a dark blouse and a light skirt in a softly lit room." padding="0" border-radius="9px 9px 0 0" />
+        <mj-text container-background-color="#ffffff" padding="12px 11px 2px" color="#102c62" font-size="16px" line-height="20px" font-weight="bold">earth music &amp; ecology</mj-text>
+        <mj-text container-background-color="#ffffff" padding="0 11px 7px" color="#506687" font-size="12px" line-height="18px">Ground Floor · G-45</mj-text>
+        <mj-text container-background-color="#ffffff" padding="0 11px 6px" font-size="13px" line-height="19px">Soft colours and feminine silhouettes make for easy layers from desk to dinner.</mj-text>
+        <mj-text container-background-color="#ffffff" padding="0 11px 13px" font-size="13px" line-height="19px"><a href="https://mitsui-shopping-park.com.my/LaLaportBBCC/Brand/brandDetail?dian_id=1&amp;id=2315" style="font-weight:bold;color:#103f9b;text-decoration:underline;" aria-label="View earth music &amp; ecology store details">Store details →</a></mj-text>
+      </mj-column>
+      <mj-column width="33.33%" padding="0 6px 12px">
+        <mj-image href="https://mitsui-shopping-park.com.my/LaLaportBBCC/Brand/brandDetail?dian_id=1&amp;id=1834" src="{{IKUKO_IMAGE_URL}}" alt="A selection of IKUKO skincare products." padding="0" border-radius="9px 9px 0 0" />
+        <mj-text container-background-color="#ffffff" padding="12px 11px 2px" color="#102c62" font-size="16px" line-height="20px" font-weight="bold">IKUKO Japan Beauty</mj-text>
+        <mj-text container-background-color="#ffffff" padding="0 11px 7px" color="#506687" font-size="12px" line-height="18px">Level 3 · L3-05</mj-text>
+        <mj-text container-background-color="#ffffff" padding="0 11px 6px" font-size="13px" line-height="19px">Discover Japanese skincare or make time for an after-work facial.</mj-text>
+        <mj-text container-background-color="#ffffff" padding="0 11px 13px" font-size="13px" line-height="19px"><a href="https://mitsui-shopping-park.com.my/LaLaportBBCC/Brand/brandDetail?dian_id=1&amp;id=1834" style="font-weight:bold;color:#103f9b;text-decoration:underline;" aria-label="View IKUKO Japan Beauty store details">Store details →</a></mj-text>
+      </mj-column>
+      </mj-section>
+    </mj-wrapper>
+
+    <mj-section background-color="#e3eefb" padding="15px 25px">
+      <mj-column>
+        <mj-text color="#385276" font-size="12px" line-height="19px">
+          Eligibility and reward redemption are subject to campaign terms.<br />
+          LaLaport BBCC Membership Team<br />
+          <a href="{{UNSUBSCRIBE_URL}}" style="color:#385276;text-decoration:underline;">Unsubscribe</a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
