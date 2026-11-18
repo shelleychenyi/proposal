@@ -100,8 +100,8 @@ def core_map(s, y=1.3):
     d.tx(s, 1.0, cy + 0.14, 9, 0.35, "核心 CORE｜LaLa Quest 基本版・帶來人流與註冊", 13, color="#E8D6AE", bold=True)
     cores = [("會員身份＋四級", "首頁 QR・Rookie → Legend"),
              ("LaLa Park 車牌停車", "車牌＝會員・等級送時數\n點數折抵剩餘停車費"),
-             ("LaLa Go 巴士", "LTH 購票・時刻表\n乘車提醒・KLIA 接駁"),
-             ("點數＋e-Voucher", "發票登錄・票券錢包\n乘車券與店家優惠")]
+             ("LaLa Go 巴士", "LTH・KLIA 班次時刻\n乘車提醒・不做售票"),
+             ("點數＋任務", "發票登錄・任務牆\n智慧推播・e-Voucher")]
     for i, (t, body) in enumerate(cores):
         x = 1.0 + i * 2.95
         d.round(s, x, cy + 0.6, 2.75, 1.25, "#1E3A63", 0.08)
@@ -124,7 +124,7 @@ def whats_new(title, label, banner, head, rows):
     for i, (x, w) in enumerate(X):
         d.tx(s, x + (0.12 if i < 3 else 0), y0 + 0.08, w, 0.25, head[i], 10.5, color=SC_GOLD_L if i == 2 else "white",
              bold=True, align=PP_ALIGN.LEFT if i < 3 else PP_ALIGN.CENTER)
-    rh = 0.535
+    rh = min(0.535, 4.3 / len(rows))
     for r, (feat, before, after, pkg, key) in enumerate(rows):
         y = y0 + 0.42 + r * rh
         new = "NEW" in pkg
@@ -249,7 +249,7 @@ def fill_page_refs():
 # ---------------------------------------------------------------- 封面
 d.cover("MSP 會員 App\n3.0 改版提案。", "LaLa Quest｜每一次來，都在升級。", "2026.11",
         company="TURN CLOUD TECHNOLOGY SERVICE INC.", logos=[LALA, MOP], image=A + "mock_hero3.jpg")
-d.toc([("現況與洞察", "機會"), ("標竿學習", "標竿"), ("App 3.0 全貌", "全貌"), ("核心｜會員分級", "分級"),
+d.toc([("現況與洞察", "機會"), ("標竿學習", "標竿"), ("App 3.0 全貌", "全貌"), ("核心｜會員分級＋任務", "分級"),
        ("核心｜LaLa Park 停車", "停車"), ("核心｜LaLa Go 巴士", "巴士"), ("加購｜AI 包＋遊戲包", "加購"),
        ("落地與 KPI", "落地")])
 
@@ -275,9 +275,9 @@ s = d.info("一頁看懂：核心功能把人帶進來，加購功能讓人留�
 d.columns(s, [("洞察", "#8A94A6", "有熱度，缺導客工具",
                "半年 3,696 篇、90.7% 正面\n最大負評：停車\nLTH＋KLIA 帶來大量旅客\n只有 5% 會員用 App 集點"),
               ("解法", BLUE, "一個核心＋兩個加購",
-               "核心：四級會員、車牌停車\n核心：LaLa Go 巴士購票\n核心：點數＋e-Voucher\n加購：AI（含口碑）・遊戲"),
+               "核心：四級會員、任務牆、車牌停車\n核心：LaLa Go 班次提醒\n核心：發票登錄＋智慧推播\n加購：AI（含口碑）・遊戲"),
               ("收益", ORANGE, "更多來客、更多會員",
-               "每一個車牌＝一位會員\n每一張車票＝一筆館內消費\n集點率 5% → 20%\n各館共用一個會員身份")])
+               "每一個車牌＝一位會員\n每一次等車＝一段逛街時間\n集點率 5% → 20%\n各館共用一個會員身份")])
 
 s = d.info("洞察①　大家很愛 LaLaport：半年 3,696 篇、九成正面", label="Pandora 聲量報告",
            banner="聲量和好感都在，缺的是一個把這份熱度「記回會員身上」的 App", source=PSRC)
@@ -320,19 +320,19 @@ d.callouts(s, 7.0, 3.3, 5.75, [("首頁＝廣告牆", "Banner、News、Voucher �
                                ("紙本停車券，沒綁車牌", "停車跟會員身份、點數完全沒有連動")], gap=0.9)
 
 s = d.info("洞察④　旅客本來就在館內經過：LaLaport 有 LTH 巴士站、MOP 緊鄰機場", label="桌面調查｜交通",
-           banner="等車的時間就是逛街的時間：在 App 賣票、附上 e-Voucher、提醒上車",
+           banner="等車的時間就是逛街的時間：在 App 看班次、提醒上車、順路帶去店家",
            source="Data source: busonlineticket.com LaLaport Transportation Hub 頁面（2026/11）；railtravelstation.com MOP KLIA Sepang 接駁資訊；班次以業者公告為準")
 d.num_cards(s, [("8", "LTH 巴士業者", "LaLaport BBCC LG1 East Atrium\n吉隆坡 ⇄ 新加坡、新山\n約 06:30–23:45 發車"),
                 ("~10 分", "MOP ⇄ KLIA 免費接駁", "KLIA T1 約 10 分、klia2 約 20 分\n轉機旅客、候機觀光客"),
-                ("0", "目前與商場的連動", "車票在第三方網站購買\n沒有會員、沒有優惠券\n也沒有「先逛再上車」的提醒")], y=1.35, h=2.55)
+                ("0", "目前與商場的連動", "班次只在業者網站\n沒有會員連動\n也沒有「先逛再上車」的提醒")], y=1.35, h=2.55)
 d.fit(s, A + "app/lth_bay.jpg", 0.72, 4.05, 3.2, 2.0)
 d.ai_tag(s, 0.82, 4.12)
 d.callouts(s, 4.2, 4.1, 8.4, [("旅客都會提早到", "跨境巴士要求提早報到：30–90 分鐘的空檔可以被填滿"),
-                              ("他們需要提醒，不是廣告", "「30 分鐘後上車，RM10 優惠券還沒用」把等待變成消費")], gap=0.95)
+                              ("他們需要提醒，不是廣告", "「30 分鐘後上車，先去 L1 吃點東西」把等待變成消費")], gap=0.95)
 
 d.statement("IDEA", "LaLa Quest\n停車、搭車、升級",
             "Every visit levels you up.\n"
-            "核心：四級會員・車牌停車・LaLa Go 巴士・e-Voucher\n"
+            "核心：四級會員・任務牆・車牌停車・LaLa Go 班次\n"
             "AI 智慧包：1 秒發票掃描、Ask LaLa、LaLa Buzz 口碑\n"
             "遊戲包：簽到、任務、集章、扭蛋",
             image=A + ("idea_poster.jpg" if IDEA_VIDEO else "app/acg_event.jpg"), video=IDEA_VIDEO)
@@ -398,22 +398,23 @@ glance("一眼看懂 App 3.0：從「公告欄」變成「為我服務的 APP」
        "BEFORE・現行 MSP APP", "AFTER・App 3.0（Prototype 實錄）",
        [("home", "首頁先放 Banner\n會員資訊被埋住"), ("news", "滿版促銷公告\n沒有一則是「我的」")],
        [("home", "我的卡・車・行程", None), ("tiers", "四級會員＋角色", None),
-        ("parking", "LaLa Park 車牌停車", "NEW"), ("busticket", "LaLa Go 巴士", "NEW")], "")
-whats_new("App 3.0 更新一覽：8 項升級，其中 5 項是全新功能", "What's New｜Before → After",
-          "從「推播商場消息的 App」，變成「幫我停車、幫我訂車、陪我升級的 App」",
+        ("missions", "任務牆", "NEW"), ("parking", "LaLa Park 車牌停車", "NEW")], "")
+whats_new("App 3.0 更新一覽：9 項升級，其中 6 項是全新功能", "What's New｜Before → After",
+          "從「推播商場消息的 App」，變成「幫我停車、提醒我搭車、陪我升級的 App」",
           ["功能", "Before・現在的 App", "After・App 3.0", "方案", "Demo"],
           [("首頁", "Banner、News 一直推，沒有「我」", "我的會員卡、我的車、我的行程，一頁看完", "核心", "home"),
            ("會員", "權益看不清楚，沒有升級的動力", "4 個等級＋角色，每次來館權益都長大", "核心", "tiers"),
            ("停車", "紙本票卡；免費 3H 藏在 News 裡", "LaLa Park：車牌即會員、依等級免費停、點數折抵、閘門自動開", "核心・NEW", "park"),
-           ("巴士・接駁", "在第三方網站買票，跟商場無關", "LaLa Go：App 買票＋RM10 券＋上車提醒；MOP 機場接駁", "核心・NEW", "go"),
-           ("點數・券", "只有 5% 會員在 App 集點", "點數可抵停車、巴士；店家券＋行程券都在同一個錢包", "核心", "home"),
+           ("巴士・接駁", "班次只在業者網站，跟商場無關", "LaLa Go：巴士＋KLIA 接駁時刻、上車提醒、順路逛店", "核心・NEW", "go"),
+           ("任務", "活動只是一則 News 貼文", "任務牆＋智慧推播：差額提醒、推薦店家、領獎與升級通知", "核心・NEW", "missions"),
+           ("發票・點數", "只有 5% 會員在 App 集點", "拍照登錄發票、追蹤審核狀態；點數可抵停車", "核心", "receipt"),
            ("遊戲", "—", "來店打卡、任務、Stamp Rally、LaLa Capsule", "遊戲・NEW", "play"),
            ("AI", "—", "1 秒發票掃描、Ask LaLa 管家、For You 推薦", "AI・NEW", "ai"),
            ("口碑", "好評散在 IG、Threads，App 裡看不到", "LaLa Buzz：Pandora Buzz Score＋Real Talk 真心話", "AI・NEW", "buzz")])
 phone_demo("首頁：我的會員卡、我的車、我的行程，一頁看完", "Home", "home",
            [("會員卡＝QR＋等級", "結帳一打開 App，店員直接掃首頁 QR（右：情境影片）"),
             ("我的車，即時", "LPR 辨識 WXY 1234 停在 P2：免費時數剩 2h 31m"),
-            ("我的行程", "15:30 往新加坡、Bay 3、還有 RM10 優惠券可用"),
+            ("任務＋我的行程", "週年慶任務還差 RM80；設了提醒才出現 15:30 巴士"),
             ("What's On 活動牆", "首頁下方滑動看今天的活動與優惠（見影片）")],
            "首頁從「商場在推什麼」換成「我是誰、我今天能拿到什麼」", clip="checkout")
 PAGES["home"] = d.n
@@ -433,7 +434,7 @@ d.logo(s, MOP, 3.3, 3.88, 0.5)
 d.tx(s, 0.7, 4.65, 7.5, 1.2, "字型：Cormorant Garamond（標題，精品襯線）＋ Plus Jakarta Sans（內文，易讀、支援馬來文）\n線性 icon 取代 emoji；金色只出現在等級、點數與 QR 邊框",
      12.5, color="mid", spacing=1.6)
 d.tx(s, 9.0, 1.35, 3.7, 0.35, "Microcopy：馬來西亞英語", 13, color="frame", bold=True)
-mc = ["Jom! Your car is parked, 2h 31m free.", "30 min to boarding, still got RM10 lah", "Ask anything, lah…",
+mc = ["Jom! Your car is parked, 2h 31m free.", "30 min to boarding, makan first lah", "Ask anything, lah…",
       "Done · Shiok!", "Squad up: bring 1 kawan", "Drive safe, see you again!"]
 for i, t in enumerate(mc):
     d.round(s, 9.0, 1.8 + i * 0.68, 3.7, 0.54, "soft", 0.3)
@@ -444,7 +445,7 @@ d.divider("會員分級", "核心①｜從 Regular Member，\n到 Rookie、Explo
 s = d.info("四個等級，四個 LaLa：會員一路養大自己的角色", label="核心｜Tier Characters",
            banner="不叫金卡銀卡：每升一級，LaLa 換一套裝備、停車多一小時、多一枚徽章",
            source="角色為 AI 示意設計，正式版可延伸成貼圖、扭蛋公仔與館內裝置")
-TIERS = [("rookie", "#8F8A80", "ROOKIE", "LV1｜註冊即得", "1x 點數・3H 停車\n乘車 e-Voucher"),
+TIERS = [("rookie", "#8F8A80", "ROOKIE", "LV1｜註冊即得", "1x 點數・3H 停車\n新會員任務"),
          ("explorer", "#13294B", "EXPLORER", "LV2｜RM1,500 或 12 次造訪", "1.2x 點數・4H 停車\n生日月雙倍點"),
          ("senpai", "#B8975A", "SENPAI", "LV3｜RM5,000", "1.5x 點數・5H 停車\n活動優先入場"),
          ("legend", "#0B1A30", "LEGEND", "LV4｜RM12,000", "2x 點數・全日停車\nLegend Lounge")]
@@ -462,11 +463,11 @@ d.ai_tag(s, 0.82, 1.38)
 META["special"]["tiers"] = d.n
 PAGES["tiers"] = d.n
 
-s = d.info("權益對照：停車時數、乘車點數跟著等級長大", label="核心｜Tier Design",
+s = d.info("權益對照：停車時數、任務加成跟著等級長大", label="核心｜Tier Design",
            banner="停車是每個人都懂的權益：「升級」直接變成每次來省下的時數",
            source="門檻與權益為試算示意，正式數字依三井會員消費與停車場數據調整")
-d.table(s, ["等級", "門檻（12 個月）", "點數倍率", "免費停車（LPR）", "乘車點數", "代表權益"],
-        [["Rookie　LV1", "註冊即得", "1x", "3 小時", "1x", "乘車 e-Voucher、生日禮"],
+d.table(s, ["等級", "門檻（12 個月）", "點數倍率", "免費停車（LPR）", "任務加成", "代表權益"],
+        [["Rookie　LV1", "註冊即得", "1x", "3 小時", "1x", "新會員任務、生日禮"],
          ["Explorer　LV2", "RM 1,500 或 12 次造訪", "1.2x", "4 小時", "1.2x", "生日月雙倍點、可綁第 2 台車"],
          ["Senpai　LV3", "RM 5,000", "1.5x", "5 小時", "1.5x", "Bon Odori・ACG 活動優先入場"],
          ["Legend　LV4", "RM 12,000", "2x", "全日", "2x", "Legend Lounge、專屬車位、Legend Night"]],
@@ -476,11 +477,14 @@ d.tx(s, 0.75, 5.2, 12, 0.6, "★ 「次數」也能升級：Explorer 可用 12 �
 
 phone_demo("等級頁：四張卡疊在一起，下一級永遠看得到", "核心｜Tier", "tierflow",
            [("卡片疊疊樂", "四級會員卡像錢包一樣疊著，Legend 黑金卡最吸睛"),
-            ("權益對照表", "倍率、車牌停車時數、乘車點數、活動入場"),
+            ("權益對照表", "倍率、車牌停車時數、任務加成、活動入場"),
             ("升級那一刻", "升上 Senpai：停車 4H → 5H、點數 1.5x"),
             ("在館內的那一刻", "跟朋友一起見證升級（右：情境影片）")],
            "讓會員知道「下一步在哪」，比給更多點數更有用",
            clip="lvscene")
+
+from core_extra import add_core_extra  # noqa: E402
+add_core_extra(d, "zh", phone, A, PAGES)
 
 # ---------------------------------------------------------------- 5 LaLa Park（核心）
 d.divider("LaLa Park", "核心②｜車牌註冊一次，\n閘門就認得你是會員", key="停車")
@@ -496,15 +500,15 @@ scene("LaLa Park：開進來、逛一下午、開出去，閘門自己打開", "
 PAGES["park"] = d.n
 
 # ---------------------------------------------------------------- 6 LaLa Go（核心）
-d.divider("LaLa Go", "核心③｜在 App 買巴士票，\n等車的時間留在館內逛", key="巴士")
-scene("LaLa Go：App 訂巴士票、多拿 RM10 券，時間到了提醒你上車", "核心｜LaLa Go・情境 Demo",
-      "等車時間變成逛街時間：每位乘客手上都帶著一張券經過店門口",
+d.divider("LaLa Go", "核心③｜在 App 看班次、收提醒，\n等車的時間留在館內逛", key="巴士")
+scene("LaLa Go：看班次、收提醒，等車的時間留在館內逛", "核心｜LaLa Go・情境 Demo",
+      "等車時間變成逛街時間：每位乘客都知道幾點出發、路上去哪吃",
       A + "app/lth_bay.jpg", ["bus", "busticket"],
-      [("1:30 PM", "App 訂 3:30 往新加坡的巴士，加送 RM10 e-Voucher"),
-       ("3:00 PM", "推播：「30 分鐘後上車，RM10 還沒用！」買杯珍奶剛好"),
-       ("3:20 PM", "Bay 3 掃 QR 上車，點數在行程結束後入帳")],
+      [("1:30 PM", "在 LaLa Go 查到 3:30 往新加坡的班次，按「提醒我」"),
+       ("3:00 PM", "推播：「30 分鐘後上車，Bay 3，先去 L1 吃點東西」買杯珍奶剛好"),
+       ("3:20 PM", "拿業者的車票走到 Bay 3，該買的都買好了")],
       chip="MOP：機場免費接駁時刻＋趕飛機提醒",
-      video="go_scene_zh", source="業者、票價與時刻皆為示意；票務以業者訂票 API 串接（LTH 為 busonlineticket.com 體系）")
+      video="go_scene_zh", source="業者與時刻皆為示意；班次由業者資料串接（LTH 為 busonlineticket.com 體系），售票仍由業者負責")
 PAGES["go"] = d.n
 
 # ---------------------------------------------------------------- 7 Add-ons (AI + Play)
@@ -565,7 +569,7 @@ phone_demo("LaLa Capsule：每天一抽，抽到的是「想收集」的心", "�
 # ---------------------------------------------------------------- 10 落地
 d.divider("落地與 KPI", "核心先上、加購隨時開：\nActivation、時程、分工、KPI", key="落地")
 d.social_idea("A", "MOP KLIA Sepang × 旅客", "Transit Quest：在 Outlet 轉機一次，成為一輩子的會員",
-              "LaLa Go 顯示 KLIA 免費接駁，時間到提醒旅客出發趕飛機。下載即送 Explorer 試用 30 天＋RM10 e-Voucher＋"
+              "LaLa Go 顯示 KLIA 免費接駁，時間到提醒旅客出發趕飛機。下載即送 Explorer 試用 30 天＋新會員任務＋"
               "Tourist Privilege Pass，讓一次性的旅客也留下會員資料。（AI 示意圖）", A + "klia_outlet.jpg")
 d.social_idea("B", "LaLaport BBCC × ACG（加購遊戲包）", "ACG Season Pass：把 ACG Matsuri 變成 App 裡的季賽",
               "開通遊戲包後：集章、聯名咖啡任務、KLP48 劇場打卡。Matsuri 週末開車來的會員停車多送 1H；"
@@ -574,13 +578,13 @@ d.social_idea("B", "LaLaport BBCC × ACG（加購遊戲包）", "ACG Season Pass
 s = d.info("先上線核心，再依檔期一個個插上加購模組", label="時程",
            banner="Phase 0 全部是核心：分級、車牌停車、LaLa Go 一起上線；加購依需求開通")
 d.timeline(s, 1.8, ["2027/01", "2027/04", "2027/07", "2027/10", "2028/01"],
-           [("P0 核心｜分級・停車・巴士・優惠券", 0, 0.4),
+           [("P0 核心｜分級・任務・停車・巴士", 0, 0.4),
             ("加購｜AI 包：LaLa Buzz 口碑（Pandora）", 0.3, 0.6),
             ("加購｜AI 包：發票掃描・Ask LaLa", 0.45, 0.8),
             ("加購｜遊戲包（任務・扭蛋・祭典）", 0.6, 1.0)])
 d.table(s, ["", "三井 Mitsui Shopping Park", "騰雲 TurnCloud"],
         [["內容", "等級權益、停車規則、店家優惠券", "UI/UX 設計、Prototype、文案在地化"],
-         ["系統", "App、會員資料、停車場 LPR 與巴士業者窗口", "分級引擎、LPR／巴士 API 串接、加購模組"],
+         ["系統", "App、會員資料、停車場 LPR 與巴士業者窗口", "分級與任務引擎、LPR／巴士班次串接、加購模組"],
          ["數據", "門檻、停車與優惠券預算", "Pandora 口碑爬取、CRM 儀表板"]],
         y=3.85, col_w=[1.0, 4.0, 4.0], size=12.5, row_h=0.5)
 
@@ -589,8 +593,8 @@ s = d.info("KPI：核心拉來客與註冊，加購拉黏著度", label="KPI",
            source="目標值為試算示意，正式目標依三井會員數、停車場與 App 數據校正")
 d.table(s, ["指標", "方案", "現況", "Phase 0（3 個月）", "12 個月（示意）"],
         [["註冊車牌數（LaLa Park）", "核心", "—", "15,000", "60,000"],
-         ["App 售出巴士票（LaLa Go）", "核心", "0", "3,000／月", "10,000／月"],
-         ["乘車 e-Voucher 使用率", "核心", "0", "40%", "55%"],
+         ["巴士提醒設定數（LaLa Go）", "核心", "0", "3,000／月", "10,000／月"],
+         ["任務獎勵領取率", "核心", "0", "25%", "40%"],
          ["App 集點會員比例", "核心", "5%", "10%", "20%"],
          ["平均月造訪次數", "核心", "—", "+0.2 次", "+0.6 次"],
          ["MAU／會員數", "加購", "—", "20%", "35%"],
@@ -601,7 +605,7 @@ from mkt_section import add_marketing  # noqa: E402
 add_marketing(d, "zh", META)
 
 d.closing("每一次來，都在升級。",
-          "Next Step\n① 11 月：確認核心範圍與等級權益（含停車時數）\n② 12 月：停車場 LPR＋巴士業者 API 工作坊；20 位會員 Prototype 測試\n"
+          "Next Step\n① 11 月：確認核心範圍與等級權益（含停車時數）\n② 12 月：停車場 LPR＋巴士班次串接工作坊；20 位會員 Prototype 測試\n"
           "③ 2027/01：Phase 0 核心開發啟動",
           logos=[TC])
 fill_page_refs()

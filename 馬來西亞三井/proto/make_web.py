@@ -5,10 +5,10 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)) + "/..")
 SITES = [("web", "MSP_App3.0_LaLaQuest_Proposal_EN.pdf", "web_meta_en.json", "en"),
          ("web_zh", "MSP_App3.0_LaLaQuest_提案.pdf", "web_meta.json", "zh")]
 IDEA = {"en": ('LaLa Quest<br>Park. Ride. Level up.',
-               '<b>Core</b>　Tiers · LPR parking · LaLa Go buses · e-Vouchers<br><b>AI</b>　Instant receipt scan, Ask LaLa, LaLa Buzz reviews<br>'
+               '<b>Core</b>　Tiers · Mission Wall · LPR parking · LaLa Go bus times<br><b>AI</b>　Instant receipt scan, Ask LaLa, LaLa Buzz reviews<br>'
                '<b>Play</b>　Check-ins, quests, stamps, capsules'),
         "zh": ('LaLa Quest<br>停車、搭車、升級',
-               '<b>核心</b>　四級會員・車牌停車・LaLa Go 巴士・e-Voucher<br><b>AI 包</b>　1 秒發票掃描、Ask LaLa、LaLa Buzz 口碑<br>'
+               '<b>核心</b>　四級會員・任務牆・車牌停車・LaLa Go 班次<br><b>AI 包</b>　1 秒發票掃描、Ask LaLa、LaLa Buzz 口碑<br>'
                '<b>遊戲包</b>　簽到、任務、集章、扭蛋')}
 for site, pdf, meta, lang in SITES:
     A = f"{site}/assets/"

@@ -589,11 +589,144 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
 .wo-c{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;position:relative}
 .wo-c img{width:100%;height:100px;object-fit:cover;display:block}
 .wo-c div{padding:7px 9px 9px}.wo-c b{font-size:11.5px;display:block;line-height:1.3}.wo-c span{font-size:10px;color:var(--mid)}
+
+/* ===== v7: mission wall, receipts, pushes ===== */
+.mhero{margin:4px 18px 0;border-radius:24px;padding:18px 18px 16px;color:#fff;position:relative;overflow:hidden;background:radial-gradient(120% 90% at 100% 0%,#2F4E7A 0%,#13294B 45%,#0B1A30 100%)}
+.mhero:before{content:"";position:absolute;right:-40px;top:22px;width:220px;height:46px;background:linear-gradient(90deg,rgba(217,196,154,0),rgba(217,196,154,.55),rgba(217,196,154,.15));transform:rotate(-18deg);border-radius:30px}
+.mhero .k{font-size:10px;letter-spacing:2px;font-weight:800;color:var(--gold2)}
+.mhero h1{font-family:var(--serif);font-size:30px;line-height:1.02;margin-top:6px;font-weight:700}
+.mhero .tkt2{position:absolute;right:14px;top:58px;width:92px;height:56px;border-radius:10px;background:linear-gradient(135deg,#E8D6AE,#B8975A);color:#0B1A30;display:grid;place-items:center;text-align:center;font-weight:800;font-size:10.5px;line-height:1.15;transform:rotate(8deg);box-shadow:0 8px 18px rgba(0,0,0,.3)}
+.mhero .tkt2:before,.mhero .tkt2:after{content:"";position:absolute;top:21px;width:14px;height:14px;border-radius:50%;background:#13294B}
+.mhero .tkt2:before{left:-7px}.mhero .tkt2:after{right:-7px}
+.mhero .pg{margin-top:16px;display:flex;justify-content:space-between;font-size:12px;font-weight:700}
+.mhero .pb{height:8px;border-radius:4px;background:rgba(255,255,255,.18);margin-top:7px;overflow:hidden}
+.mhero .pb i{display:block;height:100%;width:57%;border-radius:4px;background:linear-gradient(90deg,#D9C49A,#B8975A)}
+.mtabs{display:flex;gap:7px;padding:12px 18px 2px;overflow:hidden}
+.mtabs span{white-space:nowrap;font-size:11.5px;font-weight:700;padding:7px 11px;border-radius:12px;background:#fff;border:1px solid var(--line);color:var(--mid)}
+.mtabs span.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.minv{margin:12px 18px 0;background:#fff;border:1px solid #E3D3B3;border-radius:18px;padding:12px 14px;display:flex;align-items:center;gap:12px}
+.minv .e{width:40px;height:40px;border-radius:12px;background:#FAF3E4;display:grid;place-items:center;font-size:20px;flex:none}
+.minv b{font-size:13.5px;display:block}.minv span{font-size:11.5px;color:var(--mid)}
+.minv a{margin-left:auto;font-size:12px;font-weight:800;color:var(--gold);white-space:nowrap}
+.mg{margin:14px 18px 0;background:#fff;border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.mg .h{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#FAF7F1;border-bottom:1px solid var(--line)}
+.mg .h b{font-family:var(--serif);font-size:19px;font-weight:700}
+.mg .h b:after{content:" ✦";color:var(--gold);font-size:14px}
+.mg .h em{font-style:normal;font-size:10.5px;font-weight:800;padding:4px 9px;border-radius:10px;background:var(--navy);color:#fff}
+.mg .h em.g{background:var(--gold)}
+.mg.main .h{background:linear-gradient(90deg,#13294B,#1E3A63)}.mg.main .h b{color:#fff}
+.mr{display:flex;gap:11px;align-items:center;padding:11px 14px;border-bottom:1px solid #F0EBE2}
+.mr:last-child{border-bottom:0}
+.mr .e{width:36px;height:36px;border-radius:11px;background:#F3EEE5;display:grid;place-items:center;font-size:17px;flex:none}
+.mr .tx{flex:1;min-width:0}.mr .tx b{font-size:13px;display:block}.mr .tx span{font-size:11px;color:var(--mid)}
+.mr .ok{font-size:11px;font-weight:800;color:#2E7D4F;white-space:nowrap}
+.mr .lk{font-size:10.5px;font-weight:700;color:#A09A8E;white-space:nowrap;background:#F3EEE5;padding:4px 8px;border-radius:9px}
+.mr .gb{font-size:11px;font-weight:800;padding:6px 11px;border-radius:11px;background:var(--navy);color:#fff;white-space:nowrap}
+.mr .gb.out{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+.mspend{padding:13px 14px 12px;border-bottom:1px solid #F0EBE2}
+.mspend .t{display:flex;justify-content:space-between;align-items:baseline}
+.mspend .t b{font-size:13.5px}.mspend .t span{font-size:11px;color:var(--mid)}
+.mspend .amt{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px}
+.mspend .amt b{font-family:var(--serif);font-size:26px;color:var(--navy)}.mspend .amt b small{font-family:inherit;font-size:14px;color:var(--mid);font-weight:600}
+.mspend .chip2{font-size:11.5px;font-weight:800;padding:5px 10px;border-radius:10px;background:#FFF1C9;color:#8C6E3C;transition:all .4s}
+.mspend .chip2.done{background:#2E7D4F;color:#fff}
+.mspend .bar2{height:10px;border-radius:5px;background:#EEE8DD;margin-top:8px;overflow:hidden}
+.mspend .bar2 i{display:block;height:100%;width:73%;border-radius:5px;background:linear-gradient(90deg,#13294B,#2F4E7A);transition:width 1.6s cubic-bezier(.5,0,.2,1)}
+.mspend .bar2.gold i{background:linear-gradient(90deg,#B8975A,#D9C49A)}
+.mspend .rw{font-size:11px;color:var(--mid);margin-top:7px}.mspend .rw b{color:var(--gold)}
+.picks{display:flex;gap:8px;margin-top:10px}
+.mpk{flex:1;border-radius:13px;overflow:hidden;border:1px solid var(--line);background:#fff}
+.mpk img{width:100%;height:58px;object-fit:cover;display:block}
+.mpk div{padding:5px 7px 6px}.mpk b{font-size:10.5px;display:block;line-height:1.2}.mpk span{font-size:9.5px;color:var(--mid)}
+.mnote{text-align:center;font-size:10.5px;color:#A09A8E;margin:12px 0 0;text-decoration:underline}
+.claimov{position:absolute;inset:0;z-index:60;background:rgba(11,26,48,.55);display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .35s}
+.claimov.on{opacity:1;pointer-events:auto}
+.claimbox{width:300px;border-radius:26px;background:#fff;padding:22px 20px 18px;text-align:center;transform:scale(.85);transition:transform .45s cubic-bezier(.3,1.5,.5,1)}
+.claimov.on .claimbox{transform:none}
+.claimbox .ck{width:64px;height:64px;border-radius:50%;margin:0 auto;background:var(--navy);color:var(--gold2);display:grid;place-items:center;font-size:30px;border:3px solid var(--gold2)}
+.claimbox h3{font-family:var(--serif);font-size:26px;margin-top:10px}
+.claimbox .big{margin:12px auto 0;border-radius:18px;padding:12px;background:linear-gradient(135deg,#13294B,#0B1A30);color:#fff}
+.claimbox .big b{font-family:var(--serif);font-size:28px;display:block}.claimbox .big span{font-size:11.5px;color:var(--gold2)}
+.claimbox .gift{display:flex;gap:8px;margin-top:10px}
+.claimbox .gift div{flex:1;border:1.5px dashed #D9C49A;border-radius:14px;padding:8px 4px;font-size:11px;color:var(--mid)}
+.claimbox .gift b{display:block;font-size:16px;color:var(--navy)}
+.claimbox .btn{margin-top:14px;height:46px;transition:transform .2s}
+.claimbox.done .btn{background:#2E7D4F}
+.strip.mis{border-color:#E3D3B3}
+.strip.mis .ic{background:linear-gradient(135deg,#B8975A,#8C6E3C);color:#fff;font-size:16px}
+.strip.mis .mb{height:5px;border-radius:3px;background:#EEE8DD;margin-top:6px;overflow:hidden;width:150px}.strip.mis .mb i{display:block;height:100%;width:73%;background:var(--navy)}
+/* paycode */
+.payc{margin:6px 18px 0;border-radius:26px;background:linear-gradient(160deg,#13294B,#0B1A30);color:#fff;padding:18px;text-align:center}
+.payc .k{font-size:10px;letter-spacing:2px;color:var(--gold2);font-weight:800}
+.payc .nm{font-family:var(--serif);font-size:26px;margin-top:4px}
+.payc .qrbox{width:210px;height:210px;margin:14px auto 0;background:#fff;border-radius:18px;padding:12px}
+.payc .tm{font-size:11.5px;opacity:.8;margin-top:10px}
+.trk2{margin:12px 18px 0;background:#fff;border:1.5px solid #E3D3B3;border-radius:18px;padding:12px 14px}
+.trk2 .t{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:800}
+.trk2 .t .dot{width:8px;height:8px;border-radius:50%;background:#2E7D4F;box-shadow:0 0 0 4px rgba(46,125,79,.15)}
+.trk2 p{font-size:11.5px;color:var(--mid);margin-top:5px;line-height:1.45}
+/* receipt submit */
+.rcard{margin:0 18px 12px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px}
+.rcard h4{font-family:var(--serif);font-size:19px;font-weight:700;margin-bottom:8px}
+.rcard .lab{font-size:10px;letter-spacing:1.6px;font-weight:800;color:var(--gold);margin-bottom:6px}
+.ropt{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:8px}
+.ropt .rd{width:18px;height:18px;border-radius:50%;border:2px solid #C9C2B6;flex:none;position:relative}
+.ropt.on{border-color:var(--navy);background:#F6F8FB}.ropt.on .rd{border-color:var(--navy)}
+.ropt.on .rd:after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--navy)}
+.ropt b{font-size:12.5px;display:block}.ropt span{font-size:11px;color:var(--mid)}
+.ropt .mini{margin-left:auto;font-size:10.5px;font-weight:800;color:#8C6E3C;background:#FFF1C9;padding:4px 8px;border-radius:9px;white-space:nowrap}
+.rq{font-size:12.5px;line-height:1.45}
+.yn{display:flex;gap:8px;margin-top:10px}.yn span{flex:1;text-align:center;padding:10px;border-radius:12px;border:1.5px solid var(--line);font-weight:800;font-size:13px;transition:all .3s}
+.yn span.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.rwarn{display:flex;gap:10px;background:#13294B;color:#fff;border-radius:14px;padding:10px 12px;font-size:11.5px;line-height:1.4}
+.rwarn b{color:var(--gold2)}
+.slots{display:flex;gap:10px;margin-top:12px}
+.slot{width:128px;height:170px;border-radius:16px;background:#EFEAE1;display:grid;place-items:center;position:relative;overflow:hidden;flex:none}
+.slot .cm{width:52px;height:52px;border-radius:16px;background:var(--navy);display:grid;place-items:center;color:var(--gold2);font-size:24px}
+.slot.add{background:#fff;border:1.5px dashed #C9C2B6;color:var(--mid);font-size:12px;font-weight:700;text-align:center}
+.slot .thumb{position:absolute;inset:0;background:#FFFDF8;padding:10px 9px;font-family:"Courier New",monospace;font-size:7.5px;line-height:1.35;color:#333;opacity:0;transition:opacity .4s}
+.slot.got .thumb{opacity:1}.slot.got .cm{display:none}
+.slot .pg{position:absolute;left:6px;top:6px;background:#fff;border-radius:8px;font-size:9.5px;font-weight:800;padding:3px 6px;box-shadow:0 2px 6px rgba(0,0,0,.12);display:none}
+.slot .ac{position:absolute;right:6px;top:6px;display:none;gap:4px}.slot .ac span{background:var(--gold);color:#fff;font-size:9.5px;font-weight:800;padding:3px 7px;border-radius:8px}
+.slot.got .pg,.slot.got .ac{display:flex}
+.agree{display:flex;align-items:center;gap:10px;font-size:12px;margin-top:4px}
+.agree a{color:var(--gold);font-weight:700}
+.rcam{position:absolute;inset:0;z-index:65;background:#0A0A0A;color:#fff;opacity:0;pointer-events:none;transition:opacity .35s}
+.rcam.on{opacity:1;pointer-events:auto}
+.rcam .paper{position:absolute;left:78px;top:120px;width:234px;height:440px;background:#FFFDF8;color:#333;font-family:"Courier New",monospace;font-size:10px;line-height:1.45;padding:16px 14px;transform:rotate(-2deg);box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.rcam .paper .c{text-align:center}.rcam .paper hr{border:0;border-top:1px dashed #999;margin:6px 0}.rcam .paper .ln{display:flex;justify-content:space-between}
+.rcam .edge{position:absolute;left:70px;top:112px;width:250px;height:456px;border:3px solid #4F8BFF;border-radius:6px;opacity:0;transition:opacity .3s}
+.rcam.lock .edge{opacity:1}
+.rcam .pill{position:absolute;left:50%;top:80px;transform:translateX(-50%);background:rgba(40,40,40,.85);font-size:12.5px;padding:7px 14px;border-radius:16px;white-space:nowrap}
+.rcam .ctl{position:absolute;left:0;right:0;bottom:46px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.rcam .sh{width:70px;height:70px;border-radius:50%;border:4px solid #fff;display:grid;place-items:center}.rcam .sh i{width:56px;height:56px;border-radius:50%;background:#fff;transition:transform .15s}
+.rcam.snap .sh i{transform:scale(.8)}
+.rcam .md{display:flex;gap:6px;background:rgba(60,60,60,.8);border-radius:16px;padding:4px}.rcam .md span{font-size:11.5px;padding:5px 12px;border-radius:12px}.rcam .md span.on{background:#fff;color:#111;font-weight:700}
+.rcam .fl{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.rcam.snap .fl{animation:flash .5s}
+@keyframes flash{0%{opacity:.9}100%{opacity:0}}
+.rhsum{display:flex;gap:8px;margin:0 18px 12px}.rhsum div{flex:1;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 12px}
+.rhsum b{font-family:var(--serif);font-size:20px;display:block;color:var(--navy)}.rhsum span{font-size:10.5px;color:var(--mid)}
+.rh{margin:0 18px 10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 14px;transition:all .5s}
+.rh .t{display:flex;justify-content:space-between;align-items:center}
+.rh .st{font-size:13.5px;font-weight:800;display:flex;align-items:center;gap:6px}
+.rh .dt{font-size:11.5px;color:var(--mid);text-align:right}
+.rh .am{display:flex;justify-content:space-between;align-items:baseline;margin-top:4px}
+.rh .am b{font-size:15px}.rh .am span{font-size:11.5px;color:var(--mid)}
+.rh .ms{font-size:11.5px;margin-top:6px;line-height:1.4}
+.rh.pend{border-color:#E3D3B3;background:#FFFCF5}.rh.pend .ms{color:#8C6E3C}
+.rh.okk .ms{color:#2E7D4F}.rh.rej .ms{color:#B3261E}
+.rh.new{box-shadow:0 0 0 3px rgba(184,151,90,.35)}
+.aitip{margin:6px 18px 0;border-radius:18px;padding:12px 14px;background:linear-gradient(120deg,#13294B,#2F4E7A);color:#fff;display:flex;gap:10px;align-items:center}
+.aitip b{font-size:13px;display:block}.aitip span{font-size:11px;opacity:.85}
+.dep .fr .bell{font-size:11px;font-weight:800;color:var(--navy);border:1.5px solid var(--navy);border-radius:10px;padding:4px 8px;display:inline-block}
+.dep.sel .fr .bell{background:var(--navy);color:#fff}
+.push{cursor:pointer}
 </style>
 </head>
 <body>
 <div id="side"><h1>LaLa Quest<br><span style="color:#13294B">MSP App 3.0</span></h1><p>Clickable prototype. Tap, scroll and swipe like a real app.<br>AI 示意・資料為示意</p>
-<div class="mode"><span class="on" data-m="full">Core + Add-ons</span><span data-m="core">Core only</span></div><div class="jump"><em class="ag">CORE</em><span data-j="home">🏠 Home</span><span data-j="tiers">🏅 Member levels</span><span data-j="parking">🅿️ LaLa Park · LPR</span><span data-j="bus">🚌 LaLa Go · Bus tickets</span><span data-j="busticket">🎫 My trip &amp; reminders</span><span data-j="me">👤 Me &amp; vouchers</span><em class="ag">ADD-ONS · AI</em><span data-j="scan">🧾 AI · Receipt Scan</span><span data-j="ask">✨ AI · Ask LaLa</span><span data-j="buzz">💬 AI · LaLa Buzz</span><span data-j="akiba">🍜 AI · Buzz tenant page</span><em class="ag">ADD-ONS · PLAY</em><span data-j="quest">🗺️ Play · Stamp Rally</span><span data-j="capsule">🎰 Play · LaLa Capsule</span></div></div>
+<div class="mode"><span class="on" data-m="full">Core + Add-ons</span><span data-m="core">Core only</span></div><div class="jump"><em class="ag">CORE</em><span data-j="home">🏠 Home</span><span data-j="missions">🎯 Mission Wall</span><span data-j="tiers">🏅 Member levels</span><span data-j="parking">🅿️ LaLa Park · LPR</span><span data-j="bus">🚌 LaLa Go · Bus times</span><span data-j="busticket">⏰ Trip reminder</span><span data-j="receipt">🧾 Submit receipt</span><span data-j="rhist">📋 My receipts</span><span data-j="me">👤 Me &amp; vouchers</span><em class="ag">ADD-ONS · AI</em><span data-j="scan">🧾 AI · Receipt Scan</span><span data-j="ask">✨ AI · Ask LaLa</span><span data-j="buzz">💬 AI · LaLa Buzz</span><span data-j="akiba">🍜 AI · Buzz tenant page</span><em class="ag">ADD-ONS · PLAY</em><span data-j="quest">🗺️ Play · Stamp Rally</span><span data-j="capsule">🎰 Play · LaLa Capsule</span></div></div>
 <div id="device">
 
 <!-- HOME -->
@@ -620,14 +753,15 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
       </div>
       <div class="chips"><span class="chip">4H free parking</span><span class="chip">1.2x points</span><span class="chip">Birthday 2x</span></div>
     </div>
+    <div class="strip mis" data-go="missions"><div class="ic">🎯</div><div><b>Fiesta mission · RM80 to go</b><span>RM300 spend → RM30 + 300 pts</span><div class="mb"><i></i></div></div><div class="rt">73%<small>done</small></div></div>
     <div class="strip park"><div class="ic">P</div><div><b><span class="plate" style="font-size:11px;padding:2px 7px;letter-spacing:1.5px">WXY 1234</span>&nbsp; parked · P2</b><span>Ticketless LPR · points pay the rest</span></div><div class="rt">2h 31m<small>free left</small></div></div>
     <div class="quick">
       <div class="q"><div class="e"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M10 16V8h3a2.5 2.5 0 010 5h-3"/></svg></div>My<br>Parking</div>
-      <div class="q"><div class="e"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="3"/><path d="M5 11h14M8 18v2M16 18v2"/><circle cx="8.5" cy="14.5" r=".8"/><circle cx="15.5" cy="14.5" r=".8"/></svg></div>Bus<br>Tickets</div>
+      <div class="q"><div class="e"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="3"/><path d="M5 11h14M8 18v2M16 18v2"/><circle cx="8.5" cy="14.5" r=".8"/><circle cx="15.5" cy="14.5" r=".8"/></svg></div>Bus &amp;<br>Shuttle</div>
       <div class="q"><div class="e"><svg viewBox="0 0 24 24"><path d="M3 8a2 2 0 002-2h14a2 2 0 002 2v2a2 2 0 000 4v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2a2 2 0 000-4z"/><path d="M14 6v12" stroke-dasharray="2 2"/></svg></div>My<br>Vouchers</div>
       <div class="q"><div class="e"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></div>Submit<br>Receipt</div>
     </div>
-    <div class="strip trip"><div class="ic"><svg style="width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="3"/><path d="M5 11h14M8 18v2M16 18v2"/><circle cx="8.5" cy="14.5" r=".8"/><circle cx="15.5" cy="14.5" r=".8"/></svg></div><div><b>Singapore · 3:30 PM</b><span>Bay 3, LTH LG1 · RM10 voucher left</span></div><div class="rt">1h 25m<small>to board</small></div></div>
+    <div class="strip trip"><div class="ic"><svg style="width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="15" rx="3"/><path d="M5 11h14M8 18v2M16 18v2"/><circle cx="8.5" cy="14.5" r=".8"/><circle cx="15.5" cy="14.5" r=".8"/></svg></div><div><b>Singapore · 3:30 PM</b><span>Bay 3, LTH LG1 · reminder on</span></div><div class="rt">1h 25m<small>to board</small></div></div>
     <div class="sec addon"><b>Today's Quests <em class="ao">PLAY</em></b><a>See all</a></div>
     <div class="hs addon">
       <div class="qc" style="background:linear-gradient(135deg,#0B1A30,#1E3A63)"><span class="xp">+300 XP</span><div class="t">ACG MATSURI · 7–9 NOV</div><h3>Stamp Rally:<br>collect 5 stamps</h3><div class="p"><i class="on">🎐</i><i class="on">🍜</i><i class="on">⛩️</i><i>?</i><i>?</i></div></div>
@@ -674,7 +808,7 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
     <tr><th style="background:#8F8A80;text-align:left;padding-left:12px">Perks</th><th style="background:#4A5F80">Rookie</th><th style="background:#1E3A63">Explorer</th><th style="background:#B8975A">Senpai</th><th style="background:#0B1A30">Legend</th></tr>
     <tr><td>Points</td><td>1x</td><td class="me">1.2x</td><td>1.5x</td><td>2x</td></tr>
     <tr><td>Free parking (LPR)</td><td>3H</td><td class="me">4H</td><td>5H</td><td>All day</td></tr>
-    <tr><td>Bus ticket pts</td><td>1x</td><td class="me">1.2x</td><td>1.5x</td><td>2x</td></tr>
+    <tr><td>Mission bonus</td><td>1x</td><td class="me">1.2x</td><td>1.5x</td><td>2x</td></tr>
     <tr class="addon"><td>Capsule spins</td><td>1/day</td><td class="me">1/day</td><td>2/day</td><td>3/day</td></tr>
     <tr><td>Event entry</td><td>–</td><td class="me">–</td><td>Priority</td><td>VIP</td></tr>
     <tr><td>Unlock at</td><td>Sign up</td><td class="me">RM1.5k</td><td>RM5k</td><td>RM12k</td></tr>
@@ -874,10 +1008,10 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
   </div>
   <div class="mecard" data-act="qr"><div class="mini" id="miniqr"></div><div><b>My Member QR</b><p>Show at counter to earn &amp; redeem.<br><span class="score" style="margin-top:6px">1,884 MSP pts</span></p></div><div style="margin-left:auto;color:#A09A8E;font-size:20px">›</div></div>
   <div class="grid3">
-    <div data-go="tiers"><b>🏅</b>My Level</div><div data-act="vouchers"><b>🎟️</b>Vouchers</div><div data-go="parking"><b>🅿️</b>Parking</div><div data-go="busticket"><b>🚌</b>My Trips</div>
+    <div data-go="tiers"><b>🏅</b>My Level</div><div data-act="vouchers"><b>🎟️</b>Vouchers</div><div data-go="bus"><b>🚌</b>Bus times</div><div data-go="rhist"><b>🧾</b>Receipts</div>
   </div>
   <div class="sec" id="vouchers"><b>My Vouchers (4)</b><a data-act="collect">Collect more</a></div>
-  <div class="vch"><div class="l" style="background:#8C6E3C">RM10<br><small style="font-size:11px">TRIP</small></div><div class="r"><b>Bus e-Voucher · any F&amp;B</b><span>From your LaLa Go ticket · till 3:15 PM</span><div class="use" data-act="usev" data-v="RM10 OFF · Trip e-Voucher">Use</div></div></div>
+  <div class="vch"><div class="l" style="background:#8C6E3C">RM30<br><small style="font-size:11px">FIESTA</small></div><div class="r"><b>Anniversary Fiesta reward</b><span>Unlocks at RM300 · RM80 to go</span><div class="use" data-go="missions">View</div></div></div>
   <div class="vch"><div class="l" style="background:#13294B">RM20<br><small style="font-size:11px">OFF</small></div><div class="r"><b>Sasa</b><span>Min. spend RM100 · till 29 Nov</span><div class="use" data-act="usev" data-v="RM20 OFF · Sasa">Use</div></div></div>
   <div class="vch"><div class="l" style="background:#13294B">RM10<br><small style="font-size:11px">OFF</small></div><div class="r"><b>ACG Chapter</b><span>ACG Matsuri special · till 27 Nov</span><div class="use" data-act="usev" data-v="RM10 OFF · ACG Chapter">Use</div></div></div>
   <div class="vch"><div class="l" style="background:#8C6E3C">5%<br><small style="font-size:11px">OFF</small></div><div class="r"><b>Kickers</b><span>MSP Special · till 14 Dec</span><div class="use" data-act="usev" data-v="5% OFF · Kickers">Use</div></div></div>
@@ -938,20 +1072,20 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
 <!-- BUS: LaLa Go -->
 <section class="screen" id="bus">
   <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
-  <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>LaLa Go</h2><div class="sub" style="font-size:12px">Bus tickets · timetables · boarding reminders</div></div></div>
+  <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>LaLa Go</h2><div class="sub" style="font-size:12px">Bus &amp; shuttle times · boarding reminders</div></div></div>
   <div class="seg" style="margin-bottom:12px"><span class="on" data-act="bustab" data-t="lth">🚌 LTH Express Bus</span><span data-act="bustab" data-t="klia">✈️ KLIA Shuttle · MOP</span></div>
   <div id="busLTH">
   <div class="route">
     <div class="r1"><div class="st"><small>FROM</small><b>LaLaport BBCC</b><div style="font-size:11px;opacity:.75">LTH · LG1 East Atrium</div></div><div class="sw">⇄</div><div class="st" style="text-align:right"><small>TO</small><b>Singapore</b><div style="font-size:11px;opacity:.75">Woodlands · Jurong East</div></div></div>
-    <div class="r2"><span><small>Date</small>Sat, 21 Nov</span><span><small>Passengers</small>1 adult</span><span><small>Members</small>+1x pts</span></div>
+    <div class="r2"><span><small>Date</small>Sat, 21 Nov</span><span><small>Operators</small>6 at LTH</span><span><small>Bay info</small>Live</span></div>
   </div>
-  <div class="banner" style="margin-top:10px;background:linear-gradient(120deg,#B8975A,#8C6E3C)"><div><b>Every ticket = RM10 e-Voucher</b><span>Spend it at LaLaport before you board</span></div><div style="font-size:26px">🎟️</div></div>
+  <div class="banner" style="margin-top:10px;background:linear-gradient(120deg,#13294B,#2F4E7A)"><div><b>Got your ticket? Set a reminder</b><span>We ping you before boarding, with the bay and food nearby</span></div><div style="font-size:26px">⏰</div></div>
   <div class="sec"><b>Departures · 21 Nov</b><a>Filter</a></div>
-  <div class="dep" data-act="pickdep"><div class="tm">09:00<small>~5h 30m</small></div><div class="tx"><b>Super Nice Express</b><span>Executive 2+1 · 6 seats left</span></div><div class="fr">RM 38.80<small>+RM10 VOUCHER</small></div></div>
-  <div class="dep" data-act="pickdep"><div class="tm">12:30<small>~5h 30m</small></div><div class="tx"><b>KKKL Express</b><span>VIP 2+1 · 11 seats left</span></div><div class="fr">RM 45.00<small>+RM10 VOUCHER</small></div></div>
-  <div class="dep sel" data-act="pickdep"><div class="tm">15:30<small>~5h 30m</small></div><div class="tx"><b>Transtar Express</b><span>First Class · 4 seats left</span></div><div class="fr">RM 59.00<small>+RM10 VOUCHER</small></div></div>
-  <div class="dep" data-act="pickdep"><div class="tm">23:45<small>overnight</small></div><div class="tx"><b>707 Inc</b><span>Executive 2+1 · 18 seats left</span></div><div class="fr">RM 35.00<small>+RM10 VOUCHER</small></div></div>
-  <div class="pad" style="margin-top:6px"><div class="btn" data-act="buybus">Book 15:30 · RM 59.00 →</div></div>
+  <div class="dep" data-act="pickdep"><div class="tm">09:00<small>~5h 30m</small></div><div class="tx"><b>Super Nice Express</b><span>To Woodlands · Bay 1</span></div><div class="fr"><span class="bell">🔔 Remind</span></div></div>
+  <div class="dep" data-act="pickdep"><div class="tm">12:30<small>~5h 30m</small></div><div class="tx"><b>KKKL Express</b><span>To Jurong East · Bay 2</span></div><div class="fr"><span class="bell">🔔 Remind</span></div></div>
+  <div class="dep sel" data-act="pickdep"><div class="tm">15:30<small>~5h 30m</small></div><div class="tx"><b>Transtar Express</b><span>To Woodlands · Bay 3</span></div><div class="fr"><span class="bell">🔔 Reminder on</span></div></div>
+  <div class="dep" data-act="pickdep"><div class="tm">23:45<small>overnight</small></div><div class="tx"><b>707 Inc</b><span>To Jurong East · Bay 1</span></div><div class="fr"><span class="bell">🔔 Remind</span></div></div>
+  <div class="pad" style="margin-top:6px"><div class="btn" data-go="busticket">⏰ Remind me · 15:30 Transtar →</div></div><div style="text-align:center;font-size:11px;color:var(--mid);margin-top:8px">Tickets are sold by each bus operator · times shown for planning</div>
   </div>
   <div id="busKLIA" style="display:none">
   <div class="route"><div class="r1"><div class="st"><small>FROM</small><b>MOP KLIA Sepang</b><div style="font-size:11px;opacity:.75">Shuttle stop · Main entrance</div></div><div class="sw">⇄</div><div class="st" style="text-align:right"><small>TO</small><b>KLIA T1 · klia2</b><div style="font-size:11px;opacity:.75">~10 / 20 min</div></div></div>
@@ -971,11 +1105,11 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
 <!-- BUS TICKET + REMINDER -->
 <section class="screen" id="busticket">
   <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
-  <div class="push" id="busPush"><div class="ap">L</div><div><b>🚌 30 min to boarding</b><span>Transtar to Singapore · Bay 3, LTH LG1 East Atrium. Your RM10 e-Voucher is still unused!</span></div><em>3:00 PM</em></div>
-  <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>My Trip</h2><div class="sub" style="font-size:12px">E-ticket · show at the bay</div></div></div>
+  <div class="push" id="busPush"><div class="ap">L</div><div><b>🚌 30 min to boarding</b><span>Transtar to Singapore · Bay 3, LTH LG1 East Atrium. Grab a bite at L1 on the way.</span></div><em>3:00 PM</em></div>
+  <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>Trip Reminder</h2><div class="sub" style="font-size:12px">Bus times · boarding alerts</div></div></div>
   <div class="tkt">
     <div class="tp"><div class="k">TRANSTAR EXPRESS · FIRST CLASS</div><div class="rw"><div><small>LaLaport BBCC</small><b>15:30</b></div><div style="font-size:20px;color:#E8D6AE">→</div><div style="text-align:right"><small>Singapore</small><b>21:00</b></div></div></div>
-    <div class="bt"><div class="qrbox" id="tktqr"></div><div class="inf"><b>Sat, 21 Nov 2026</b><br>Seat <b>2A</b> · 1 adult · RM 59.00<br>Board at <b>Bay 3 · LTH, LG1 East Atrium</b><br>Ref <b>LQ-8F27K</b> · +59 pts earned</div></div>
+    <div class="bt"><div style="width:84px;height:84px;flex:none;border-radius:16px;background:#F3EEE5;display:grid;place-items:center;text-align:center;font-weight:800;color:var(--navy);font-size:12px;line-height:1.2"><span style="font-size:26px">3</span>BAY</div><div class="inf"><b>Sat, 21 Nov 2026</b><br>Board at <b>Bay 3 · LTH, LG1 East Atrium</b><br>Show your operator e-ticket at the bay<br>Live updates from <b>Transtar</b></div></div>
   </div>
   <div class="cd">⏱ Boarding opens 3:15 PM<b id="busCd">1h 25m</b></div>
   <div class="sec"><b>Remind me</b><a>Push + SMS</a></div>
@@ -984,18 +1118,125 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
     <div class="pr"><div class="tx"><b>30 min before</b><span>3:00 PM · head to LG1 East Atrium</span></div><div class="tog on" data-act="tog" id="tog30"></div></div>
     <div class="pr"><div class="tx"><b>Last call · 15 min</b><span>3:15 PM · boarding opens</span></div><div class="tog on" data-act="tog"></div></div>
   </div>
-  <div class="sec"><b>Spend before you board 🎟️</b><a data-go="me">Wallet</a></div>
-  <div class="ev2" data-act="usev" data-v="RM10 OFF · Trip e-Voucher"><div class="l">RM10<br><small style="font-size:10px">OFF</small></div><div class="r"><b>Trip e-Voucher · any F&amp;B</b><span>Min. spend RM30 · valid till 3:15 PM today</span></div></div>
-  <div class="ev2" data-act="toast" data-msg="🛍️ Uniqlo L1 · 4 min walk from LTH"><div class="l" style="background:linear-gradient(135deg,#13294B,#0B1A30)">15%<br><small style="font-size:10px">OFF</small></div><div class="r"><b>Travel picks · Uniqlo, Watsons</b><span>Show your bus ticket · same day only</span></div></div>
+  <div class="sec"><b>Before you board 🍱</b><a data-go="me">Wallet</a></div>
+  <div class="ev2" data-act="toast" data-msg="🍱 Grab-and-go at LG1 · 2 min walk from Bay 3"><div class="l">10%<br><small style="font-size:10px">OFF</small></div><div class="r"><b>Grab-and-go near Bay 3</b><span>Members · bento, bubble tea, snacks</span></div></div>
+  <div class="ev2" data-act="toast" data-msg="🛍️ Watsons L1 · 4 min walk from LTH"><div class="l" style="background:linear-gradient(135deg,#13294B,#0B1A30)">Trip<br><small style="font-size:10px">PICKS</small></div><div class="r"><b>Travel picks · Watsons, Uniqlo</b><span>On your way to LG1 · open till 10 PM</span></div></div>
   <div style="height:24px"></div>
   <div class="nav"><div>x</div></div>
+</section>
+
+<!-- MISSION WALL -->
+<section class="screen" id="missions">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="scroll"><div class="inner" id="msInner">
+    <div class="mhero"><div class="k">ANNIVERSARY FIESTA · 1–30 NOV</div><h1>Member Rewards<br>Mission Wall</h1>
+      <div class="tkt2">LaLaport<br>BBCC<br>FIESTA</div>
+      <div class="pg"><span>4 of 7 missions complete</span><span id="msPct">57%</span></div><div class="pb"><i id="msPb"></i></div></div>
+    <div class="mtabs"><span class="on">Member Missions</span><span>Anime Collection</span><span>Family Fun</span><span>Japanese Style</span></div>
+    <div class="minv" data-act="msinv"><div class="e">💌</div><div><b>Your anniversary offers</b><span>Shown for Explorer members</span></div><a>View invitation ›</a></div>
+    <div class="mg"><div class="h"><b>Warm-Up</b><em>2 / 2</em></div>
+      <div class="mr"><div class="e">📅</div><div class="tx"><b>View the Fiesta preview</b><span>1 / 1</span></div><span class="ok">✓ Completed</span></div>
+      <div class="mr"><div class="e">⭐</div><div class="tx"><b>Save 1 favourite brand</b><span>1 / 1 brand</span></div><span class="ok">✓ Completed</span></div>
+    </div>
+    <div class="mg main" id="msMain"><div class="h"><b>Main Event</b><em class="g" id="msBadge">In progress</em></div>
+      <div class="mspend"><div class="t"><b>🛍️ Exclusive spend reward</b><span>by 30 Nov</span></div>
+        <div class="amt"><b id="msAmt">RM220 <small>/ RM300</small></b><span class="chip2" id="msGap">RM80 to go</span></div>
+        <div class="bar2"><i id="msBar"></i></div>
+        <div class="rw">Reward: <b>RM30 voucher + 300 bonus pts</b></div>
+        <div class="picks"><div class="mpk"><img src="../assets/app/ramen.jpg"><div><b>Akiba Ramen</b><span>Set RM28 · L4</span></div></div>
+          <div class="mpk"><img src="../assets/app/collabcafe.jpg"><div><b>Doko Koko Café</b><span>Collab menu · L3</span></div></div>
+          <div class="mpk"><img src="../assets/app/ev_boost.jpg"><div><b>Boost Juice</b><span>RM12+ · LG</span></div></div></div>
+      </div>
+      <div class="mspend"><div class="t"><b>👑 Senpai upgrade</b><span>this year</span></div>
+        <div class="amt"><b>RM4,380 <small>/ RM5,000</small></b><span class="chip2">RM620 to go</span></div>
+        <div class="bar2 gold"><i style="width:88%"></i></div>
+        <div class="rw">Unlocks <b>5H free parking · 1.5x points</b> · <a data-go="tiers" style="color:var(--navy);font-weight:800">View tier benefits</a></div>
+      </div>
+      <div class="mr"><div class="e">🧾</div><div class="tx"><b>Submit 1 receipt in the app</b><span>1 / 1 receipt</span></div><span class="ok">✓ Completed</span></div>
+    </div>
+    <div class="mg"><div class="h"><b>Comeback</b><em>Available</em></div>
+      <div class="mr"><div class="e">💎</div><div class="tx"><b>Redeem expiring points</b><span>300 pts expire 30 Nov · use 200 for a dining voucher</span></div><span class="gb" data-act="toast" data-msg="💎 RM10 dining voucher added">Redeem</span></div>
+      <div class="mr"><div class="e">🎟️</div><div class="tx"><b>Use next-month voucher</b><span>RM15 off · any store</span></div><span class="lk">🔒 Opens 1 Dec</span></div>
+      <div class="mr"><div class="e">🛍️</div><div class="tx"><b>New arrivals for you</b><span>Beauty &amp; lifestyle picks</span></div><span class="gb out" data-act="toast" data-msg="🛍️ 12 new arrivals picked for you">Explore</span></div>
+    </div>
+    <div class="mnote">Illustrative offers and progress</div>
+    <div style="height:30px"></div>
+  </div></div>
+  <div class="claimov" id="msClaim"><div class="claimbox" id="msCbox"><div class="ck">✓</div><h3>Reward unlocked</h3>
+    <div class="big"><b>RM300 reached</b><span>Anniversary Fiesta · exclusive spend reward</span></div>
+    <div class="gift"><div><b>RM30</b>voucher</div><div><b>+300</b>bonus pts</div></div>
+    <div class="btn" id="msCbtn" data-act="claim">Claim reward</div></div></div>
+  <div class="nav"><div>x</div></div>
+</section>
+
+<!-- MY QR / PAY CODE -->
+<section class="screen" id="paycode">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>My Member QR</h2><div class="sub" style="font-size:12px">Show at checkout to earn &amp; redeem</div></div></div>
+  <div class="payc"><div class="k">MSP MEMBER · EXPLORER</div><div class="nm">Shu Hoong</div><div class="qrbox" id="payqr"></div><div class="tm">Refreshes in 0:58 · 1.2x points</div></div>
+  <div class="trk2"><div class="t"><span class="dot"></span>Mission tracking on</div><p>This purchase counts toward <b>Anniversary Fiesta</b>: RM80 to your RM30 + 300 pts reward.</p></div>
+  <div class="sec" style="margin-top:14px"><b>Apply a voucher</b><a data-go="me">All</a></div>
+  <div class="ev2"><div class="l">RM10<br><small style="font-size:10px">OFF</small></div><div class="r"><b>Akiba Ramen · dining pick</b><span>Min. spend RM60 · today only</span></div></div>
+  <div class="nav"><div>x</div></div>
+</section>
+
+<!-- SUBMIT RECEIPT (core) -->
+<section class="screen" id="receipt">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="scroll" style="bottom:0"><div class="inner" id="rcInner">
+    <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>Submit Receipt</h2><div class="sub" style="font-size:12px">Earn points · count it toward missions</div></div></div>
+    <div class="rcard"><div class="lab">STEP 1 · COUNT IT TOWARD</div>
+      <div class="ropt on" data-act="ropt"><span class="rd"></span><div><b>Anniversary Fiesta</b><span>Spend RM300 mission</span></div><span class="mini">RM80 to go</span></div>
+      <div class="ropt" data-act="ropt"><span class="rd"></span><div><b>Points only</b><span>Skip campaign entry</span></div></div>
+    </div>
+    <div class="rcard"><div class="lab">STEP 2 · QUICK CHECK</div>
+      <div class="rq">Is this <b>one receipt</b> from a LaLaport BBCC store, dated within the last 7 days?</div>
+      <div class="yn"><span id="rcYes" data-act="ryes">Yes</span><span data-act="toast" data-msg="Only LaLaport BBCC receipts from the last 7 days earn points">No</span></div>
+    </div>
+    <div class="rcard" id="rcUp"><div class="lab">STEP 3 · UPLOAD</div>
+      <div class="rwarn"><span>ℹ️</span><div>Long receipt? <b>Snap each page</b> in the next box. Keep the original until your points arrive.</div></div>
+      <div class="slots"><div class="slot" id="rcSlot" data-act="rcam"><div class="cm">📷</div>
+          <div class="thumb"><div style="text-align:center"><b>AKIBA RAMEN</b><br>LaLaport BBCC L4-FC-14</div>------------------<br>18/11/2026 19:42<br>Inv #A-09231<br>------------------<br>Chicken Paitan x2 25.80<br>Tempura Set x2 &nbsp;17.80<br>Gyoza &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 12.90<br>Matcha Latte x3 21.30<br>Ramune x2 &nbsp; &nbsp; &nbsp; 20.70<br>------------------<br><b>TOTAL &nbsp; &nbsp; RM 98.50</b></div>
+          <span class="pg">Page 1 of 1</span><span class="ac"><span>Retake</span><span>🗑</span></span></div>
+        <div class="slot add" data-act="toast" data-msg="📷 Add the next page of a long receipt">＋<br>Add page</div></div>
+    </div>
+    <div class="rcard"><div class="agree"><div class="tog" id="rcTog" data-act="tog"></div><div>I agree to the <a>Terms &amp; Conditions</a></div></div>
+      <div class="btn" id="rcSubmit" style="margin-top:12px" data-act="rsubmit">Submit receipt</div></div>
+    <div style="height:30px"></div>
+  </div></div>
+  <div class="rcam" id="rcCam"><div class="pill" id="rcPill">Position the receipt in the frame</div>
+    <div class="paper"><div class="c"><b>AKIBA RAMEN</b><br>LaLaport BBCC L4-FC-14<br>Kuala Lumpur</div><hr>
+      <div class="ln"><span>18/11/2026</span><span>19:42</span></div><div class="ln"><span>Inv #A-09231</span><span>T07</span></div><hr>
+      <div class="ln"><span>Chicken Paitan x2</span><span>25.80</span></div><div class="ln"><span>Tempura Set x2</span><span>17.80</span></div>
+      <div class="ln"><span>Gyoza</span><span>12.90</span></div><div class="ln"><span>Matcha Latte x3</span><span>21.30</span></div>
+      <div class="ln"><span>Ramune x2</span><span>20.70</span></div><hr><div class="ln"><b>TOTAL</b><b>RM 98.50</b></div><hr>
+      <div class="c">Member: 6018-xxxx-2307<br>Terima kasih!</div></div>
+    <div class="edge"></div><div class="fl"></div>
+    <div class="ctl"><div class="sh"><i></i></div><div class="md"><span>Manual</span><span class="on">Auto capture</span></div></div></div>
+</section>
+
+<!-- MY RECEIPTS -->
+<section class="screen" id="rhist">
+  <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
+  <div class="hdr"><div class="back" data-act="back">‹</div><div><h2>My Receipts</h2><div class="sub" style="font-size:12px">Checked within 24 h · we'll notify you</div></div></div>
+  <div class="rhsum"><div><b>RM 318.50</b><span>Fiesta spend this month</span></div><div><b>+382</b><span>pts from receipts</span></div></div>
+  <div class="rh pend new" id="rhNew"><div class="t"><span class="st" id="rhSt">⏳ Pending</span><span class="dt">18 Nov 2026<br>7:46 PM</span></div>
+    <div class="am"><b>RM 98.50</b><span>Akiba Ramen · L4</span></div><div class="ms" id="rhMs">We're checking your receipt. Usually within 24 hours.</div></div>
+  <div class="rh okk"><div class="t"><span class="st">✅ Approved</span><span class="dt">16 Nov 2026<br>3:12 PM</span></div>
+    <div class="am"><b>RM 221.90</b><span>Uniqlo · L1</span></div><div class="ms">+266 pts · counted toward Anniversary Fiesta</div></div>
+  <div class="rh rej"><div class="t"><span class="st">⛔ Rejected</span><span class="dt">08 Nov 2026<br>6:01 PM</span></div>
+    <div class="am"><b>RM 43.00</b><span>Unknown store</span></div><div class="ms">Not from a participating LaLaport BBCC store. <a style="color:var(--navy);font-weight:800">Resubmit ›</a></div></div>
+  <div class="aitip addon" data-go="scan"><div style="font-size:24px">✨</div><div><b>Skip the wait with AI Receipt Scan</b><span>AI add-on · points land in 1 second</span></div></div>
+  <div class="pad" style="margin-top:14px"><div class="btn" data-go="receipt">＋ Submit another receipt</div></div>
 </section>
 
 <!-- NOTIFICATIONS -->
 <section class="screen" id="notif">
   <div class="status"><span>9:41</span><span class="ic">▂▄▆ 5G <i class="bat"></i></span></div>
   <div class="hdr"><div class="back" data-act="back">‹</div><h2>Notifications</h2></div>
-  <div class="nt new" data-go="busticket"><div class="e" style="background:#F3EEE5">🚌</div><div><b>30 min to boarding</b><span>Transtar to Singapore · Bay 3, LTH LG1 East Atrium.</span><em>Just now</em></div></div>
+  <div class="nt new" data-go="missions"><div class="e" style="background:#FAF3E4">🎯</div><div><b>RM80 to your next reward</b><span>Anniversary Fiesta · dining picks near you: Akiba Ramen set RM28.</span><em>Just now</em></div></div>
+  <div class="nt new" data-go="rhist"><div class="e" style="background:#F3EEE5">🧾</div><div><b>Receipt approved · +118 pts</b><span>Akiba Ramen RM98.50 now counts toward your Fiesta mission.</span><em>5 min ago</em></div></div>
+  <div class="nt" data-go="busticket"><div class="e" style="background:#F3EEE5">🚌</div><div><b>30 min to boarding</b><span>Transtar to Singapore · Bay 3, LTH LG1 East Atrium.</span><em>Just now</em></div></div>
   <div class="nt new" data-go="parking"><div class="e" style="background:#F3EEE5">🅿️</div><div><b>WXY 1234 recognised at P2</b><span>Explorer 4H free parking has started. No ticket needed.</span><em>2:14 PM</em></div></div>
   <div class="nt addon" data-go="quest"><div class="e" style="background:#F3EEE5">🎐</div><div><b>ACG Matsuri Stamp Rally is live!</b><span>Collect 5 stamps this weekend for a limited capsule.</span><em>10 min ago</em></div></div>
   <div class="nt" data-go="tiers"><div class="e" style="background:#F3EEE5">🔥</div><div><b>616 pts to SENPAI</b><span>Scan 2 more receipts this week to level up.</span><em>1 h ago</em></div></div>
@@ -1020,13 +1261,15 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
   I.Park='<rect x="4" y="3" width="16" height="18" rx="3"/><path d="M10 16V8h3a2.5 2.5 0 010 5h-3"/>';
   I.Bus='<rect x="5" y="3" width="14" height="15" rx="3"/><path d="M5 11h14M8 18v2M16 18v2"/>';
   I.QR='<rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><path d="M14 14h2v2h-2zM18 18h2v2h-2z"/>';
-  const ACT={home:0,parking:1,bus:3,busticket:3,me:4};
+  I.Missions='<path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/><circle cx="17.5" cy="17.5" r="2.5"/>';
+  const ACT={home:0,parking:1,missions:3,me:4};
   document.querySelectorAll('.nav').forEach(n=>{
     const sid=n.closest('.screen').id, act=ACT[sid]===undefined?-1:ACT[sid];
-    const L=[['Home','Home'],['Park','Parking'],['QR','My QR'],['Bus','Bus'],['Me','Me']];
+    const L=[['Home','Home'],['Park','Parking'],['QR','My QR'],['Missions','Missions'],['Me','Me']];
     n.innerHTML=L.map(([k,lab],i)=>k==='QR'?'<div class="fab"><div class="b">'+sv(k)+'</div><span>My QR</span></div>':'<div'+(i===act?' class="act"':'')+'><span class="i">'+sv(k)+'</span>'+lab+'</div>').join('');
   });
   // add nav to parking/bus screens
+  const pq=document.getElementById('payqr');if(pq){let o='',x=23,n=25;for(let r=0;r<n;r++)for(let c=0;c<n;c++){let f=-1;for(const[R,C]of[[0,0],[0,n-7],[n-7,0]]){const a=r-R,b=c-C;if(a>=0&&a<7&&b>=0&&b<7)f=(a===0||a===6||b===0||b===6||(a>1&&a<5&&b>1&&b<5))?1:0}if(f<0){x=(x*9301+49297)%233280;f=x/233280>.52?1:0}o+='<i style="background:'+(f?'#13294B':'#fff')+'"></i>'}pq.innerHTML=o}
   const tq=document.getElementById('tktqr');if(tq){let o='',x=5,n=25;for(let r=0;r<n;r++)for(let c=0;c<n;c++){let f=-1;for(const[R,C]of[[0,0],[0,n-7],[n-7,0]]){const a=r-R,b=c-C;if(a>=0&&a<7&&b>=0&&b<7)f=(a===0||a===6||b===0||b===6||(a>1&&a<5&&b>1&&b<5))?1:0}if(f<0){x=(x*9301+49297)%233280;f=x/233280>.52?1:0}o+='<i style="background:'+(f?'#13294B':'#fff')+'"></i>'}tq.innerHTML=o}
   if(new URLSearchParams(location.search).get('core')==='1')document.documentElement.classList.add('coreonly');
   const h=document.getElementById('homeqr');
@@ -1034,9 +1277,44 @@ html.app #side .jump .ag{display:block;font-size:10px;letter-spacing:1.4px;font-
     for(let r=0;r<n;r++)for(let c=0;c<n;c++){let f=F(r,c);if(f<0){x=(x*9301+49297)%233280;f=x/233280>.52?1:0}o+='<i style="background:'+(f?'#13294B':'#fff')+'"></i>'}h.innerHTML=o}
 })();
 
-const q=new URLSearchParams(location.search);if(q.get('z'))document.documentElement.style.zoom=q.get('z');if(q.has('s')){const s=q.get('s')||'home';if(q.get('y'))document.getElementById('homeInner').style.transform='translateY(-'+q.get('y')+'px)';const play=q.get('play')==='1';
+
+const PUSH={invite:['🎉 You\'re invited · Anniversary Fiesta','Explorer exclusive: spend RM300 by 30 Nov, get RM30 + 300 bonus pts. Tap to see your missions.','now','missions'],
+  gap:['🍜 RM80 to your next reward','Dining picks near you: Akiba Ramen set RM28 · Doko Koko Café. Ends Sunday.','now','missions'],
+  approved:['🧾 Receipt approved · +118 pts','Akiba Ramen RM98.50 now counts toward Anniversary Fiesta.','now','rhist'],
+  reward:['✅ Reward unlocked · RM300 reached','Your RM30 voucher + 300 bonus pts are ready. Tap to claim.','now','missions'],
+  tier:['🏅 Next tier: Senpai · RM620 to go','5H free parking and 1.5x points are close. See your tier benefits.','now','tiers']};
+function gpush(scr,k,on=true){let p=scr.querySelector('.push.gp');if(!p){p=document.createElement('div');p.className='push gp';scr.appendChild(p)}
+  const d=PUSH[k];p.innerHTML='<div class="ap">L</div><div><b>'+d[0]+'</b><span>'+d[1]+'</span></div><em>'+d[2]+'</em>';p.dataset.go=d[3];
+  if(on){p.classList.remove('on');void p.offsetWidth;setTimeout(()=>p.classList.add('on'),30)}return p}
+const q=new URLSearchParams(location.search);if(q.get('z'))document.documentElement.style.zoom=q.get('z');if(q.has('s')){const s=q.get('s')||'home';if(q.get('y')){const ii=document.querySelector('#'+s+' .inner');if(ii){ii.style.transition='none';ii.style.transform='translateY(-'+q.get('y')+'px)'}}const play=q.get('play')==='1';
 document.getElementById(s).classList.add('on');
 function later(ms,fn){setTimeout(fn,ms)}
+
+const SCR=document.getElementById(s);
+if(q.get('push')&&!play){const p=gpush(SCR,q.get('push'),false);p.style.transition='none';p.classList.add('on')}
+if(q.get('claim')){msBar.style.transition='none';msBar.style.width='100%';msAmt.innerHTML='RM318.50 <small>/ RM300</small>';msGap.textContent='Reward unlocked';msGap.classList.add('done');msClaim.style.transition='none';msClaim.classList.add('on')}
+if(s==='missions'&&play){later(700,()=>gpush(SCR,'gap'));later(3600,()=>SCR.querySelector('.push.gp').classList.remove('on'));
+  later(4000,()=>msInner.style.transform='translateY(-250px)');
+  later(5600,()=>{msBar.style.width='100%';msAmt.innerHTML='RM318.50 <small>/ RM300</small>'});
+  later(6900,()=>{msGap.textContent='Reward unlocked';msGap.classList.add('done');msBadge.textContent='Ready to claim'});
+  later(7700,()=>msClaim.classList.add('on'));
+  later(9300,()=>{msCbtn.style.transform='scale(.94)'});later(9500,()=>{msCbtn.style.transform='';msCbox.classList.add('done');msCbtn.textContent='✓ Claimed · added to My Vouchers'});
+  later(10700,()=>msClaim.classList.remove('on'));later(11300,()=>gpush(SCR,'tier'));}
+if(s==='receipt'&&play){later(1300,()=>rcYes.classList.add('on'));
+  later(2300,()=>rcInner.style.transform='translateY(-330px)');
+  later(3900,()=>{rcSlot.style.boxShadow='0 0 0 4px rgba(184,151,90,.45)'});later(4300,()=>rcCam.classList.add('on'));
+  later(5300,()=>{rcPill.textContent='Scanning… hold steady';rcCam.classList.add('lock')});
+  later(6700,()=>{rcPill.textContent='✓ Captured';rcCam.classList.add('snap')});
+  later(7500,()=>{rcCam.classList.remove('on');rcSlot.classList.add('got');rcSlot.style.boxShadow=''});
+  later(8600,()=>rcInner.style.transform='translateY(-470px)');
+  later(9500,()=>rcTog.classList.add('on'));later(10300,()=>{rcSubmit.style.transform='scale(.95)'});
+  later(10600,()=>{SCR.classList.remove('on');const R=document.getElementById('rhist');R.classList.add('on')});
+  later(12600,()=>{rhSt.textContent='✅ Approved';rhNew.className='rh okk new';rhMs.textContent='+118 pts · counted toward Anniversary Fiesta'});
+  later(13400,()=>gpush(document.getElementById('rhist'),'reward'));}
+if(s==='rhist'&&q.get('st')==='ok'){rhSt.textContent='✅ Approved';rhNew.className='rh okk new';rhMs.textContent='+118 pts · counted toward Anniversary Fiesta'}
+if(s==='rcam'){}
+if(s==='receipt'&&q.get('cam')){rcCam.style.transition='none';rcCam.classList.add('on','lock');rcPill.textContent='Scanning… hold steady'}
+if(s==='receipt'&&q.get('got')){rcSlot.classList.add('got');rcYes.classList.add('on');rcTog.classList.add('on')}
 if(s==='home'&&play){later(3000,()=>homeInner.style.transform='translateY(-300px)');later(5400,()=>homeInner.style.transform='translateY(-640px)');later(7800,()=>homeInner.style.transform='translateY(-1074px)');}
 if(s==='tiers'&&play){const T=document.getElementById('tiers');const w=document.createElement('div');w.style.transition='transform 1.4s cubic-bezier(.45,0,.2,1)';[...T.children].filter(c=>!c.matches('.status')).forEach(c=>w.appendChild(c));T.appendChild(w);
   const t3=T.querySelector('.tc.t3');later(1700,()=>{t3.style.transition='box-shadow .8s';t3.style.boxShadow='0 0 0 3px #E8D6AE, 0 18px 34px rgba(184,151,90,.55)'});
@@ -1070,7 +1348,7 @@ if(s==='levelup'){const cs=['#D9C49A','#1E3A63','#2F4E7A','#B8975A','#C9D3E0','#
   }
   addEventListener('resize', fit); fit();
   // wrap scrollable content (status + nav stay put)
-  ['me', 'parking', 'bus', 'busticket', 'notif', 'tiers', 'quest', 'capsule', 'realtalk'].forEach(id => {
+  ['me', 'parking', 'bus', 'busticket', 'notif', 'tiers', 'quest', 'capsule', 'realtalk', 'paycode', 'rhist'].forEach(id => {
     const scr = document.getElementById(id), w = document.createElement('div');
     w.className = 'sc' + (scr.querySelector(':scope > .nav') ? ' nb' : '');
     [...scr.children].filter(c => !c.matches('.status,.nav,.reveal,#toast,.push,.exitsheet')).forEach(c => w.appendChild(c));
@@ -1163,15 +1441,15 @@ if(s==='levelup'){const cs=['#D9C49A','#1E3A63','#2F4E7A','#B8975A','#C9D3E0','#
   enter.brand = renderBrand;
 
   // ---------- wire existing markup ----------
-  const navMap = {Home: 'home', Parking: 'parking', Bus: 'bus', Me: 'me'};
-  $$('.nav > div').forEach(d => { const sp = d.querySelector('span:not(.i)'); const t = (sp ? sp.textContent : d.lastChild.textContent).trim(); if (navMap[t]) d.dataset.go = navMap[t]; if (t === 'My QR') d.dataset.act = 'qr'; });
+  const navMap = {Home: 'home', Parking: 'parking', Missions: 'missions', Me: 'me'};
+  $$('.nav > div').forEach(d => { const sp = d.querySelector('span:not(.i)'); const t = (sp ? sp.textContent : d.lastChild.textContent).trim(); if (navMap[t]) d.dataset.go = navMap[t]; if (t === 'My QR') d.dataset.go = 'paycode'; });
   $$('.back').forEach(b => b.dataset.act = 'back');
   $('#home .mall').dataset.act = 'mall';
   $$('#home .icons div')[0].dataset.go = 'notif';
   $$('#home .icons div')[1].dataset.act = 'qr';
   $('#home .tier').dataset.go = 'tiers'; $('#home .qrw').dataset.act = 'qr';
   { const t = $('#home .d.today'); if (t) t.dataset.act = 'checkin'; }
-  ['parking', 'bus', 'me', 'scan'].forEach((g, i) => $$('#home .q')[i].dataset.go = g);
+  ['parking', 'bus', 'me', 'receipt'].forEach((g, i) => $$('#home .q')[i].dataset.go = g);
   $('#home .strip.park').dataset.go = 'parking'; $('#home .strip.trip').dataset.go = 'busticket';
   $$('#home .qc').forEach(e => e.dataset.go = 'quest');
   $$('#home .bz').forEach((e, i) => { e.dataset.act = 'brand'; e.dataset.k = ['akiba', 'doko'][i]; });
@@ -1179,10 +1457,7 @@ if(s==='levelup'){const cs=['#D9C49A','#1E3A63','#2F4E7A','#B8975A','#C9D3E0','#
   const homeMore = `<div class="home-more"><div class="sec"><b>Vouchers for you 🎟️</b><a data-go="me">My wallet</a></div>
     <div class="hs">${[['#13294B', 'RM20 OFF', 'Sasa · min RM100'], ['#13294B', 'RM10 OFF', 'ACG Chapter'], ['#8C6E3C', '5% OFF', 'Kickers · MSP Special']].map(v =>
       `<div class="vch" style="min-width:250px;margin:0" data-act="collectv" data-v="${v[1]} · ${v[2]}"><div class="l" style="background:${v[0]};width:84px">${v[1].replace(' ', '<br>')}</div><div class="r"><b>${v[2]}</b><span>Tap to collect · free</span></div></div>`).join('')}</div>
-    <div class="sec"><b>Happening at LaLaport 🎉</b><a data-go="notif">All</a></div>
-    <div class="hs"><div class="ev" data-go="bus"><img src="../assets/klia_outlet.jpg"><div><b>LaLa Go · bus to Singapore</b><span>Every ticket + RM10 e-Voucher</span></div></div><div class="ev addon" data-go="quest"><img src="../assets/app/acg_event.jpg"><div><b>ACG Matsuri · 7–9 Nov</b><span>Stamp Rally · +300 XP</span></div></div>
-    <div class="ev" data-act="brand" data-k="doko"><img src="../assets/app/collabcafe.jpg"><div><b>Doko Koko × NIKKE</b><span>Collab café · till 9 Nov</span></div></div>
-    </div></div>`;
+    </div>`;
   const spacer = $('#homeInner > div:last-child'); spacer.insertAdjacentHTML('beforebegin', homeMore); spacer.style.height = '110px';
   // tiers
   $('#tiers .btn.blue').dataset.go = 'levelup';
@@ -1243,6 +1518,13 @@ if(s==='levelup'){const cs=['#D9C49A','#1E3A63','#2F4E7A','#B8975A','#C9D3E0','#
   };
   enter.parking = () => { $('#pkExit').classList.remove('on', 'done'); const p = $('#pkPush'); p.classList.remove('on'); if (!p.dataset.shown) { p.dataset.shown = 1; setTimeout(() => p.classList.add('on'), 300); setTimeout(() => p.classList.remove('on'), 3200); } };
   enter.busticket = () => { const p = $('#busPush'); p.classList.remove('on'); setTimeout(() => p.classList.add('on'), 700); setTimeout(() => p.classList.remove('on'), 4500); };
+  let rewardReady = false, claimed = false;
+  enter.missions = () => { const sc = $('#missions .scroll'); sc.scrollTop = 0;
+    if (rewardReady && !claimed) { claimed = true; $('#msBar').style.width = '100%'; $('#msAmt').innerHTML = 'RM318.50 <small>/ RM300</small>'; $('#msGap').textContent = 'Reward unlocked'; $('#msGap').classList.add('done'); $('#msBadge').textContent = 'Ready to claim';
+      setTimeout(() => sc.scrollTo({top: 250, behavior: 'smooth'}), 300); setTimeout(() => $('#msClaim').classList.add('on'), 1300); } };
+  enter.receipt = () => { $('#rcSlot').classList.remove('got'); $('#rcYes').classList.remove('on'); $('#rcTog').classList.remove('on'); $('#rcCam').classList.remove('on'); };
+  let invited = false;
+  enter.home = () => { if (invited) return; invited = true; setTimeout(() => gpush($('#home'), 'invite'), 1400); setTimeout(() => { const p = $('#home .push.gp'); if (p) p.classList.remove('on'); }, 7000); };
   enter.me = () => { $('#meMall').textContent = mall; $('#rtCount').textContent = rtPosts + (rtPosts === 1 ? ' post' : ' posts'); };
 
   // ---------- ask ----------
@@ -1290,6 +1572,15 @@ if(s==='levelup'){const cs=['#D9C49A','#1E3A63','#2F4E7A','#B8975A','#C9D3E0','#
   function act(el, e) {
     const k = el.dataset.act;
     switch (k) {
+      case 'msinv': return $('#missions .scroll').scrollTo({top: 260, behavior: 'smooth'});
+      case 'claim': { const b = $('#msCbox'); if (b.classList.contains('done')) { $('#msClaim').classList.remove('on'); setTimeout(() => gpush($('#missions'), 'tier'), 500); return; } b.classList.add('done'); el.textContent = '✓ Claimed · tap to close'; setPts(300); return toast('🎁 RM30 voucher + 300 pts added'); }
+      case 'ropt': $$('#receipt .ropt').forEach(o => o.classList.toggle('on', o === el)); return;
+      case 'ryes': return el.classList.add('on');
+      case 'rcam': { if (el.classList.contains('got')) return toast('Retake or add another page'); const c = $('#rcCam'); c.classList.remove('lock', 'snap'); $('#rcPill').textContent = 'Position the receipt in the frame'; c.classList.add('on');
+        setTimeout(() => { c.classList.add('lock'); $('#rcPill').textContent = 'Scanning… hold steady'; }, 900); setTimeout(() => { c.classList.add('snap'); $('#rcPill').textContent = '✓ Captured'; }, 2100);
+        setTimeout(() => { c.classList.remove('on'); el.classList.add('got'); }, 2800); return; }
+      case 'rsubmit': { if (!$('#rcSlot').classList.contains('got')) return toast('📷 Add a photo of your receipt first'); if (!$('#rcTog').classList.contains('on')) return toast('Please agree to the Terms & Conditions');
+        go('rhist'); setTimeout(() => { $('#rhSt').textContent = '✅ Approved'; $('#rhNew').className = 'rh okk new'; $('#rhMs').textContent = '+118 pts · counted toward Anniversary Fiesta'; setPts(118); rewardReady = true; gpush($('#rhist'), 'reward'); }, 2600); return; }
       case 'back': return back();
       case 'close': return closeSheet();
       case 'toast': return toast(el.dataset.msg);

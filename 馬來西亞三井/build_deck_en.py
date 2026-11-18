@@ -118,8 +118,8 @@ def core_map(s, y=1.3):
     d.tx(s, 1.0, cy + 0.14, 8, 0.35, "CORE  |  LaLa Quest base app · drives footfall and sign-ups", 13, color="#E8D6AE", bold=True)
     cores = [("Member ID + 4 tiers", "QR on home · Rookie → Legend"),
              ("LaLa Park · LPR", "Plate = member · free hours by tier\npoints pay the rest"),
-             ("LaLa Go · Bus", "LTH tickets · timetable\nboarding reminders · KLIA shuttle"),
-             ("Points + e-Vouchers", "Receipt submission · wallet\ntrip & tenant e-Vouchers")]
+             ("LaLa Go · Bus", "LTH & KLIA bus times\nboarding reminders · no ticketing"),
+             ("Points + Missions", "Receipt submission · Mission Wall\nsmart push · e-Vouchers")]
     for i, (t, body) in enumerate(cores):
         x = 1.0 + i * 2.95
         d.round(s, x, cy + 0.6, 2.75, 1.25, "#1E3A63", 0.08)
@@ -142,7 +142,7 @@ def whats_new(title, label, banner, head, rows):
     for i, (x, w) in enumerate(X):
         d.tx(s, x + (0.12 if i < 3 else 0), y0 + 0.08, w, 0.25, head[i], 10.5, color=SC_GOLD_L if i == 2 else "white",
              bold=True, align=PP_ALIGN.LEFT if i < 3 else PP_ALIGN.CENTER)
-    rh = 0.535
+    rh = min(0.535, 4.3 / len(rows))
     for r, (feat, before, after, pkg, key) in enumerate(rows):
         y = y0 + 0.42 + r * rh
         new = "NEW" in pkg
@@ -267,7 +267,7 @@ def fill_page_refs():
 # ---------------------------------------------------------------- Cover
 d.cover("MSP App 3.0\nRenewal Proposal.", "LaLa Quest | Every visit levels you up.", "Nov 2026",
         company="TURN CLOUD TECHNOLOGY SERVICE INC.", logos=[LALA, MOP], image=A + "mock_hero3.jpg")
-d.toc([("Insights", "機會"), ("Benchmarks", "標竿"), ("App 3.0 Overview", "全貌"), ("Core · Member Tiers", "分級"),
+d.toc([("Insights", "機會"), ("Benchmarks", "標竿"), ("App 3.0 Overview", "全貌"), ("Core · Tiers & Missions", "分級"),
        ("Core · LaLa Park", "停車"), ("Core · LaLa Go", "巴士"), ("Add-ons · AI + Play", "加購"),
        ("Rollout & KPI", "落地")])
 
@@ -295,10 +295,10 @@ d.columns(s, [("Insight", "#8A94A6", "Love is there, traffic tools aren't",
                "3,696 posts, 90.7% positive\nTop complaint: parking\nLTH + KLIA bring travellers\n"
                "Only 5% earn points in-app"),
               ("Solution", BLUE, "Core + 2 add-ons",
-               "Core: tiers, LPR parking\nCore: LaLa Go bus tickets\nCore: points + e-Vouchers\n"
+               "Core: tiers, missions, LPR parking\nCore: LaLa Go bus times\nCore: receipts + smart push\n"
                "Add-ons: AI (+ Buzz) · Play"),
               ("Return", ORANGE, "More visits, more members",
-               "Every plate = a member\nEvery bus ticket = mall spend\nPoint earning 5% → 20%\n"
+               "Every plate = a member\nEvery bus wait = mall time\nPoint earning 5% → 20%\n"
                "One ID across all malls")])
 
 s = d.info("Insight 1  People love LaLaport: 3,696 posts, 9 in 10 positive", label="Pandora Volume Report",
@@ -348,24 +348,24 @@ d.callouts(s, 7.0, 3.3, 5.75, [("Home = ad wall", "Banners, News and Vouchers al
 
 s = d.info("Insight 4  Travellers pass through: LTH buses and the KLIA shuttle",
            label="Desk Research | Transport",
-           banner="Bus waiting time is mall time: sell the ticket in-app, attach an e-Voucher, remind them to board",
+           banner="Bus waiting time is mall time: show the times in-app, remind them to board, point them to shops on the way",
            source="Data source: busonlineticket.com LaLaport Transportation Hub page (Nov 2026); "
                   "railtravelstation.com, MOP KLIA Sepang shuttle info. Timetables to be confirmed with operators.")
 d.num_cards(s, [("8", "Bus operators at LTH", "LG1 East Atrium, LaLaport BBCC.\nKL ⇄ Singapore & Johor Bahru,\n"
                  "departures about 06:30–23:45."),
                 ("~10 min", "MOP ⇄ KLIA free shuttle", "KLIA T1 ~10 min, klia2 ~20 min.\nTransit passengers and\n"
                  "tourists on a layover."),
-                ("0", "Linked to the mall today", "Tickets sit on third-party sites;\nno member ID, no voucher,\n"
+                ("0", "Linked to the mall today", "Times sit on operator sites;\nno member link, no reminder,\n"
                  "no reminder to shop first.")], y=1.35, h=2.55)
 d.fit(s, A + "app/lth_bay.jpg", 0.72, 4.05, 3.2, 2.0)
 d.ai_tag(s, 0.82, 4.12)
 d.callouts(s, 4.2, 4.1, 8.4, [("Travellers arrive early", "Cross-border coaches ask you to come early: 30–90 min to fill"),
-                              ("They need a nudge, not an ad", "\"30 min to boarding, RM10 voucher still unused\" turns waiting into spending")],
+                              ("They need a nudge, not an ad", "\"30 min to boarding, grab a bite at L1\" turns waiting into spending")],
            gap=0.95)
 
 d.statement("IDEA", "LaLa Quest\nPark. Ride. Level up.",
             "Every visit levels you up.\n"
-            "Core: tiers · LPR parking · LaLa Go buses · e-Vouchers\n"
+            "Core: tiers · missions · LPR parking · LaLa Go bus times\n"
             "AI add-on: instant receipt scan, Ask LaLa, LaLa Buzz reviews\n"
             "Play add-on: check-ins, quests, stamp rallies, capsules",
             image=A + ("idea_poster.jpg" if IDEA_VIDEO else "app/acg_event.jpg"), video=IDEA_VIDEO)
@@ -417,7 +417,7 @@ bench("Starbucks: a clear reward ladder, a surprise at every scan", "Starbucks R
       [("Reward ladder", "25★, 100★, 200★… each step is clear"),
        ("Scan to pay & earn", "Paying = earning, in one action"),
        ("\"Yay!\" animation", "A celebration after checkout")],
-      "Parking hours, bus vouchers, collab merch\nas a reward ladder;\n"
+      "Parking hours, mission rewards, collab merch\nas a reward ladder;\n"
       "full-screen Level Up celebration.",
       "Starbucks went back to 3 tiers in 2026: tiers + ladder is proven design")
 bench("Shopee: the \"open it every day\" rhythm Malaysians know", "Shopee MY",
@@ -443,23 +443,24 @@ glance("App 3.0 at a glance: from a news board to an app that works for me", "Wh
        "Same members, a whole new app: every screen now starts with me, my car, my trip, my level",
        "BEFORE · today's MSP app", "AFTER · App 3.0 (prototype recordings)",
        [("home", "Banners first;\nmember info buried"), ("news", "Promos & news,\nnothing personal")],
-       [("home", "My card, car & trip", None), ("tiers", "4 tiers + characters", None),
-        ("parking", "LaLa Park", "NEW"), ("busticket", "LaLa Go", "NEW")], "")
-whats_new("What's new in App 3.0: 8 upgrades, 5 brand-new features", "What's New | Before → After",
-          "From an app that pushes mall news to an app that parks my car, books my bus and levels me up",
+       [("home", "My card, car & missions", None), ("tiers", "4 tiers + characters", None),
+        ("missions", "Mission Wall", "NEW"), ("parking", "LaLa Park", "NEW")], "")
+whats_new("What's new in App 3.0: 9 upgrades, 6 brand-new features", "What's New | Before → After",
+          "From an app that pushes mall news to an app that parks my car, times my bus and levels me up",
           ["Feature", "Before · current app", "After · App 3.0", "Package", "Demo"],
           [("Home", "Banners and News push; no \"me\"", "My card, my car, my trip, all on one screen", "Core", "home"),
            ("Membership", "Perks hard to see; no reason to level up", "4 tiers + characters; perks grow with every visit", "Core", "tiers"),
            ("Parking", "Paper tickets; free 3H buried in News", "LaLa Park: plate = member, free hours by tier, points pay, gate opens", "Core · NEW", "park"),
-           ("Bus & shuttle", "Tickets on third-party sites, no link to the mall", "LaLa Go: in-app tickets + RM10 e-Voucher + boarding reminders; KLIA shuttle", "Core · NEW", "go"),
-           ("Points & vouchers", "Only 5% of members earn in-app", "Points pay parking and buses; tenant + trip e-Vouchers in one wallet", "Core", "home"),
+           ("Bus & shuttle", "Times on operator sites, no link to the mall", "LaLa Go: bus + KLIA shuttle times, boarding reminders, shops on the way", "Core · NEW", "go"),
+           ("Missions", "Campaigns live in News posts", "Mission Wall + smart push: spend gap, picks, reward and tier alerts", "Core · NEW", "missions"),
+           ("Receipts & points", "Only 5% of members earn in-app", "Snap & submit receipts, track status; points pay parking", "Core", "receipt"),
            ("Play", "—", "Visit check-ins, quests, Stamp Rally, LaLa Capsule", "Play · NEW", "play"),
            ("AI", "—", "1-sec receipt scan, Ask LaLa concierge, For You picks", "AI · NEW", "ai"),
            ("Reviews", "Scattered on IG and Threads, invisible in the app", "LaLa Buzz: Pandora Buzz Score + Real Talk reviews", "AI · NEW", "buzz")])
 phone_demo("Home: my card, my car, my trip, all on one screen", "Home", "home",
            [("Card = QR + tier", "At checkout, staff scan the QR on home (video, right)"),
             ("My car, live", "LPR spotted WXY 1234 at P2: 2h 31m free left"),
-            ("My trip", "Bus to Singapore 3:30 PM, Bay 3, RM10 voucher to spend"),
+            ("Missions + my trip", "Fiesta mission RM80 to go; bus 3:30 PM reminder, only if you set one"),
             ("What's On gallery", "Swipe today's events and promos at the bottom of home (video)")],
            "Home moves from \"what the mall is pushing\" to \"who I am and what I get today\"", clip="checkout")
 PAGES["home"] = d.n
@@ -480,7 +481,7 @@ d.tx(s, 0.7, 4.65, 7.6, 1.2, "Fonts: Cormorant Garamond (headlines, luxury serif
      "supports Malay)\nLine icons instead of emoji; gold only on tiers, points and the QR frame",
      12, color="mid", spacing=1.55)
 d.tx(s, 9.0, 1.35, 3.7, 0.35, "Microcopy: Malaysian English", 13, color="frame", bold=True)
-mc = ["Jom! Your car is parked, 2h 31m free.", "30 min to boarding, still got RM10 lah", "Ask anything, lah…",
+mc = ["Jom! Your car is parked, 2h 31m free.", "30 min to boarding, makan first lah", "Ask anything, lah…",
       "Done · Shiok!", "Squad up: bring 1 kawan", "Drive safe, see you again!"]
 for i, t in enumerate(mc):
     d.round(s, 9.0, 1.8 + i * 0.68, 3.7, 0.54, "soft", 0.3)
@@ -491,7 +492,7 @@ d.divider("Member Tiers", "Core 1 | From Regular Member\nto Rookie, Explorer, Se
 s = d.info("Four tiers, four LaLas: members grow their own character", label="Core | Tier Characters",
            banner="No gold or silver cards: each level brings new gear, more parking hours and a badge worth a screenshot",
            source="Characters are AI concept designs; can extend into stickers, capsule figures and in-mall installations")
-TIERS = [("rookie", "#8F8A80", "ROOKIE", "LV1 | On sign-up", "1x points · 3H parking\nTrip e-Vouchers"),
+TIERS = [("rookie", "#8F8A80", "ROOKIE", "LV1 | On sign-up", "1x points · 3H parking\nWelcome missions"),
          ("explorer", "#13294B", "EXPLORER", "LV2 | RM1,500 or 12 visits", "1.2x points · 4H parking\nBirthday 2x points"),
          ("senpai", "#B8975A", "SENPAI", "LV3 | RM5,000", "1.5x points · 5H parking\nPriority event entry"),
          ("legend", "#0B1A30", "LEGEND", "LV4 | RM12,000", "2x points · all-day parking\nLegend Lounge")]
@@ -509,11 +510,11 @@ d.ai_tag(s, 0.82, 1.38)
 META["special"]["tiers"] = d.n
 PAGES["tiers"] = d.n
 
-s = d.info("Tier perks: parking hours and bus points grow with your level", label="Core | Tier Design",
+s = d.info("Tier perks: parking hours and mission bonuses grow with your level", label="Core | Tier Design",
            banner="Parking is the perk everyone understands: it turns \"level up\" into hours saved every visit",
            source="Thresholds and perks are illustrative; final numbers to be set from Mitsui member spending and car park data")
-d.table(s, ["Tier", "Threshold (12 months)", "Points", "Free parking (LPR)", "Bus ticket pts", "Signature perks"],
-        [["Rookie  LV1", "On sign-up", "1x", "3 hours", "1x", "Trip e-Vouchers, birthday gift"],
+d.table(s, ["Tier", "Threshold (12 months)", "Points", "Free parking (LPR)", "Mission bonus", "Signature perks"],
+        [["Rookie  LV1", "On sign-up", "1x", "3 hours", "1x", "Welcome missions, birthday gift"],
          ["Explorer  LV2", "RM 1,500 or 12 visits", "1.2x", "4 hours", "1.2x", "Birthday 2x points, 2nd plate"],
          ["Senpai  LV3", "RM 5,000", "1.5x", "5 hours", "1.5x", "Priority entry to Bon Odori & ACG events"],
          ["Legend  LV4", "RM 12,000", "2x", "All day", "2x", "Legend Lounge, reserved bays, Legend Night"]],
@@ -523,11 +524,14 @@ d.tx(s, 0.75, 5.2, 12, 0.6, "★ Visits count too: reach Explorer with 12 visits
 
 phone_demo("Tier page: four cards stacked, the next level always in sight", "Core | Tier", "tierflow",
            [("Stacked cards", "Four tier cards stacked like a wallet; Legend black-gold"),
-            ("Perks at a glance", "Multiplier, LPR parking hours, bus points, event entry"),
+            ("Perks at a glance", "Multiplier, LPR parking hours, mission bonus, event entry"),
             ("Level-up moment", "Senpai unlocked: 4H → 5H parking, 1.5x points"),
             ("In the mall", "The moment it happens, with friends (video, right)")],
            "Showing members \"where's next\" works better than giving more points",
            clip="lvscene")
+
+from core_extra import add_core_extra  # noqa: E402
+add_core_extra(d, "en", phone, A, PAGES)
 
 # ---------------------------------------------------------------- 5 LaLa Park (core)
 d.divider("LaLa Park", "Core 2 | Register your plate once.\nThe gate knows you're a member.", key="停車")
@@ -543,15 +547,15 @@ scene("LaLa Park: drive in, shop all afternoon, drive out. The gate just opens",
 PAGES["park"] = d.n
 
 # ---------------------------------------------------------------- 6 LaLa Go (core)
-d.divider("LaLa Go", "Core 3 | Buy the bus ticket in the app.\nSpend the wait in the mall.", key="巴士")
-scene("LaLa Go: book the bus, get RM10 to spend, never miss boarding", "Core | LaLa Go · Scenario Demo",
-      "Waiting time becomes mall time: every passenger walks past the shops with a voucher in hand",
+d.divider("LaLa Go", "Core 3 | Know your bus time in the app.\nSpend the wait in the mall.", key="巴士")
+scene("LaLa Go: know the bus time, get reminded, spend the wait in the mall", "Core | LaLa Go · Scenario Demo",
+      "Waiting time becomes mall time: every passenger knows when to leave and where to eat on the way",
       A + "app/lth_bay.jpg", ["bus", "busticket"],
-      [("1:30 PM", "Book the 3:30 PM coach to Singapore in the app, +RM10 e-Voucher"),
-       ("3:00 PM", "Push: \"30 min to boarding, RM10 still unused!\" Bubble tea, sorted"),
-       ("3:20 PM", "Show the QR at Bay 3 and board. Points land after the trip")],
+      [("1:30 PM", "Check the 3:30 PM coach to Singapore in LaLa Go and tap \"Remind me\""),
+       ("3:00 PM", "Push: \"30 min to boarding, Bay 3. Grab a bite at L1\" Bubble tea, sorted"),
+       ("3:20 PM", "Walk to Bay 3 with the operator ticket. Shopping already done")],
       chip="Also at MOP: free KLIA shuttle + \"catch my flight\"",
-      video="go_scene_en", source="Operators, fares and timetables are illustrative; tickets via operator booking APIs (busonlineticket.com network at LTH)")
+      video="go_scene_en", source="Operators and timetables are illustrative; times via operator feeds (busonlineticket.com network at LTH). Tickets stay with the operators.")
 PAGES["go"] = d.n
 
 # ---------------------------------------------------------------- 7 Add-ons (AI + Play)
@@ -613,7 +617,7 @@ phone_demo("LaLa Capsule: one free draw a day, and a reason to collect", "Add-on
 d.divider("Rollout & KPI", "Core first, add-ons when ready:\nactivation, timeline, roles, KPIs.", key="落地")
 d.social_idea("A", "MOP KLIA Sepang × Travellers", "Transit Quest: a layover at the outlet, a member for life",
               "LaLa Go shows the free KLIA shuttle and pings travellers when to leave for their flight. "
-              "Download = 30-day Explorer trial + RM10 e-Voucher + Tourist Privilege Pass, so one-time "
+              "Download = 30-day Explorer trial + welcome missions + Tourist Privilege Pass, so one-time "
               "visitors still become members. (AI mock-up)", A + "klia_outlet.jpg")
 d.social_idea("B", "LaLaport BBCC × ACG (with Play add-on)", "ACG Season Pass: ACG Matsuri becomes an in-app season",
               "Once Play Pack is on: stamp rallies, collab café quests, KLP48 Theatre check-ins. Members who drive in "
@@ -623,13 +627,13 @@ d.social_idea("B", "LaLaport BBCC × ACG (with Play add-on)", "ACG Season Pass: 
 s = d.info("Launch the core first, then plug in add-ons season by season", label="Timeline",
            banner="Phase 0 is all core: tiers, LPR parking and LaLa Go go live together; add-ons follow on demand")
 d.timeline(s, 1.8, ["Jan 2027", "Apr 2027", "Jul 2027", "Oct 2027", "Jan 2028"],
-           [("P0 Core | Tiers · Park · Go · Vouchers", 0, 0.4),
+           [("P0 Core | Tiers · Missions · Park · Go", 0, 0.4),
             ("Add-on | AI Pack: LaLa Buzz (Pandora)", 0.3, 0.6),
             ("Add-on | AI Pack: Receipt Scan · Ask LaLa", 0.45, 0.8),
             ("Add-on | Play Pack (Quests · Capsule · Matsuri)", 0.6, 1.0)])
 d.table(s, ["", "Mitsui Shopping Park", "TurnCloud"],
         [["Content", "Tier perks, car park rules, tenant vouchers", "UI/UX, prototype, localised copy"],
-         ["System", "App, member data, car park LPR + bus partners", "Tier engine, LPR & bus API links, add-ons"],
+         ["System", "App, member data, car park LPR + bus partners", "Tier & mission engine, LPR + bus timetable feeds, add-ons"],
          ["Data", "Thresholds, parking & voucher budget", "Pandora listening, CRM dashboard"]],
         y=3.85, col_w=[1.1, 4.0, 4.4], size=12, row_h=0.5)
 
@@ -638,8 +642,8 @@ s = d.info("KPI: core moves traffic and sign-ups, add-ons move engagement", labe
            source="Targets are illustrative; final targets to be calibrated with Mitsui's member base, car park and app data")
 d.table(s, ["Metric", "Package", "Today", "Phase 0 (3 months)", "12 months (illustrative)"],
         [["Plates registered (LaLa Park)", "Core", "—", "15,000", "60,000"],
-         ["Bus tickets sold in-app (LaLa Go)", "Core", "0", "3,000 / month", "10,000 / month"],
-         ["Trip e-Vouchers redeemed", "Core", "0", "40%", "55%"],
+         ["Bus reminders set (LaLa Go)", "Core", "0", "3,000 / month", "10,000 / month"],
+         ["Mission rewards claimed", "Core", "0", "25%", "40%"],
          ["Members earning points in-app", "Core", "5%", "10%", "20%"],
          ["Avg. monthly visits", "Core", "—", "+0.2", "+0.6"],
          ["MAU / members", "Add-ons", "—", "20%", "35%"],
@@ -651,7 +655,7 @@ add_marketing(d, "en", META)
 
 d.closing("Every visit levels you up.",
           "Next Steps\n1  Nov: confirm the Core scope and tier perks (incl. parking hours)\n"
-          "2  Dec: car park LPR + bus operator API workshop; prototype test with 20 members\n"
+          "2  Dec: car park LPR + bus timetable feed workshop; prototype test with 20 members\n"
           "3  Jan 2027: Phase 0 Core development kicks off",
           logos=[TC])
 fill_page_refs()
